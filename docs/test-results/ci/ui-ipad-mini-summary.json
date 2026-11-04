@@ -3,7 +3,7 @@
     {
       "device" : {
         "architecture" : "arm64",
-        "deviceId" : "6100C2E3-4DCC-42D1-B659-C06220A1F2A2",
+        "deviceId" : "410CD6CB-C689-40F9-8A1C-3ED3D7D7709B",
         "deviceName" : "VN iPad mini 6",
         "modelName" : "iPad mini (6th generation)",
         "osBuildNumber" : "23C54",
@@ -11,8 +11,8 @@
         "platform" : "iOS Simulator"
       },
       "expectedFailures" : 0,
-      "failedTests" : 1,
-      "passedTests" : 7,
+      "failedTests" : 0,
+      "passedTests" : 8,
       "skippedTests" : 0,
       "testPlanConfiguration" : {
         "configurationId" : "1",
@@ -22,24 +22,20 @@
   ],
   "environmentDescription" : "VNReader · Built with macOS 15.8.2",
   "expectedFailures" : 0,
-  "failedTests" : 1,
-  "finishTime" : 1793819273.206,
-  "passedTests" : 7,
-  "result" : "Failed",
+  "failedTests" : 0,
+  "finishTime" : 1793823384.672,
+  "passedTests" : 8,
+  "result" : "Passed",
   "skippedTests" : 0,
-  "startTime" : 1793818573.847,
+  "startTime" : 1793822749.224,
   "statistics" : [
-
+    {
+      "subtitle" : "8 test runs",
+      "title" : "1 configuration ran with test repetitions"
+    }
   ],
   "testFailures" : [
-    {
-      "failureText" : "Failed to get launch progress for <XCUIApplicationImpl: 0x600000c91590 org.yfwu.VNReader at /Users/runner/work/VN-Reader/VN-Reader/build/dd/Build/Products/Debug-iphonesimulator/VNReader.app>: Timed out while requesting launch progress.",
-      "targetName" : "VNReaderUITests",
-      "testIdentifier" : 1,
-      "testIdentifierString" : "ReaderUITests/test01EmptyLibrary()",
-      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test01EmptyLibrary",
-      "testName" : "test01EmptyLibrary()"
-    }
+
   ],
   "title" : "Test - VNReader",
   "topInsights" : [
