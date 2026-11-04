@@ -11,7 +11,7 @@ and nothing in this report was run on a physical iPad.
 |---|---|---|
 | 原始碼完成 (source complete) | ✅ P0 complete; P1 items 1–6 implemented; iPhone layout not started | this repository |
 | 編譯成功 (builds) | ✅ Simulator (Debug) and device `iphoneos` arm64 (Release archive) with Xcode 26.3 (17C529), iOS SDK 26.2, macOS 15.8.2 runner | `docs/test-results/ci/SUMMARY.md` |
-| 模擬器測試通過 (simulator tests) | ✅ core 53/53 (2 skipped by design) on iPad mini (6th gen) simulator; UI suites: see table below | `docs/test-results/ci/` |
+| 模擬器測試通過 (simulator tests) | ✅ core 53 tests (51 run + 2 opt-in stress skipped) pass on macOS host and iPad mini 6 simulator; **UI 8/8 on iPad mini 6 and 8/8 on iPad Pro 13** (iOS 26.2), all on the first iteration (no retries) — [run 41896232490](https://github.com/yfwu/VN-Reader/actions/runs/41896232490), commit `95220b9` | `docs/test-results/ci/` |
 | 實機 Archive 成功 (device archive) | ✅ **unsigned** archive (`CODE_SIGNING_ALLOWED=NO`); ❌ signed archive not done — no Team / certificate available | `deliverables/UNSIGNED-IPA-INFO.txt` |
 | IPA 匯出成功 (IPA export) | ⚠️ Only `VNReader-0.1.0-1-UNSIGNED.ipa` (packaged, **cannot be installed**). Signed export: pending your Team ID | `deliverables/` |
 | 指定 iPad 安裝並啟動成功 (installed on iPad) | ❌ Not done — no signed build, no device | — |
@@ -57,7 +57,23 @@ in the `*-tests.json` files.
 | test07RepeatedOpenClose | open/close two books 5× with page turns |
 | test08VerticalScrollMode | vertical continuous mode advances logical page, jump works |
 
-Latest per-device results: `docs/test-results/ci/SUMMARY.md`.
+### Results — CI run 41896232490 (commit 95220b9, Xcode 26.3, iOS 26.2 simulators)
+
+| Test | iPad mini 6 | iPad Pro 13 |
+|---|---|---|
+| test01EmptyLibrary | ✅ 34.9 s | ✅ 74.1 s |
+| test02ImportAndLibrary | ✅ 24.5 s | ✅ 20.6 s |
+| test03LTRPagingZoomThumbnailsAndProgress | ✅ 141.3 s | ✅ 168.5 s |
+| test04RTLAndDirectionSwitchKeepsPage | ✅ 74.8 s | ✅ 65.6 s |
+| test05ProgressSurvivesBackgroundAndRelaunch | ✅ 84.1 s | ✅ 57.8 s |
+| test06RenameDeleteAndMenu | ✅ 37.0 s | ✅ 51.3 s |
+| test07RepeatedOpenClose | ✅ 70.4 s | ✅ 89.5 s |
+| test08VerticalScrollMode | ✅ 54.2 s | ✅ 69.2 s |
+
+(Durations are simulator wall-clock including launches and deliberate waits; they are not performance numbers.)
+
+History: earlier runs exposed and fixed (1) two quick side taps being taken as a double-tap zoom — side zones now turn pages immediately; (2) tall-strip covers stretching grid cells; (3) the empty-state layout; (4) the reader-settings sheet hiding controls at medium height on 13-inch iPads; (5) a cold-simulator launch timeout (simulators are now booted before tests).
+Latest regenerated summary: `docs/test-results/ci/SUMMARY.md`.
 
 ## Acceptance criteria (section 11) — coverage
 
