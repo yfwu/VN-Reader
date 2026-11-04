@@ -2,7 +2,7 @@ import UIKit
 import ComicCore
 
 /// One screen of the pager: a single page or a spread, with loading and error states.
-final class SpreadPageController: UIViewController {
+final class SpreadPageController: UIViewController, UIGestureRecognizerDelegate {
     let unit: Int
     let pages: [Int]          // logical reading order
     private weak var reader: ReaderViewController?
@@ -80,6 +80,7 @@ final class SpreadPageController: UIViewController {
         ])
 
         doubleTap.numberOfTapsRequired = 2
+        doubleTap.delegate = self
         doubleTap.addTarget(self, action: #selector(handleDoubleTap(_:)))
         singleTap.numberOfTapsRequired = 1
         singleTap.addTarget(self, action: #selector(handleSingleTap(_:)))
@@ -155,6 +156,15 @@ final class SpreadPageController: UIViewController {
                 }
             }
         }
+    }
+
+    /// Double-tap zoom only starts in the centre zone (or anywhere while zoomed in),
+    /// so taps on the side zones turn pages immediately, even in quick succession.
+    func gestureRecognizer(_ g: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        guard g === doubleTap else { return true }
+        if zoomView.isZoomedIn { return true }
+        let x = touch.location(in: view).x
+        return ReaderNavigation.region(x: Double(x), width: Double(view.bounds.width)) == .center
     }
 
     @objc private func handleDoubleTap(_ g: UITapGestureRecognizer) {

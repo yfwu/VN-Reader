@@ -38,33 +38,14 @@ struct LibraryView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    if !importer.jobs.isEmpty { ImportJobsSection() }
-                    if search.isEmpty, settings.filter == .all, let book = library.continueReading {
-                        ContinueReadingCard(book: book) { openBook = book }
-                    }
-                    if !books.isEmpty {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 150, maximum: 210), spacing: 20, alignment: .top)],
-                                  alignment: .leading, spacing: 28) {
-                            ForEach(books) { book in
-                                BookCell(book: book,
-                                         open: { openBook = book },
-                                         readFromStart: {
-                                             library.resetProgress(book.id)
-                                             openBook = library.book(book.id)
-                                         },
-                                         rename: { renameText = book.displayName; renaming = book },
-                                         reset: { resetting = book },
-                                         delete: { deleting = book })
-                            }
-                        }
-                    }
+            Group {
+                if library.books.isEmpty && importer.jobs.isEmpty {
+                    emptyLibrary
+                } else {
+                    libraryContent
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
             }
-            .overlay { emptyState }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay {
                 if dropTargeted {
                     RoundedRectangle(cornerRadius: 20).stroke(Color.accentColor, style: StrokeStyle(lineWidth: 3, dash: [10]))
@@ -137,24 +118,62 @@ struct LibraryView: View {
         }
     }
 
-    @ViewBuilder
-    private var emptyState: some View {
-        if library.books.isEmpty && importer.jobs.isEmpty {
-            ContentUnavailableView {
-                Label(L10n.emptyTitle, systemImage: "books.vertical")
-            } description: {
-                Text(L10n.emptyMessage)
-            } actions: {
-                Button { showPicker = true } label: {
-                    Label(L10n.importButton, systemImage: "square.and.arrow.down")
-                        .padding(.horizontal, 8)
-                        .frame(minHeight: 36)
-                }
-                .buttonStyle(.borderedProminent)
-                .accessibilityIdentifier("library.empty.import")
+    private var emptyLibrary: some View {
+        ContentUnavailableView {
+            Label(L10n.emptyTitle, systemImage: "books.vertical")
+        } description: {
+            Text(L10n.emptyMessage)
+        } actions: {
+            Button { showPicker = true } label: {
+                Label(L10n.importButton, systemImage: "square.and.arrow.down")
+                    .padding(.horizontal, 8)
+                    .frame(minHeight: 36)
             }
-        } else if books.isEmpty && !library.books.isEmpty {
-            ContentUnavailableView.search(text: search)
+            .buttonStyle(.borderedProminent)
+            .accessibilityIdentifier("library.empty.import")
+        }
+        .frame(maxWidth: 520)
+    }
+
+    private var libraryContent: some View {
+        ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    if !importer.jobs.isEmpty { ImportJobsSection() }
+                    if search.isEmpty, settings.filter == .all, let book = library.continueReading {
+                        ContinueReadingCard(book: book) { openBook = book }
+                    }
+                    if !books.isEmpty {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 150, maximum: 210), spacing: 20, alignment: .top)],
+                                  alignment: .leading, spacing: 28) {
+                            ForEach(books) { book in
+                                BookCell(book: book,
+                                         open: { openBook = book },
+                                         readFromStart: {
+                                             library.resetProgress(book.id)
+                                             openBook = library.book(book.id)
+                                         },
+                                         rename: { renameText = book.displayName; renaming = book },
+                                         reset: { resetting = book },
+                                         delete: { deleting = book })
+                            }
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+            }
+        .overlay {
+            if books.isEmpty && importer.jobs.isEmpty {
+                Group {
+                    if search.isEmpty {
+                        ContentUnavailableView(L10n.noResultsTitle, systemImage: "line.3.horizontal.decrease.circle")
+                    } else {
+                        ContentUnavailableView.search(text: search)
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
     }
 }

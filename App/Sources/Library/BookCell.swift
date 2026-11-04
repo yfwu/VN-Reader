@@ -7,20 +7,24 @@ struct CoverView: View {
     @State private var image: UIImage?
 
     var body: some View {
-        ZStack {
-            if let image {
-                Image(uiImage: image).resizable().scaledToFill()
-            } else {
-                LinearGradient(colors: [Color.accentColor.opacity(0.35), Color.accentColor.opacity(0.15)],
-                               startPoint: .topLeading, endPoint: .bottomTrailing)
-                Text(String(book.displayName.prefix(1)))
-                    .font(.system(size: 44, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.white.opacity(0.9))
+        // Fixed 2:3 frame; the cover fills and is cropped (tall strips no longer stretch the cell).
+        Color.clear
+            .aspectRatio(2.0 / 3.0, contentMode: .fit)
+            .overlay {
+                if let image {
+                    Image(uiImage: image).resizable().scaledToFill()
+                } else {
+                    ZStack {
+                        LinearGradient(colors: [Color.accentColor.opacity(0.35), Color.accentColor.opacity(0.15)],
+                                       startPoint: .topLeading, endPoint: .bottomTrailing)
+                        Text(String(book.displayName.prefix(1)))
+                            .font(.system(size: 44, weight: .semibold, design: .rounded))
+                            .foregroundStyle(.white.opacity(0.9))
+                    }
+                }
             }
-        }
-        .aspectRatio(2.0 / 3.0, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(Color.primary.opacity(0.08)))
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(Color.primary.opacity(0.08)))
         .task(id: book.id) {
             guard book.hasCover else { return }
             image = await CoverCache.shared.image(for: library.paths.coverFile(book.id))

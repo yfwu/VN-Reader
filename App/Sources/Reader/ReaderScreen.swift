@@ -169,7 +169,7 @@ struct ReaderScreen: View {
                            label: model.isBookmarked ? L10n.removeBookmark : L10n.addBookmark, id: "reader.bookmark") {
                     model.toggleBookmark()
                 }
-                iconButton("textformat.size", label: L10n.readerSettings, id: "reader.settings") { showSettings = true }
+                iconButton("slider.horizontal.3", label: L10n.readerSettings, id: "reader.settings") { showSettings = true }
             }
         }
         .padding(.horizontal, 12)

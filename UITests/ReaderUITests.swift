@@ -51,12 +51,18 @@ final class ReaderUITests: XCTestCase {
     private func showChrome() {
         let jump = app.buttons["reader.jump"]
         // Upper-middle: still the "center" tap zone, but clear of any centered status card.
-        if !jump.exists { tapScreen(0.5, 0.22) }
+        if !jump.exists {
+            usleep(700_000) // never let two centre taps form a double-tap (zoom)
+            tapScreen(0.5, 0.22)
+        }
         XCTAssertTrue(jump.waitForExistence(timeout: 5))
     }
 
     private func hideChrome() {
-        if app.buttons["reader.jump"].exists { tapScreen(0.5, 0.22) }
+        if app.buttons["reader.jump"].exists {
+            usleep(700_000)
+            tapScreen(0.5, 0.22)
+        }
         let gone = NSPredicate(format: "exists == false")
         expectation(for: gone, evaluatedWith: app.buttons["reader.jump"])
         waitForExpectations(timeout: 5)
@@ -174,7 +180,7 @@ final class ReaderUITests: XCTestCase {
         app.swipeLeft()
         waitForPage(3)
 
-        // Thumbnails: jump to page 12.
+        // Thumbnails: jump to page 12. (The book has 15 pages: one file is a double-page spread.)
         app.buttons["reader.thumbnails"].tap()
         let thumb = app.descendants(matching: .any)["thumb.11"]
         XCTAssertTrue(thumb.waitForExistence(timeout: 10))
@@ -188,15 +194,15 @@ final class ReaderUITests: XCTestCase {
         // (Extra taps: two taps in quick succession may be read as a double tap.)
         for _ in 0..<20 { tapScreen(0.95) }
         sleep(1)
-        XCTAssertEqual(currentPage(), 16)
+        XCTAssertEqual(currentPage(), 15)
         hideChrome()
         tapScreen(0.08)
-        waitForPage(15)
+        waitForPage(14)
 
         // Landscape keeps the page.
         XCUIDevice.shared.orientation = .landscapeLeft
         sleep(1)
-        XCTAssertEqual(currentPage(), 15)
+        XCTAssertEqual(currentPage(), 14)
         hideChrome()
         screenshot("06-reader")
 
