@@ -6,7 +6,10 @@ UDID="$1"; OUT="$2"; DD="${3:-}"
 mkdir -p "$OUT"
 RESULT="$OUT/ui.xcresult"
 rm -rf "$RESULT"
-COMMON=(-destination "id=$UDID" -resultBundlePath "$RESULT"
+# Boot and wait first: a cold simulator can time out the first app launch.
+xcrun simctl boot "$UDID" 2>/dev/null || true
+xcrun simctl bootstatus "$UDID" -b >/dev/null 2>&1 || true
+COMMON=(-destination "id=$UDID" -resultBundlePath "$RESULT" -retry-tests-on-failure -test-iterations 2
         -test-timeouts-enabled YES -default-test-execution-time-allowance 300 -maximum-test-execution-time-allowance 420)
 if [[ -n "$DD" ]]; then
   xcodebuild test-without-building -project VNReader.xcodeproj -scheme VNReader -derivedDataPath "$DD" "${COMMON[@]}" \

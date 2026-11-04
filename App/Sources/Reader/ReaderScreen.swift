@@ -74,7 +74,6 @@ struct ReaderScreen: View {
         }
         .sheet(isPresented: $showSettings) {
             ReaderSettingsSheet(model: model)
-                .presentationDetents([.medium, .large])
         }
         .alert(L10n.jumpToPage, isPresented: $showJump) {
             TextField(L10n.jumpRange(model.pageCount), text: $jumpText)

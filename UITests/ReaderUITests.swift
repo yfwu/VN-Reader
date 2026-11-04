@@ -210,6 +210,7 @@ final class ReaderUITests: XCTestCase {
         showChrome()
         app.buttons["reader.settings"].tap()
         let layout = app.segmentedControls["settings.layout"]
+        if !layout.waitForExistence(timeout: 3) { app.swipeUp() }
         XCTAssertTrue(layout.waitForExistence(timeout: 5))
         layout.buttons.element(boundBy: 1).tap()
         app.buttons["readersettings.done"].tap()
@@ -320,6 +321,7 @@ final class ReaderUITests: XCTestCase {
         showChrome()
         app.buttons["reader.settings"].tap()
         let layout = app.segmentedControls["settings.layout"]
+        if !layout.waitForExistence(timeout: 3) { app.swipeUp() }
         XCTAssertTrue(layout.waitForExistence(timeout: 5))
         layout.buttons.element(boundBy: 2).tap()
         app.buttons["readersettings.done"].tap()
