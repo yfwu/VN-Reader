@@ -1,0 +1,73 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "0E1E0F12-3522-479F-B502-86CD77B9D1B5",
+        "deviceName" : "VN iPad mini 6",
+        "modelName" : "iPad mini (6th generation)",
+        "osBuildNumber" : "23C54",
+        "osVersion" : "26.2",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 4,
+      "passedTests" : 3,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "VNReader · Built with macOS 15.8.2",
+  "expectedFailures" : 0,
+  "failedTests" : 4,
+  "finishTime" : 1793816411.529,
+  "passedTests" : 3,
+  "result" : "Failed",
+  "skippedTests" : 0,
+  "startTime" : 1793815697.363,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "XCTAssertEqual failed: (\"15\") is not equal to (\"16\")",
+      "targetName" : "VNReaderUITests",
+      "testIdentifier" : 3,
+      "testIdentifierString" : "ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress()",
+      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress",
+      "testName" : "test03LTRPagingZoomThumbnailsAndProgress()"
+    },
+    {
+      "failureText" : "XCTAssertTrue failed",
+      "targetName" : "VNReaderUITests",
+      "testIdentifier" : 4,
+      "testIdentifierString" : "ReaderUITests/test04RTLAndDirectionSwitchKeepsPage()",
+      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test04RTLAndDirectionSwitchKeepsPage",
+      "testName" : "test04RTLAndDirectionSwitchKeepsPage()"
+    },
+    {
+      "failureText" : "failed - expected page 3, got 2",
+      "targetName" : "VNReaderUITests",
+      "testIdentifier" : 5,
+      "testIdentifierString" : "ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch()",
+      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch",
+      "testName" : "test05ProgressSurvivesBackgroundAndRelaunch()"
+    },
+    {
+      "failureText" : "XCTAssertTrue failed",
+      "targetName" : "VNReaderUITests",
+      "testIdentifier" : 7,
+      "testIdentifierString" : "ReaderUITests/test07RepeatedOpenClose()",
+      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test07RepeatedOpenClose",
+      "testName" : "test07RepeatedOpenClose()"
+    }
+  ],
+  "title" : "Test - VNReader",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 7
+}

@@ -1,0 +1,3 @@
+Run: https://github.com/yfwu/VN-Reader/actions/runs/41882987728
+Commit tested: 6cc8b260841c2ae26df649323ca3fede0057bb38
+Date: 2026-11-04T18:32:47Z

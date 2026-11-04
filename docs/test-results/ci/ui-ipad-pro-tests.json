@@ -1,0 +1,135 @@
+{
+  "devices" : [
+    {
+      "architecture" : "arm64",
+      "deviceId" : "0D167097-4644-4AF1-909E-8AFC30B49267",
+      "deviceName" : "VN iPad Pro 13",
+      "modelName" : "iPad Pro 13-inch (M4)",
+      "osBuildNumber" : "23C54",
+      "osVersion" : "26.2",
+      "platform" : "iOS Simulator"
+    }
+  ],
+  "testNodes" : [
+    {
+      "children" : [
+        {
+          "children" : [
+            {
+              "children" : [
+                {
+                  "duration" : "1m 24s",
+                  "durationInSeconds" : 84.76276302337646,
+                  "name" : "test01EmptyLibrary()",
+                  "nodeIdentifier" : "ReaderUITests/test01EmptyLibrary()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test01EmptyLibrary",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "29s",
+                  "durationInSeconds" : 29.710134029388428,
+                  "name" : "test02ImportAndLibrary()",
+                  "nodeIdentifier" : "ReaderUITests/test02ImportAndLibrary()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test02ImportAndLibrary",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "children" : [
+                    {
+                      "name" : "ReaderUITests.swift:191: XCTAssertEqual failed: (\"15\") is not equal to (\"16\")",
+                      "nodeType" : "Failure Message"
+                    },
+                    {
+                      "name" : "Publishing changes from within view updates is not allowed, this will cause undefined behavior.",
+                      "nodeType" : "Runtime Warning"
+                    }
+                  ],
+                  "duration" : "1m 46s",
+                  "durationInSeconds" : 106.20135402679443,
+                  "name" : "test03LTRPagingZoomThumbnailsAndProgress()",
+                  "nodeIdentifier" : "ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress",
+                  "nodeType" : "Test Case",
+                  "result" : "Failed"
+                },
+                {
+                  "children" : [
+                    {
+                      "name" : "Multiple Runtime Warnings",
+                      "nodeType" : "Runtime Warning"
+                    }
+                  ],
+                  "duration" : "1m 4s",
+                  "durationInSeconds" : 64.53134596347809,
+                  "name" : "test04RTLAndDirectionSwitchKeepsPage()",
+                  "nodeIdentifier" : "ReaderUITests/test04RTLAndDirectionSwitchKeepsPage()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test04RTLAndDirectionSwitchKeepsPage",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "children" : [
+                    {
+                      "name" : "Multiple Runtime Warnings",
+                      "nodeType" : "Runtime Warning"
+                    }
+                  ],
+                  "duration" : "45s",
+                  "durationInSeconds" : 45.76389396190643,
+                  "name" : "test05ProgressSurvivesBackgroundAndRelaunch()",
+                  "nodeIdentifier" : "ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "42s",
+                  "durationInSeconds" : 42.86511194705963,
+                  "name" : "test06RenameDeleteAndMenu()",
+                  "nodeIdentifier" : "ReaderUITests/test06RenameDeleteAndMenu()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test06RenameDeleteAndMenu",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "children" : [
+                    {
+                      "name" : "Multiple Runtime Warnings",
+                      "nodeType" : "Runtime Warning"
+                    }
+                  ],
+                  "duration" : "1m 15s",
+                  "durationInSeconds" : 75.61381602287292,
+                  "name" : "test07RepeatedOpenClose()",
+                  "nodeIdentifier" : "ReaderUITests/test07RepeatedOpenClose()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test07RepeatedOpenClose",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "ReaderUITests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests",
+              "nodeType" : "Test Suite",
+              "result" : "Failed"
+            }
+          ],
+          "name" : "VNReaderUITests",
+          "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests",
+          "nodeType" : "UI test bundle",
+          "result" : "Failed"
+        }
+      ],
+      "name" : "VNReader",
+      "nodeType" : "Test Plan",
+      "result" : "Failed"
+    }
+  ],
+  "testPlanConfigurations" : [
+    {
+      "configurationId" : "1",
+      "configurationName" : "Test Scheme Action"
+    }
+  ]
+}

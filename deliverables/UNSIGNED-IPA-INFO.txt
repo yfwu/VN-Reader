@@ -1,0 +1,12 @@
+File: VNReader-0.1.0-1-UNSIGNED.ipa
+Signing: UNSIGNED — cannot be installed on a device as-is
+Platform: iphoneos (arm64)
+Bundle ID: org.yfwu.VNReader
+Version: 0.1.0 (1)
+Minimum OS: 18.0
+Archs: arm64
+Built with: Xcode 26.3 Build version 17C529 
+SDK: 26.2
+Date: 2026-11-04T18:32:37Z
+Commit: 6cc8b26
+Size: 1.6M

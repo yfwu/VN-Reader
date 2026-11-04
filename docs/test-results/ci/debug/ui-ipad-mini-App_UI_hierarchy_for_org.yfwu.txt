@@ -1,0 +1,74 @@
+Application, 0x103063600, pid: 27463, label: 'VN Reader' <App element pid: 27463>
+  Window (Main), 0x10304df40, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4385618800.4>
+    Other, 0x1030628f0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383080432.5>
+      Other, 0x103062a10, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383194688.6>
+        Other, 0x103062fb0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383196304.7>
+          Other, 0x103062650, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4384443408.8>
+            Other, 0x103062770, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4868756384.9>
+              Other, 0x103062b30, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383473056.10>
+                NavigationBar, 0x103062c50, {{0.0, 10.0}, {744.0, 166.0}}, identifier: '書庫' <AX element pid: 27463, elementOrHash.elementID: 4384142864.11>
+                  Button, 0x103062d70, {{14.0, 14.0}, {36.0, 36.0}}, identifier: 'library.settings', label: '設定' <AX element pid: 27463, elementOrHash.elementID: 4385664624.14>
+                  Button, 0x103062e90, {{637.0, 14.0}, {40.0, 36.0}}, identifier: 'library.sort', label: '排序與篩選' <AX element pid: 27463, elementOrHash.elementID: 4385775264.15>
+                  Button, 0x10305b020, {{693.0, 14.0}, {37.0, 36.0}}, identifier: 'library.import', label: '從「檔案」匯入漫畫' <AX element pid: 27463, elementOrHash.elementID: 4383416048.16>
+                  StaticText, 0x10305b140, {{20.0, 67.5}, {64.5, 41.0}}, label: '書庫' <AX element pid: 27463, elementOrHash.elementID: 4384493232.17>
+                  SearchField, 0x10305b260, {{20.0, 117.0}, {704.0, 44.0}}, label: '搜尋書名', placeholderValue: '搜尋書名' <AX element pid: 27463, elementOrHash.elementID: 4413848576.18>
+                    Image, 0x10305b380, {{32.0, 129.5}, {20.5, 18.5}}, identifier: 'magnifyingglass', label: '搜尋' <AX element pid: 27463, elementOrHash.elementID: 4385700528.21>
+                Other, 0x10305b4a0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383475904.12>
+                  Other, 0x10305b5c0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383842784.19>
+                    Other, 0x10305b6e0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4385662640.22>
+                      Other, 0x10305b800, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4868817408.23>
+                        ScrollView, 0x10305b920, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4412790784.24>
+                          Other, 0x10305ba40, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383506720.25>
+                            Other, 0x10305bb60, {{0.0, 0.0}, {744.0, 118.8}} <AX element pid: 27463, elementOrHash.elementID: 4386016640.29>
+                          Other, 0x10305bc80, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383505792.26>
+                          Other, 0x10305bda0, {{0.0, 176.0}, {744.0, 1032.0}} <AX element pid: 27463, elementOrHash.elementID: 4383485472.27>
+                            Button, 0x10305bec0, {{20.0, 188.0}, {704.0, 136.0}}, identifier: 'library.continue', label: '繼續閱讀：01 星之旅人 第1卷，4 / 30 頁' <AX element pid: 27463, elementOrHash.elementID: 4385835776.68>
+                              Button, 0x10305bfe0, {{20.0, 188.0}, {704.0, 136.0}}, label: '繼續閱讀、01 星之旅人 第1卷、4 / 30 頁', value: 10% <AX element pid: 27463, elementOrHash.elementID: 4868777344.69>
+                                Image, 0x10305c100, {{33.5, 201.5}, {73.0, 109.0}} <AX element pid: 27463, elementOrHash.elementID: 4383430224.70>
+                                StaticText, 0x10305c220, {{122.0, 218.5}, {48.0, 14.5}}, label: '繼續閱讀' <AX element pid: 27463, elementOrHash.elementID: 4868799584.71>
+                                StaticText, 0x10305c340, {{122.0, 239.0}, {136.5, 20.5}}, label: '01 星之旅人 第1卷' <AX element pid: 27463, elementOrHash.elementID: 4868807728.72>
+                                StaticText, 0x10305c460, {{122.0, 265.5}, {59.0, 18.0}}, label: '4 / 30 頁' <AX element pid: 27463, elementOrHash.elementID: 4868786160.73>
+                                ProgressIndicator, 0x10305c580, {{122.0, 289.5}, {260.0, 4.0}}, value: 10% <AX element pid: 27463, elementOrHash.elementID: 4386106944.74>
+                                  ProgressIndicator, 0x10305c6a0, {{122.0, 279.5}, {260.0, 24.0}}, value: 10% <AX element pid: 27463, elementOrHash.elementID: 4384650512.77>
+                                Image, 0x10305c7c0, {{677.5, 248.0}, {15.0, 16.5}}, identifier: 'play.fill', label: '播放' <AX element pid: 27463, elementOrHash.elementID: 4868556080.75>
+                            Other, 0x10305c8e0, {{19.5, 347.5}, {533.5, 848.0}} <AX element pid: 27463, elementOrHash.elementID: 4868805456.30>
+                              Button, 0x10305ca00, {{19.5, 347.5}, {162.0, 242.5}}, identifier: 'book.01 星之旅人 第1卷', label: '01 星之旅人 第1卷，閱讀中，4 / 30 頁', value: 10% <AX element pid: 27463, elementOrHash.elementID: 4868799152.40>
+                                Image, 0x10305cb20, {{19.5, 347.5}, {162.0, 242.5}} <AX element pid: 27463, elementOrHash.elementID: 4868794672.50>
+                                ProgressIndicator, 0x10305cc40, {{28.0, 577.5}, {145.0, 4.0}}, value: 10% <AX element pid: 27463, elementOrHash.elementID: 4383921280.76>
+                                  ProgressIndicator, 0x10305cd60, {{28.0, 567.5}, {145.0, 24.0}}, value: 10% <AX element pid: 27463, elementOrHash.elementID: 4384536688.78>
+                              StaticText, 0x10305ce80, {{20.0, 597.5}, {99.0, 38.0}}, label: '01 星之旅人 第1卷' <AX element pid: 27463, elementOrHash.elementID: 4868800880.41>
+                              StaticText, 0x10305cfa0, {{20.0, 637.5}, {48.5, 14.5}}, label: '4 / 30 頁' <AX element pid: 27463, elementOrHash.elementID: 4868801312.42>
+                              Button, 0x10305d0c0, {{147.0, 587.5}, {44.0, 44.0}}, identifier: 'book.menu.01 星之旅人 第1卷', label: '更多操作：01 星之旅人 第1卷' <AX element pid: 27463, elementOrHash.elementID: 4868804720.43>
+                                Button, 0x10305d1e0, {{147.0, 587.5}, {44.0, 44.0}} <AX element pid: 27463, elementOrHash.elementID: 4384668304.52>
+                                  Image, 0x10305d300, {{147.0, 587.5}, {44.0, 44.0}}, identifier: 'ellipsis', label: '更多' <AX element pid: 27463, elementOrHash.elementID: 4868802096.55>
+                              Button, 0x10305d420, {{200.5, 347.5}, {162.0, 806.0}}, identifier: 'book.03 長條漫畫', label: '03 長條漫畫，未讀' <AX element pid: 27463, elementOrHash.elementID: 4868776912.32>
+                                Image, 0x10305d540, {{200.5, 347.5}, {162.0, 806.0}} <AX element pid: 27463, elementOrHash.elementID: 4868773040.44>
+                                StaticText, 0x10305d660, {{213.0, 357.0}, {22.0, 13.5}}, label: '未讀' <AX element pid: 27463, elementOrHash.elementID: 4868775808.45>
+                              StaticText, 0x10305d780, {{201.0, 1161.0}, {82.5, 18.0}}, label: '03 長條漫畫' <AX element pid: 27463, elementOrHash.elementID: 4868778640.33>
+                              StaticText, 0x10305d8a0, {{201.0, 1181.0}, {38.5, 14.5}}, label: '共 6 頁' <AX element pid: 27463, elementOrHash.elementID: 4868779072.34>
+                              Button, 0x10305d9c0, {{328.0, 1151.0}, {44.0, 44.0}}, identifier: 'book.menu.03 長條漫畫', label: '更多操作：03 長條漫畫' <AX element pid: 27463, elementOrHash.elementID: 4868782128.35>
+                                Button, 0x10305dae0, {{328.0, 1151.0}, {44.0, 44.0}} <AX element pid: 27463, elementOrHash.elementID: 4385986576.46>
+                                  Image, 0x10305dc00, {{328.0, 1151.0}, {44.0, 44.0}}, identifier: 'ellipsis', label: '更多' <AX element pid: 27463, elementOrHash.elementID: 4868779856.53>
+                              Button, 0x10305dd20, {{381.5, 347.5}, {162.0, 242.5}}, identifier: 'book.02 城市速寫', label: '02 城市速寫，未讀' <AX element pid: 27463, elementOrHash.elementID: 4868788368.36>
+                                Image, 0x10305de40, {{381.5, 347.5}, {162.0, 242.5}} <AX element pid: 27463, elementOrHash.elementID: 4868782864.47>
+                                StaticText, 0x10305df60, {{394.0, 357.0}, {22.0, 13.5}}, label: '未讀' <AX element pid: 27463, elementOrHash.elementID: 4868783296.48>
+                              StaticText, 0x10305e080, {{382.0, 597.5}, {82.0, 18.0}}, label: '02 城市速寫' <AX element pid: 27463, elementOrHash.elementID: 4868790096.37>
+                              StaticText, 0x10305e1a0, {{382.0, 617.5}, {46.0, 14.5}}, label: '共 15 頁' <AX element pid: 27463, elementOrHash.elementID: 4868790528.38>
+                              Button, 0x10305e2c0, {{509.0, 587.5}, {44.0, 44.0}}, identifier: 'book.menu.02 城市速寫', label: '更多操作：02 城市速寫' <AX element pid: 27463, elementOrHash.elementID: 4868793936.39>
+                                Button, 0x10305e3e0, {{509.0, 587.5}, {44.0, 44.0}} <AX element pid: 27463, elementOrHash.elementID: 4868707072.49>
+                                  Image, 0x10305e500, {{509.0, 587.5}, {44.0, 44.0}}, identifier: 'ellipsis', label: '更多' <AX element pid: 27463, elementOrHash.elementID: 4868791312.54>
+                          Other, 0x10305e620, {{711.0, 54.0}, {30.0, 1057.5}}, label: '垂直捲軸, 2頁', value: 0% <AX element pid: 27463, elementOrHash.elementID: 4384129888.28>
+                            Other, 0x10305e740, {{738.0, 57.0}, {3.0, 970.0}} <AX element pid: 27463, elementOrHash.elementID: 4384534416.31>
+                          Other, 0x10305e860, {{711.0, 54.0}, {30.0, 1057.5}}, label: '垂直捲軸, 2頁', value: 0% <AX element pid: 27463, elementOrHash.elementID: 4384129888.28>
+                            Other, 0x10305e980, {{738.0, 57.0}, {3.0, 970.0}} <AX element pid: 27463, elementOrHash.elementID: 4384534416.31>
+                Other, 0x10305eaa0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383482688.13>
+                  Other, 0x10305ebc0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383368608.20>
+    Other, 0x10305ece0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383852704.59>
+      Other, 0x10305ee00, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4383830496.60>
+        Other, 0x10305ef20, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4385412672.61>
+          Other, 0x10305f040, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4385839648.62>
+            Other, 0x10305f160, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4384553456.63>
+              ScrollView, 0x10305f280, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4405078016.64>
+                Other, 0x10305f3a0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4384640448.65>
+                  Other, 0x10305f4c0, {{0.0, 0.0}, {744.0, 1133.0}} <AX element pid: 27463, elementOrHash.elementID: 4384938208.244>
+                    Image, 0x10305f5e0, {{0.0, 0.0}, {744.0, 1133.0}}, identifier: 'reader.page.3', label: '第 4 頁' <AX element pid: 27463, elementOrHash.elementID: 4406173696.245>
