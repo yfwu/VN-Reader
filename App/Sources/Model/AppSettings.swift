@@ -67,6 +67,7 @@ final class AppSettings: ObservableObject {
     @Published var filter: LibraryFilter { didSet { d.set(filter.rawValue, forKey: "libraryFilter") } }
 
     private init() {
+        let d = UserDefaults.standard
         d.register(defaults: ["tapToTurn": true, "animatePageTurns": true, "coverAlone": true])
         defaultDirection = ReadingDirection(rawValue: d.string(forKey: "defaultDirection") ?? "") ?? .rightToLeft
         defaultFitMode = PageFitMode(rawValue: d.string(forKey: "defaultFitMode") ?? "") ?? .fitPage

@@ -177,12 +177,12 @@ struct ReaderScreen: View {
             if count > 1 {
                 Slider(value: Binding(get: { scrubPage ?? Double(model.currentPage) },
                                       set: { scrubPage = $0.rounded() }),
-                       in: 0...Double(count - 1), step: 1) { editing in
+                       in: 0...Double(count - 1), step: 1, onEditingChanged: { editing in
                     if !editing, let p = scrubPage {
                         model.jump(to: Int(p))
                         scrubPage = nil
                     }
-                }
+                })
                 // RTL books: page 1 is on the right end of the slider.
                 .environment(\.layoutDirection, model.record.readingDirection == .rightToLeft ? .rightToLeft : .leftToRight)
                 .accessibilityLabel(L10n.pageSlider)

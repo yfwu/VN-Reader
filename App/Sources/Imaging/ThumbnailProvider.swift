@@ -28,13 +28,11 @@ final class ThumbnailProvider: @unchecked Sendable {
     /// Returns nil if the page cannot be produced yet (solid archive still preparing) or failed.
     func thumbnail(_ page: Int) async -> UIImage? {
         if let m = cached(page) { return m }
-        let op = BlockOperation()
+        let op = ThumbnailOperation(page: page, provider: self)
         return await withTaskCancellationHandler {
             await withCheckedContinuation { (cont: CheckedContinuation<UIImage?, Never>) in
-                op.addExecutionBlock { [weak op, self] in
-                    if op?.isCancelled == true { cont.resume(returning: nil); return }
-                    cont.resume(returning: self.produce(page))
-                }
+                // completionBlock runs exactly once, also for operations cancelled before starting.
+                op.completionBlock = { [unowned op] in cont.resume(returning: op.result) }
                 queue.addOperation(op)
             }
         } onCancel: {
@@ -42,7 +40,21 @@ final class ThumbnailProvider: @unchecked Sendable {
         }
     }
 
-    private func produce(_ page: Int) -> UIImage? {
+    fileprivate final class ThumbnailOperation: Operation, @unchecked Sendable {
+        let page: Int
+        weak var provider: ThumbnailProvider?
+        var result: UIImage?
+        init(page: Int, provider: ThumbnailProvider) {
+            self.page = page
+            self.provider = provider
+        }
+        override func main() {
+            guard !isCancelled else { return }
+            result = provider?.produce(page)
+        }
+    }
+
+    fileprivate func produce(_ page: Int) -> UIImage? {
         let file = dir.appendingPathComponent("\(page).jpg")
         if let data = try? Data(contentsOf: file), let img = UIImage(data: data) {
             memory.setObject(img, forKey: NSNumber(value: page))
