@@ -1,0 +1,63 @@
+name: iOS build & test
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core-linux:
+    name: ComicCore tests (Linux)
+    runs-on: ubuntu-24.04
+    container: swift:6.0-noble
+    steps:
+      - uses: actions/checkout@v4
+      - run: apt-get update -qq && apt-get install -y -qq zlib1g-dev
+      - run: cd Packages/ComicCore && swift test 2>&1 | tee ../../core-linux.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: core-linux-log, path: core-linux.log }
+
+  apple:
+    name: Xcode build, tests, device build
+    runs-on: macos-15
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: scripts/ci/select-xcode.sh
+      - name: ComicCore tests (macOS host)
+        run: |
+          mkdir -p artifacts
+          cd Packages/ComicCore && swift test 2>&1 | tee ../../artifacts/core-macos.log
+      - name: Simulators
+        id: sims
+        run: scripts/ci/simulators.sh | tee -a "$GITHUB_OUTPUT"
+      - name: ComicCore tests (iPad simulator)
+        run: |
+          cd Packages/ComicCore
+          xcodebuild test -scheme ComicCore -destination "id=${{ steps.sims.outputs.MINI_UDID }}" \
+            -resultBundlePath ../../artifacts/core-ios.xcresult 2>&1 | tee ../../artifacts/core-ios.log | grep -E '^(Test Suite|Test Case.*(passed|failed|skipped)|.*error:|\*\* )' || true
+          test "${PIPESTATUS[0]}" -eq 0
+      - name: App UI tests (iPad mini 6 simulator)
+        run: scripts/test-ui.sh "${{ steps.sims.outputs.MINI_UDID }}" artifacts/ui-ipad-mini
+      - name: App UI tests (iPad Pro 13 simulator)
+        run: scripts/test-ui.sh "${{ steps.sims.outputs.PRO_UDID }}" artifacts/ui-ipad-pro
+      - name: Device build (arm64, unsigned) + UNSIGNED IPA
+        run: scripts/build-unsigned-ipa.sh artifacts/device
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apple-build
+          path: |
+            artifacts/**/*.log
+            artifacts/**/*.png
+            artifacts/**/*.txt
+            artifacts/**/*.json
+            artifacts/**/*.md
+            artifacts/device/*.ipa
+          if-no-files-found: warn

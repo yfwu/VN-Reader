@@ -1,0 +1,36 @@
+// Shared build settings for all targets (project level).
+// Signing and identifiers can be overridden in Config/Signing.xcconfig
+// (copy Signing.xcconfig.template; that file is git-ignored).
+
+// App identity — the only values most people need to change.
+VN_BUNDLE_ID = org.yfwu.VNReader
+MARKETING_VERSION = 0.1.0
+CURRENT_PROJECT_VERSION = 1
+
+SDKROOT = iphoneos
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator
+SUPPORTS_MACCATALYST = NO
+SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO
+SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO
+IPHONEOS_DEPLOYMENT_TARGET = 18.0
+// 2 = iPad. iPhone (1) is an optional later target, see docs/KNOWN_ISSUES.md.
+TARGETED_DEVICE_FAMILY = 2
+
+SWIFT_VERSION = 5.0
+SWIFT_EMIT_LOC_STRINGS = YES
+LOCALIZATION_PREFERS_STRING_CATALOGS = YES
+ENABLE_USER_SCRIPT_SANDBOXING = YES
+ENABLE_STRICT_OBJC_MSGSEND = YES
+ALWAYS_SEARCH_USER_PATHS = NO
+CLANG_ENABLE_MODULES = YES
+CLANG_ENABLE_OBJC_ARC = YES
+CLANG_CXX_LANGUAGE_STANDARD = gnu++20
+GCC_C_LANGUAGE_STANDARD = gnu17
+COPY_PHASE_STRIP = NO
+ENABLE_PREVIEWS = YES
+
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM =
+CODE_SIGN_IDENTITY = Apple Development
+
+#include? "Signing.xcconfig"

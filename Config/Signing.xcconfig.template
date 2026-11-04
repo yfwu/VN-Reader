@@ -1,0 +1,12 @@
+// Copy to Config/Signing.xcconfig (git-ignored) and fill in.
+// Never commit certificates, private keys or passwords.
+
+// Your 10-character Team ID (Xcode ▸ Settings ▸ Accounts, or developer.apple.com ▸ Membership).
+DEVELOPMENT_TEAM = ABCDE12345
+
+// Bundle identifiers must be unique per team. With a free Personal Team,
+// pick something nobody else uses, e.g. com.<yourname>.VNReader.
+VN_BUNDLE_ID = org.yfwu.VNReader
+
+// Optional: bump for each build you distribute.
+// CURRENT_PROJECT_VERSION = 2

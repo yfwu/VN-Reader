@@ -1,0 +1,7 @@
+#include "Base.xcconfig"
+
+PRODUCT_NAME = VNReaderUITests
+PRODUCT_BUNDLE_IDENTIFIER = $(VN_BUNDLE_ID).UITests
+GENERATE_INFOPLIST_FILE = YES
+TEST_TARGET_NAME = VNReader
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/Frameworks

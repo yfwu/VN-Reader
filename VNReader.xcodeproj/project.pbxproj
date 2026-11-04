@@ -1,0 +1,327 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000101 /* ComicCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000901 /* ComicCore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A10000000000000000000301 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000501;
+			remoteInfo = VNReader;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A10000000000000000000201 /* VNReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VNReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000202 /* VNReaderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VNReaderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000203 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		A10000000000000000000204 /* App.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
+		A10000000000000000000205 /* UITests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = UITests.xcconfig; sourceTree = "<group>"; };
+		A10000000000000000000206 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A10000000000000000000207 /* Signing.xcconfig.template */ = {isa = PBXFileReference; lastKnownFileType = text; path = Signing.xcconfig.template; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A10000000000000000000401 /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; path = App; sourceTree = "<group>"; };
+		A10000000000000000000402 /* UITests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = UITests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10000000000000000000601 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000101 /* ComicCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000602 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10000000000000000000701 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000401 /* App */,
+				A10000000000000000000402 /* UITests */,
+				A10000000000000000000703 /* Config */,
+				A10000000000000000000702 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10000000000000000000702 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000201 /* VNReader.app */,
+				A10000000000000000000202 /* VNReaderUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000703 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000203 /* Base.xcconfig */,
+				A10000000000000000000204 /* App.xcconfig */,
+				A10000000000000000000205 /* UITests.xcconfig */,
+				A10000000000000000000207 /* Signing.xcconfig.template */,
+				A10000000000000000000206 /* Info.plist */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10000000000000000000501 /* VNReader */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000B02 /* Build configuration list for PBXNativeTarget "VNReader" */;
+			buildPhases = (
+				A10000000000000000000801 /* Sources */,
+				A10000000000000000000601 /* Frameworks */,
+				A10000000000000000000811 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A10000000000000000000401 /* App */,
+			);
+			name = VNReader;
+			packageProductDependencies = (
+				A10000000000000000000901 /* ComicCore */,
+			);
+			productName = VNReader;
+			productReference = A10000000000000000000201 /* VNReader.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A10000000000000000000502 /* VNReaderUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000B03 /* Build configuration list for PBXNativeTarget "VNReaderUITests" */;
+			buildPhases = (
+				A10000000000000000000802 /* Sources */,
+				A10000000000000000000602 /* Frameworks */,
+				A10000000000000000000812 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A10000000000000000000C01 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A10000000000000000000402 /* UITests */,
+			);
+			name = VNReaderUITests;
+			productName = VNReaderUITests;
+			productReference = A10000000000000000000202 /* VNReaderUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A10000000000000000000501 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					A10000000000000000000502 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = A10000000000000000000501;
+					};
+				};
+			};
+			buildConfigurationList = A10000000000000000000B01 /* Build configuration list for PBXProject "VNReader" */;
+			developmentRegion = "zh-Hant";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				"zh-Hant",
+				en,
+				Base,
+			);
+			mainGroup = A10000000000000000000701;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A10000000000000000000D01 /* XCLocalSwiftPackageReference "Packages/ComicCore" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A10000000000000000000702 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10000000000000000000501 /* VNReader */,
+				A10000000000000000000502 /* VNReaderUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A10000000000000000000811 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000812 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10000000000000000000801 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000802 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A10000000000000000000C01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000000000000000000501 /* VNReader */;
+			targetProxy = A10000000000000000000301 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A10000000000000000000A01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000203 /* Base.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A10000000000000000000A02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000203 /* Base.xcconfig */;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A10000000000000000000A03 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000204 /* App.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		A10000000000000000000A04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000204 /* App.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		A10000000000000000000A05 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000205 /* UITests.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		A10000000000000000000A06 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000205 /* UITests.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10000000000000000000B01 /* Build configuration list for PBXProject "VNReader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000A01 /* Debug */,
+				A10000000000000000000A02 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000B02 /* Build configuration list for PBXNativeTarget "VNReader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000A03 /* Debug */,
+				A10000000000000000000A04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000B03 /* Build configuration list for PBXNativeTarget "VNReaderUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000A05 /* Debug */,
+				A10000000000000000000A06 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A10000000000000000000D01 /* XCLocalSwiftPackageReference "Packages/ComicCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ComicCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A10000000000000000000901 /* ComicCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000000000000000000D01 /* XCLocalSwiftPackageReference "Packages/ComicCore" */;
+			productName = ComicCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A10000000000000000000001 /* Project object */;
+}
