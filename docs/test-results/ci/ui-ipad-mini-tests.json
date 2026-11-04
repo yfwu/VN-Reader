@@ -2,7 +2,7 @@
   "devices" : [
     {
       "architecture" : "arm64",
-      "deviceId" : "0E1E0F12-3522-479F-B502-86CD77B9D1B5",
+      "deviceId" : "6100C2E3-4DCC-42D1-B659-C06220A1F2A2",
       "deviceName" : "VN iPad mini 6",
       "modelName" : "iPad mini (6th generation)",
       "osBuildNumber" : "23C54",
@@ -18,17 +18,23 @@
             {
               "children" : [
                 {
-                  "duration" : "26s",
-                  "durationInSeconds" : 26.710551023483276,
+                  "children" : [
+                    {
+                      "name" : "ReaderUITests.swift:38: Failed to get launch progress for <XCUIApplicationImpl: 0x600000c91590 org.yfwu.VNReader at /Users/runner/work/VN-Reader/VN-Reader/build/dd/Build/Products/Debug-iphonesimulator/VNReader.app>: Timed out while requesting launch progress.",
+                      "nodeType" : "Failure Message"
+                    }
+                  ],
+                  "duration" : "1m 13s",
+                  "durationInSeconds" : 73.66677498817444,
                   "name" : "test01EmptyLibrary()",
                   "nodeIdentifier" : "ReaderUITests/test01EmptyLibrary()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test01EmptyLibrary",
                   "nodeType" : "Test Case",
-                  "result" : "Passed"
+                  "result" : "Failed"
                 },
                 {
-                  "duration" : "17s",
-                  "durationInSeconds" : 17.031221985816956,
+                  "duration" : "37s",
+                  "durationInSeconds" : 37.85889410972595,
                   "name" : "test02ImportAndLibrary()",
                   "nodeIdentifier" : "ReaderUITests/test02ImportAndLibrary()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test02ImportAndLibrary",
@@ -38,63 +44,51 @@
                 {
                   "children" : [
                     {
-                      "name" : "ReaderUITests.swift:191: XCTAssertEqual failed: (\"15\") is not equal to (\"16\")",
-                      "nodeType" : "Failure Message"
-                    },
-                    {
                       "name" : "Multiple Runtime Warnings",
                       "nodeType" : "Runtime Warning"
                     }
                   ],
-                  "duration" : "1m 27s",
-                  "durationInSeconds" : 87.67978894710541,
+                  "duration" : "2m 28s",
+                  "durationInSeconds" : 148.88760495185852,
                   "name" : "test03LTRPagingZoomThumbnailsAndProgress()",
                   "nodeIdentifier" : "ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress",
                   "nodeType" : "Test Case",
-                  "result" : "Failed"
+                  "result" : "Passed"
                 },
                 {
                   "children" : [
-                    {
-                      "name" : "ReaderUITests.swift:55: XCTAssertTrue failed",
-                      "nodeType" : "Failure Message"
-                    },
                     {
                       "name" : "Multiple Runtime Warnings",
                       "nodeType" : "Runtime Warning"
                     }
                   ],
-                  "duration" : "39s",
-                  "durationInSeconds" : 39.88375008106232,
+                  "duration" : "56s",
+                  "durationInSeconds" : 56.05600595474243,
                   "name" : "test04RTLAndDirectionSwitchKeepsPage()",
                   "nodeIdentifier" : "ReaderUITests/test04RTLAndDirectionSwitchKeepsPage()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test04RTLAndDirectionSwitchKeepsPage",
                   "nodeType" : "Test Case",
-                  "result" : "Failed"
+                  "result" : "Passed"
                 },
                 {
                   "children" : [
-                    {
-                      "name" : "ReaderUITests.swift:264: failed - expected page 3, got 2",
-                      "nodeType" : "Failure Message"
-                    },
                     {
                       "name" : "Multiple Runtime Warnings",
                       "nodeType" : "Runtime Warning"
                     }
                   ],
-                  "duration" : "21s",
-                  "durationInSeconds" : 21.87879192829132,
+                  "duration" : "54s",
+                  "durationInSeconds" : 54.11413896083832,
                   "name" : "test05ProgressSurvivesBackgroundAndRelaunch()",
                   "nodeIdentifier" : "ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch",
                   "nodeType" : "Test Case",
-                  "result" : "Failed"
+                  "result" : "Passed"
                 },
                 {
-                  "duration" : "32s",
-                  "durationInSeconds" : 32.144306898117065,
+                  "duration" : "33s",
+                  "durationInSeconds" : 33.087952971458435,
                   "name" : "test06RenameDeleteAndMenu()",
                   "nodeIdentifier" : "ReaderUITests/test06RenameDeleteAndMenu()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test06RenameDeleteAndMenu",
@@ -104,21 +98,32 @@
                 {
                   "children" : [
                     {
-                      "name" : "ReaderUITests.swift:55: XCTAssertTrue failed",
-                      "nodeType" : "Failure Message"
-                    },
+                      "name" : "Multiple Runtime Warnings",
+                      "nodeType" : "Runtime Warning"
+                    }
+                  ],
+                  "duration" : "1m 5s",
+                  "durationInSeconds" : 65.7289570569992,
+                  "name" : "test07RepeatedOpenClose()",
+                  "nodeIdentifier" : "ReaderUITests/test07RepeatedOpenClose()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test07RepeatedOpenClose",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "children" : [
                     {
                       "name" : "Multiple Runtime Warnings",
                       "nodeType" : "Runtime Warning"
                     }
                   ],
-                  "duration" : "24s",
-                  "durationInSeconds" : 24.01086401939392,
-                  "name" : "test07RepeatedOpenClose()",
-                  "nodeIdentifier" : "ReaderUITests/test07RepeatedOpenClose()",
-                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test07RepeatedOpenClose",
+                  "duration" : "1m",
+                  "durationInSeconds" : 60.91785490512848,
+                  "name" : "test08VerticalScrollMode()",
+                  "nodeIdentifier" : "ReaderUITests/test08VerticalScrollMode()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test08VerticalScrollMode",
                   "nodeType" : "Test Case",
-                  "result" : "Failed"
+                  "result" : "Passed"
                 }
               ],
               "name" : "ReaderUITests",

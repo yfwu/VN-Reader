@@ -3,7 +3,7 @@
     {
       "device" : {
         "architecture" : "arm64",
-        "deviceId" : "0D167097-4644-4AF1-909E-8AFC30B49267",
+        "deviceId" : "34139AD2-D79D-4D36-A0E9-66065EC3FC18",
         "deviceName" : "VN iPad Pro 13",
         "modelName" : "iPad Pro 13-inch (M4)",
         "osBuildNumber" : "23C54",
@@ -12,7 +12,7 @@
       },
       "expectedFailures" : 0,
       "failedTests" : 1,
-      "passedTests" : 6,
+      "passedTests" : 7,
       "skippedTests" : 0,
       "testPlanConfiguration" : {
         "configurationId" : "1",
@@ -23,27 +23,27 @@
   "environmentDescription" : "VNReader · Built with macOS 15.8.2",
   "expectedFailures" : 0,
   "failedTests" : 1,
-  "finishTime" : 1793817084.023,
-  "passedTests" : 6,
+  "finishTime" : 1793819978.217,
+  "passedTests" : 7,
   "result" : "Failed",
   "skippedTests" : 0,
-  "startTime" : 1793816434.207,
+  "startTime" : 1793819294.16,
   "statistics" : [
 
   ],
   "testFailures" : [
     {
-      "failureText" : "XCTAssertEqual failed: (\"15\") is not equal to (\"16\")",
+      "failureText" : "XCTAssertTrue failed",
       "targetName" : "VNReaderUITests",
-      "testIdentifier" : 3,
-      "testIdentifierString" : "ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress()",
-      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress",
-      "testName" : "test03LTRPagingZoomThumbnailsAndProgress()"
+      "testIdentifier" : 8,
+      "testIdentifierString" : "ReaderUITests/test08VerticalScrollMode()",
+      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test08VerticalScrollMode",
+      "testName" : "test08VerticalScrollMode()"
     }
   ],
   "title" : "Test - VNReader",
   "topInsights" : [
 
   ],
-  "totalTestCount" : 7
+  "totalTestCount" : 8
 }

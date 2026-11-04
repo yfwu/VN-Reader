@@ -3,7 +3,7 @@
     {
       "device" : {
         "architecture" : "arm64",
-        "deviceId" : "0E1E0F12-3522-479F-B502-86CD77B9D1B5",
+        "deviceId" : "6100C2E3-4DCC-42D1-B659-C06220A1F2A2",
         "deviceName" : "VN iPad mini 6",
         "modelName" : "iPad mini (6th generation)",
         "osBuildNumber" : "23C54",
@@ -11,8 +11,8 @@
         "platform" : "iOS Simulator"
       },
       "expectedFailures" : 0,
-      "failedTests" : 4,
-      "passedTests" : 3,
+      "failedTests" : 1,
+      "passedTests" : 7,
       "skippedTests" : 0,
       "testPlanConfiguration" : {
         "configurationId" : "1",
@@ -22,52 +22,28 @@
   ],
   "environmentDescription" : "VNReader · Built with macOS 15.8.2",
   "expectedFailures" : 0,
-  "failedTests" : 4,
-  "finishTime" : 1793816411.529,
-  "passedTests" : 3,
+  "failedTests" : 1,
+  "finishTime" : 1793819273.206,
+  "passedTests" : 7,
   "result" : "Failed",
   "skippedTests" : 0,
-  "startTime" : 1793815697.363,
+  "startTime" : 1793818573.847,
   "statistics" : [
 
   ],
   "testFailures" : [
     {
-      "failureText" : "XCTAssertEqual failed: (\"15\") is not equal to (\"16\")",
+      "failureText" : "Failed to get launch progress for <XCUIApplicationImpl: 0x600000c91590 org.yfwu.VNReader at /Users/runner/work/VN-Reader/VN-Reader/build/dd/Build/Products/Debug-iphonesimulator/VNReader.app>: Timed out while requesting launch progress.",
       "targetName" : "VNReaderUITests",
-      "testIdentifier" : 3,
-      "testIdentifierString" : "ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress()",
-      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress",
-      "testName" : "test03LTRPagingZoomThumbnailsAndProgress()"
-    },
-    {
-      "failureText" : "XCTAssertTrue failed",
-      "targetName" : "VNReaderUITests",
-      "testIdentifier" : 4,
-      "testIdentifierString" : "ReaderUITests/test04RTLAndDirectionSwitchKeepsPage()",
-      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test04RTLAndDirectionSwitchKeepsPage",
-      "testName" : "test04RTLAndDirectionSwitchKeepsPage()"
-    },
-    {
-      "failureText" : "failed - expected page 3, got 2",
-      "targetName" : "VNReaderUITests",
-      "testIdentifier" : 5,
-      "testIdentifierString" : "ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch()",
-      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch",
-      "testName" : "test05ProgressSurvivesBackgroundAndRelaunch()"
-    },
-    {
-      "failureText" : "XCTAssertTrue failed",
-      "targetName" : "VNReaderUITests",
-      "testIdentifier" : 7,
-      "testIdentifierString" : "ReaderUITests/test07RepeatedOpenClose()",
-      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test07RepeatedOpenClose",
-      "testName" : "test07RepeatedOpenClose()"
+      "testIdentifier" : 1,
+      "testIdentifierString" : "ReaderUITests/test01EmptyLibrary()",
+      "testIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test01EmptyLibrary",
+      "testName" : "test01EmptyLibrary()"
     }
   ],
   "title" : "Test - VNReader",
   "topInsights" : [
 
   ],
-  "totalTestCount" : 7
+  "totalTestCount" : 8
 }
