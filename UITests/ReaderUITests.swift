@@ -307,6 +307,31 @@ final class ReaderUITests: XCTestCase {
         XCTAssertFalse(app.buttons["book.01 星之旅人 第1卷"].exists)
     }
 
+    func test08VerticalScrollMode() {
+        launch(seed: true)
+        waitForBooks(["03 長條漫畫"])
+        openBook("03 長條漫畫")
+        showChrome()
+        app.buttons["reader.settings"].tap()
+        let layout = app.segmentedControls["settings.layout"]
+        XCTAssertTrue(layout.waitForExistence(timeout: 5))
+        layout.buttons.element(boundBy: 2).tap()
+        app.buttons["readersettings.done"].tap()
+        XCTAssertEqual(currentPage(), 1)
+        hideChrome()
+        for _ in 0..<6 { app.swipeUp(velocity: .fast) }
+        sleep(1)
+        screenshot("11-reader-vertical")
+        XCTAssertGreaterThan(currentPage(), 1, "scrolling should advance the logical page")
+        // Jump keeps working in vertical mode.
+        app.buttons["reader.jump"].tap()
+        let field = app.alerts.textFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.typeText("6")
+        app.alerts.buttons["前往"].tap()
+        waitForPage(6)
+    }
+
     func test07RepeatedOpenClose() {
         launch(seed: true)
         waitForBooks(["01 星之旅人 第1卷", "02 城市速寫"])

@@ -171,7 +171,11 @@ enum DropImporter {
                 // The provided file is deleted when this block returns: copy it first.
                 let dir = FileManager.default.temporaryDirectory.appendingPathComponent("Dropped/\(UUID().uuidString)")
                 try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-                let name = p.suggestedName.map { $0 + "." + url.pathExtension } ?? url.lastPathComponent
+                var name = url.lastPathComponent
+                if let suggested = p.suggestedName, !suggested.isEmpty {
+                    name = (suggested as NSString).pathExtension.isEmpty && !url.pathExtension.isEmpty
+                        ? suggested + "." + url.pathExtension : suggested
+                }
                 let dest = dir.appendingPathComponent(name)
                 guard (try? FileManager.default.copyItem(at: url, to: dest)) != nil else { return }
                 onMain { importer.importFiles([dest], securityScoped: false, deleteAfterImport: true) }
