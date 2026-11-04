@@ -1,0 +1,21 @@
+# Build products
+.build/
+build/
+DerivedData/
+*.xcresult
+/artifacts/
+
+# Xcode user state
+xcuserdata/
+*.xcuserstate
+.swiftpm/xcode/xcuserdata/
+Packages/ComicCore/.swiftpm/
+
+# Signing — never commit
+Config/Signing.xcconfig
+*.p12
+*.mobileprovision
+*.cer
+ExportOptions.local.plist
+
+.DS_Store
