@@ -5,7 +5,15 @@ import ComicCore
 ///
 /// The logical page list is never reversed. Reading direction only decides which
 /// neighbour the pager shows on the right / left and which way taps and swipes go.
-final class ReaderViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+/// Commands the view model sends to whichever reading view is active.
+@MainActor
+protocol ReaderPaging: AnyObject {
+    func go(toPage page: Int, animated: Bool)
+    func reloadForSettings()
+    func widePagesChanged()
+}
+
+final class ReaderViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, ReaderPaging {
     let model: ReaderViewModel
     private var pageVC: UIPageViewController!
     /// Screens in reading order; each holds 1 page or a 2-page spread.

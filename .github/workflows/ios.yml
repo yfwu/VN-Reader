@@ -4,8 +4,11 @@ on:
   push:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 concurrency:
-  group: ios-${{ github.ref }}
+  group: ios-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
@@ -13,41 +16,59 @@ jobs:
     name: ComicCore tests (Linux)
     runs-on: ubuntu-24.04
     container: swift:6.0-noble
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - run: apt-get update -qq && apt-get install -y -qq zlib1g-dev
       - run: cd Packages/ComicCore && swift test 2>&1 | tee ../../core-linux.log
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with: { name: core-linux-log, path: core-linux.log }
 
   apple:
     name: Xcode build, tests, device build
     runs-on: macos-15
-    timeout-minutes: 75
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - name: Select Xcode
-        run: scripts/ci/select-xcode.sh
+        run: scripts/ci/select-xcode.sh | tee -a "$GITHUB_STEP_SUMMARY"
       - name: ComicCore tests (macOS host)
+        timeout-minutes: 10
         run: |
           mkdir -p artifacts
-          cd Packages/ComicCore && swift test 2>&1 | tee ../../artifacts/core-macos.log
+          cd Packages/ComicCore && swift test 2>&1 | tee ../../artifacts/core-macos.log | grep -E '(Executed|error:|failed)'
+          test "${PIPESTATUS[0]}" -eq 0
       - name: Simulators
         id: sims
         run: scripts/ci/simulators.sh | tee -a "$GITHUB_OUTPUT"
       - name: ComicCore tests (iPad simulator)
+        timeout-minutes: 15
         run: |
           cd Packages/ComicCore
           xcodebuild test -scheme ComicCore -destination "id=${{ steps.sims.outputs.MINI_UDID }}" \
-            -resultBundlePath ../../artifacts/core-ios.xcresult 2>&1 | tee ../../artifacts/core-ios.log | grep -E '^(Test Suite|Test Case.*(passed|failed|skipped)|.*error:|\*\* )' || true
+            -resultBundlePath ../../artifacts/core-ios.xcresult 2>&1 | tee ../../artifacts/core-ios.log | grep -E '(Executed|error:|failed|\*\* TEST)'
           test "${PIPESTATUS[0]}" -eq 0
-      - name: App UI tests (iPad mini 6 simulator)
-        run: scripts/test-ui.sh "${{ steps.sims.outputs.MINI_UDID }}" artifacts/ui-ipad-mini
-      - name: App UI tests (iPad Pro 13 simulator)
-        run: scripts/test-ui.sh "${{ steps.sims.outputs.PRO_UDID }}" artifacts/ui-ipad-pro
+      - name: Build app for testing
+        timeout-minutes: 20
+        run: |
+          xcodebuild build-for-testing -project VNReader.xcodeproj -scheme VNReader -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee artifacts/build-for-testing.log | grep -E '(error:|warning: .*(deprecated|never|unused)|\*\* )'
+          test "${PIPESTATUS[0]}" -eq 0
+      - name: UI tests (iPad mini 6 simulator)
+        id: ui_mini
+        continue-on-error: true
+        timeout-minutes: 30
+        run: scripts/test-ui.sh "${{ steps.sims.outputs.MINI_UDID }}" artifacts/ui-ipad-mini build/dd
+      - name: UI tests (iPad Pro 13 simulator)
+        id: ui_pro
+        continue-on-error: true
+        timeout-minutes: 30
+        run: scripts/test-ui.sh "${{ steps.sims.outputs.PRO_UDID }}" artifacts/ui-ipad-pro build/dd
       - name: Device build (arm64, unsigned) + UNSIGNED IPA
-        run: scripts/build-unsigned-ipa.sh artifacts/device
+        timeout-minutes: 20
+        run: scripts/build-unsigned-ipa.sh artifacts/device | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Summary
+        if: always()
+        run: /usr/bin/python3 scripts/ci/summarize.py artifacts | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -56,8 +77,14 @@ jobs:
           path: |
             artifacts/**/*.log
             artifacts/**/*.png
-            artifacts/**/*.txt
             artifacts/**/*.json
             artifacts/**/*.md
             artifacts/device/*.ipa
           if-no-files-found: warn
+      - name: Publish results to branch
+        # Opt-in per commit: put "[publish]" in the commit message.
+        if: always() && contains(github.event.head_commit.message, '[publish]')
+        run: scripts/ci/publish-results.sh
+      - name: Fail if UI tests failed
+        if: steps.ui_mini.outcome == 'failure' || steps.ui_pro.outcome == 'failure'
+        run: exit 1

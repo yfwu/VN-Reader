@@ -1,0 +1,30 @@
+# Stress test run — 2026-11-04T17:52Z
+# Host: Linux 6.18.44-fc-v233 x86_64, 4 vCPU, 15 GB RAM; Swift 6.0.3 (swift-6.0.3-RELEASE)
+# NOT an iPad measurement.
+STRESS stress.cbz import (copy+CRC+list+manifest): 3.064 s (peak RSS 29 MB)
+STRESS stress.cbz open: 0.005 s (peak RSS 29 MB)
+STRESS stress.cbz 200 random page reads: 0.076 s (peak RSS 30 MB)
+STRESS stress.cbz 300 sequential page turns: 0.118 s (peak RSS 30 MB)
+STRESS stress.cbz 20× open/close: 0.099 s (peak RSS 30 MB)
+STRESS stress_rar5_nonsolid.cbr import (copy+CRC+list+manifest): 0.818 s (peak RSS 30 MB)
+STRESS stress_rar5_nonsolid.cbr open: 0.005 s (peak RSS 30 MB)
+STRESS stress_rar5_nonsolid.cbr 200 random page reads: 0.424 s (peak RSS 34 MB)
+STRESS stress_rar5_nonsolid.cbr 300 sequential page turns: 0.582 s (peak RSS 34 MB)
+STRESS stress_rar5_nonsolid.cbr 20× open/close: 0.107 s (peak RSS 34 MB)
+Test Case 'StressTests.testImportAndRandomAccess' passed (5.376 seconds)
+STRESS stress_rar5_solid.cbr import: 2.040 s (peak RSS 34 MB)
+STRESS stress_rar5_solid.cbr first page ready: 0.014 s (peak RSS 41 MB)
+STRESS stress_rar5_solid.cbr page 500 ready: 6.341 s (peak RSS 72 MB)
+STRESS stress_rar5_solid.cbr full preparation: 7.999 s (peak RSS 73 MB)
+STRESS stress_rar5_solid.cbr 200 random reads from cache: 0.036 s (peak RSS 73 MB)
+STRESS stress_rar5_solid.cbr cache size: 1024 MB
+STRESS stress_rar4_solid.cbr import: 0.847 s (peak RSS 73 MB)
+STRESS stress_rar4_solid.cbr first page ready: 0.014 s (peak RSS 73 MB)
+STRESS stress_rar4_solid.cbr page 500 ready: 5.837 s (peak RSS 73 MB)
+STRESS stress_rar4_solid.cbr full preparation: 9.428 s (peak RSS 73 MB)
+STRESS stress_rar4_solid.cbr 200 random reads from cache: 0.034 s (peak RSS 73 MB)
+STRESS stress_rar4_solid.cbr cache size: 1024 MB
+Test Case 'StressTests.testSolidPreparation' passed (34.714 seconds)
+Test Suite 'StressTests' passed at 2026-11-04 17:53:22.290
+Test Suite 'Selected tests' passed at 2026-11-04 17:53:22.291
+✔ Test run with 0 tests passed after 0.001 seconds.

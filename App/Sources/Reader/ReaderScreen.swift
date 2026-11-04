@@ -7,6 +7,12 @@ struct ReaderPagerView: UIViewControllerRepresentable {
     func updateUIViewController(_ vc: ReaderViewController, context: Context) {}
 }
 
+struct VerticalReaderView: UIViewControllerRepresentable {
+    let model: ReaderViewModel
+    func makeUIViewController(context: Context) -> VerticalReaderController { VerticalReaderController(model: model) }
+    func updateUIViewController(_ vc: VerticalReaderController, context: Context) {}
+}
+
 /// Full-screen reader: UIKit pager + SwiftUI toolbars and sheets.
 struct ReaderScreen: View {
     @StateObject private var model: ReaderViewModel
@@ -29,9 +35,11 @@ struct ReaderScreen: View {
             if let err = model.openError {
                 openErrorView(err)
             } else if model.isReady {
-                ReaderPagerView(model: model)
-                    .ignoresSafeArea()
-                    .accessibilityIdentifier("reader.pager")
+                if model.record.layout == .vertical {
+                    VerticalReaderView(model: model).ignoresSafeArea()
+                } else {
+                    ReaderPagerView(model: model).ignoresSafeArea()
+                }
             } else {
                 ProgressView().controlSize(.large)
             }
@@ -342,10 +350,10 @@ struct ReaderSettingsSheet: View {
                     .accessibilityIdentifier("settings.fit")
                 }
                 Section(L10n.layout) {
-                    Picker(L10n.layout, selection: Binding(get: { model.record.layout == .double ? PageLayout.double : .single },
-                                                           set: { model.setLayout($0) })) {
+                    Picker(L10n.layout, selection: Binding(get: { model.record.layout }, set: { model.setLayout($0) })) {
                         Text(L10n.layoutSingle).tag(PageLayout.single)
                         Text(L10n.layoutDouble).tag(PageLayout.double)
+                        Text(L10n.layoutVertical).tag(PageLayout.vertical)
                     }
                     .pickerStyle(.segmented)
                     .accessibilityIdentifier("settings.layout")

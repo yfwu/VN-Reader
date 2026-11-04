@@ -22,6 +22,7 @@ struct SettingsView: View {
                     Picker(L10n.layout, selection: $settings.defaultLayout) {
                         Text(L10n.layoutSingle).tag(PageLayout.single)
                         Text(L10n.layoutDouble).tag(PageLayout.double)
+                        Text(L10n.layoutVertical).tag(PageLayout.vertical)
                     }
                 } header: { Text(L10n.settingsDefaults) } footer: { Text(L10n.settingsDefaultsFooter) }
 

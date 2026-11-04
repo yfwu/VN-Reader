@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- development: install on devices registered in your team (Xcode can register them automatically).
+	     ad-hoc: install on up to 100 registered devices without Xcode (e.g. via Apple Configurator / Finder).
+	     app-store-connect: upload to TestFlight. -->
+	<key>method</key>
+	<string>ad-hoc</string>
+	<key>signingStyle</key>
+	<string>automatic</string>
+	<!-- teamID is injected by scripts/archive-and-export.sh from DEVELOPMENT_TEAM. -->
+	<key>teamID</key>
+	<string>TEAM_ID_PLACEHOLDER</string>
+	<key>compileBitcode</key>
+	<false/>
+	<key>stripSwiftSymbols</key>
+	<true/>
+	<key>thinning</key>
+	<string>&lt;none&gt;</string>
+</dict>
+</plist>

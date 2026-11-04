@@ -69,7 +69,7 @@ final class AppSettings: ObservableObject {
     private init() {
         let d = UserDefaults.standard
         d.register(defaults: ["tapToTurn": true, "animatePageTurns": true, "coverAlone": true])
-        defaultDirection = ReadingDirection(rawValue: d.string(forKey: "defaultDirection") ?? "") ?? .rightToLeft
+        defaultDirection = ReadingDirection(rawValue: d.string(forKey: "defaultDirection") ?? "") ?? .leftToRight
         defaultFitMode = PageFitMode(rawValue: d.string(forKey: "defaultFitMode") ?? "") ?? .fitPage
         defaultLayout = PageLayout(rawValue: d.string(forKey: "defaultLayout") ?? "") ?? .single
         background = ReaderBackground(rawValue: d.string(forKey: "readerBackground") ?? "") ?? .black
@@ -87,7 +87,7 @@ final class AppSettings: ObservableObject {
                   "animatePageTurns", "coverAlone", "shiftSpreads", "librarySort", "libraryFilter"] {
             d.removeObject(forKey: k)
         }
-        defaultDirection = .rightToLeft
+        defaultDirection = .leftToRight
         defaultFitMode = .fitPage
         defaultLayout = .single
         background = .black

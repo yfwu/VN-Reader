@@ -84,8 +84,9 @@ final class SpreadPageController: UIViewController {
         singleTap.numberOfTapsRequired = 1
         singleTap.addTarget(self, action: #selector(handleSingleTap(_:)))
         singleTap.require(toFail: doubleTap)
-        zoomView.addGestureRecognizer(doubleTap)
-        zoomView.addGestureRecognizer(singleTap)
+        // On the controller's view so taps also work over loading / error states.
+        view.addGestureRecognizer(doubleTap)
+        view.addGestureRecognizer(singleTap)
         applyAppearance()
         load()
     }
@@ -157,6 +158,7 @@ final class SpreadPageController: UIViewController {
     }
 
     @objc private func handleDoubleTap(_ g: UITapGestureRecognizer) {
+        guard errorStack.isHidden else { return }
         zoomView.toggleZoom(at: g.location(in: zoomView))
     }
 

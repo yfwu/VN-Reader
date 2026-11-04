@@ -16,7 +16,7 @@ final class ReaderViewModel: ObservableObject {
 
     let library: LibraryStore
     let settings: AppSettings
-    weak var pager: ReaderViewController?
+    weak var pager: ReaderPaging?
     private(set) var source: BookPageSource?
     private(set) var loader: PageImageLoader?
     private(set) var thumbnails: ThumbnailProvider?

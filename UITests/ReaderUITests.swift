@@ -50,12 +50,13 @@ final class ReaderUITests: XCTestCase {
 
     private func showChrome() {
         let jump = app.buttons["reader.jump"]
-        if !jump.exists { tapScreen(0.5) }
+        // Upper-middle: still the "center" tap zone, but clear of any centered status card.
+        if !jump.exists { tapScreen(0.5, 0.22) }
         XCTAssertTrue(jump.waitForExistence(timeout: 5))
     }
 
     private func hideChrome() {
-        if app.buttons["reader.jump"].exists { tapScreen(0.5, 0.45) }
+        if app.buttons["reader.jump"].exists { tapScreen(0.5, 0.22) }
         let gone = NSPredicate(format: "exists == false")
         expectation(for: gone, evaluatedWith: app.buttons["reader.jump"])
         waitForExpectations(timeout: 5)
@@ -85,8 +86,9 @@ final class ReaderUITests: XCTestCase {
         let b = app.buttons["book.\(name)"]
         XCTAssertTrue(b.waitForExistence(timeout: 30))
         b.tap()
-        XCTAssertTrue(app.otherElements["reader.pager"].waitForExistence(timeout: 30) ||
-                      app.descendants(matching: .any)["reader.pager"].waitForExistence(timeout: 5))
+        let anyPage = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "identifier BEGINSWITH 'reader.page.'")).firstMatch
+        XCTAssertTrue(anyPage.waitForExistence(timeout: 30), "reader did not open")
     }
 
     private func waitForPreparation() {
@@ -183,7 +185,8 @@ final class ReaderUITests: XCTestCase {
 
         // Rapid taps never overshoot the last page.
         hideChrome()
-        for _ in 0..<12 { tapScreen(0.95) }
+        // (Extra taps: two taps in quick succession may be read as a double tap.)
+        for _ in 0..<20 { tapScreen(0.95) }
         sleep(1)
         XCTAssertEqual(currentPage(), 16)
         hideChrome()
@@ -245,7 +248,7 @@ final class ReaderUITests: XCTestCase {
         waitForPage(4)
         // Jump via page number entry.
         app.buttons["reader.jump"].tap()
-        let field = app.textFields["reader.jump.field"]
+        let field = app.alerts.textFields.firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.typeText("25")
         app.alerts.buttons["前往"].tap()
@@ -285,7 +288,7 @@ final class ReaderUITests: XCTestCase {
         waitForBooks(["03 長條漫畫"])
         app.buttons["book.menu.03 長條漫畫"].tap()
         app.buttons["重新命名"].tap()
-        let field = app.textFields["rename.field"]
+        let field = app.alerts.textFields.firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.clearAndType("Webtoon")
         app.alerts.buttons["儲存"].tap()
