@@ -71,7 +71,7 @@ public enum StorageMaintenance {
                                                       includingPropertiesForKeys: [.contentModificationDateKey]) else { return }
         var entries = items.map { url -> (URL, Date, Int64) in
             let d = (try? url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
-            return (url, d ?? .distantPast, directorySize(url))
+            return (url, d, directorySize(url))
         }
         var total = entries.reduce(0) { $0 + $1.2 }
         entries.sort { $0.1 < $1.1 }

@@ -83,7 +83,7 @@ jobs:
           if-no-files-found: warn
       - name: Publish results to branch
         # Opt-in per commit: put "[publish]" in the commit message.
-        if: always() && contains(github.event.head_commit.message, '[publish]')
+        if: always() && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[publish]'))
         run: scripts/ci/publish-results.sh
       - name: Fail if UI tests failed
         if: steps.ui_mini.outcome == 'failure' || steps.ui_pro.outcome == 'failure'
