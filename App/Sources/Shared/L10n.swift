@@ -46,6 +46,57 @@ enum L10n {
     }
     static let deleteConfirmMessage = String(localized: "book.delete.message", defaultValue: "只會刪除 App 內的副本、閱讀進度與快取，不會影響你原本的檔案。")
     static let resetConfirmTitle = String(localized: "book.reset.confirm", defaultValue: "要重設閱讀進度嗎？")
+    static let sortSeries = String(localized: "library.sort.series", defaultValue: "系列與號碼")
+
+    // MARK: Book info
+    static let menuEditInfo = String(localized: "book.info.edit", defaultValue: "編輯資訊")
+    static let fieldSeries = String(localized: "info.series", defaultValue: "系列")
+    static let fieldNumber = String(localized: "info.number", defaultValue: "號碼")
+    static let fieldVolume = String(localized: "info.volume", defaultValue: "卷次")
+    static let fieldTitle = String(localized: "info.title", defaultValue: "標題")
+    static let fieldWriter = String(localized: "info.writer", defaultValue: "作者")
+    static let fieldPenciller = String(localized: "info.penciller", defaultValue: "繪者")
+    static let fieldPublisher = String(localized: "info.publisher", defaultValue: "出版社")
+    static let fieldYear = String(localized: "info.year", defaultValue: "年份")
+    static let fieldSummary = String(localized: "info.summary", defaultValue: "簡介")
+    static let hintSeries = String(localized: "info.series.hint", defaultValue: "例：Batman、進擊的巨人")
+    static let hintNumber = String(localized: "info.number.hint", defaultValue: "美漫期數 45，或日漫第 3 卷的 3")
+    static let hintVolume = String(localized: "info.volume.hint", defaultValue: "美漫系列起始年，例：2016")
+    static let hintTitle = String(localized: "info.title.hint", defaultValue: "這一本的標題或卷名")
+    static let hintOptional = String(localized: "info.optional", defaultValue: "選填")
+    static let infoDetails = String(localized: "info.details", defaultValue: "資訊")
+    static let infoFooter = String(localized: "info.footer", defaultValue: "美漫通常用「系列 (起始年) #期數」識別，例如 Batman (2016) #45：同名系列重新從 #1 開始時，以起始年份區分。日漫單行本請把卷數填在「號碼」。資訊只存在 App 的書庫中，不會修改原始檔案。")
+    static let generateName = String(localized: "info.name.generate", defaultValue: "依資訊產生")
+    static let nameStyleSeriesIssue = String(localized: "info.name.issue", defaultValue: "美漫：系列 (年) #號碼")
+    static let nameStyleSeriesVolume = String(localized: "info.name.volume", defaultValue: "日漫：系列 第 N 卷")
+    static let nameStyleTitle = String(localized: "info.name.title", defaultValue: "使用標題")
+    static func volumeName(_ n: String) -> String {
+        String(localized: "info.volume.name", defaultValue: "第 \(n) 卷")
+    }
+    static func originalFile(_ name: String) -> String {
+        String(localized: "info.original", defaultValue: "原始檔名：\(name)")
+    }
+    static let select = String(localized: "library.select", defaultValue: "選取")
+    static let selectAll = String(localized: "library.select.all", defaultValue: "全選")
+    static let deselectAll = String(localized: "library.select.none", defaultValue: "取消全選")
+    static func selectedCount(_ n: Int) -> String {
+        String(localized: "library.selected", defaultValue: "已選取 \(n) 本")
+    }
+    static func batchTitle(_ n: Int) -> String {
+        String(localized: "info.batch.title", defaultValue: "編輯 \(n) 本書")
+    }
+    static let multipleValues = String(localized: "info.multiple", defaultValue: "多個值")
+    static let keepUnchanged = String(localized: "info.keep", defaultValue: "保持不變")
+    static let revertField = String(localized: "info.revert", defaultValue: "還原此欄位")
+    static let autoNumber = String(localized: "info.autonumber", defaultValue: "依原始檔名順序自動編號")
+    static func numberStart(_ n: Int) -> String {
+        String(localized: "info.autonumber.start", defaultValue: "從 \(n) 開始")
+    }
+    static let batchFooter = String(localized: "info.batch.footer", defaultValue: "只會套用你改過的欄位；把欄位清空會刪除該項資訊。簡介請逐本編輯。")
+    static func exampleName(_ name: String) -> String {
+        String(localized: "info.batch.example", defaultValue: "例：\(name)")
+    }
+
     static let cancel = String(localized: "common.cancel", defaultValue: "取消")
     static let save = String(localized: "common.save", defaultValue: "儲存")
     static let done = String(localized: "common.done", defaultValue: "完成")

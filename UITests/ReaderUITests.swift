@@ -99,6 +99,14 @@ final class ReaderUITests: XCTestCase {
         XCTAssertTrue(anyPage.waitForExistence(timeout: 30), "reader did not open")
     }
 
+    /// The sheet moves when the keyboard goes away; taps during that animation miss.
+    private func waitForKeyboardToHide() {
+        let gone = NSPredicate(format: "count == 0")
+        expectation(for: gone, evaluatedWith: app.keyboards)
+        waitForExpectations(timeout: 5)
+        usleep(500_000)
+    }
+
     private func waitForPreparation() {
         let prep = app.descendants(matching: .any)["reader.preparing"]
         if prep.exists {
@@ -347,6 +355,60 @@ final class ReaderUITests: XCTestCase {
         field.typeText("6")
         app.alerts.buttons["前往"].tap()
         waitForPage(6)
+    }
+
+    func test09EditInfoAndBatchEdit() {
+        launch(seed: true)
+        waitForBooks(["01 星之旅人 第1卷", "02 城市速寫", "03 長條漫畫"])
+
+        // One book: fill in US-comics details and build the name from them.
+        app.buttons["book.menu.02 城市速寫"].tap()
+        app.buttons["編輯資訊"].tap()
+        let series = app.textFields["info.field.series"]
+        XCTAssertTrue(series.waitForExistence(timeout: 5))
+        series.clearAndType("Batman")
+        app.textFields["info.field.number"].clearAndType("45")
+        app.textFields["info.field.volume"].clearAndType("2016")
+        app.textFields["info.field.writer"].clearAndType("King\n")
+        waitForKeyboardToHide()
+        app.buttons["info.generate"].tap()
+        let usStyle = app.buttons["美漫：系列 (年) #號碼"]
+        XCTAssertTrue(usStyle.waitForExistence(timeout: 5))
+        usStyle.tap()
+        XCTAssertEqual(app.textFields["info.name"].value as? String, "Batman (2016) #45")
+        screenshot("12-book-info")
+        app.buttons["info.save"].tap()
+        XCTAssertTrue(app.buttons["book.Batman (2016) #45"].waitForExistence(timeout: 5))
+
+        // Batch: one series, numbered in file-name order, manga-style names.
+        app.buttons["library.select"].tap()
+        app.buttons["library.selectall"].tap()
+        app.buttons["library.batchinfo"].tap()
+        let batchSeries = app.textFields["info.field.series"]
+        XCTAssertTrue(batchSeries.waitForExistence(timeout: 5))
+        batchSeries.clearAndType("星之旅人\n")
+        waitForKeyboardToHide()
+        app.switches["info.autonumber"].switches.firstMatch.tap()
+        app.buttons["info.namestyle"].tap()
+        app.buttons["日漫：系列 第 N 卷"].tap()
+        screenshot("13-batch-info")
+        app.buttons["info.save"].tap()
+        waitForBooks(["星之旅人 第 1 卷", "星之旅人 第 2 卷", "星之旅人 第 3 卷"], timeout: 10)
+        XCTAssertTrue(app.buttons["library.select"].exists, "selection mode ends after saving")
+
+        // The per-book writer survives the batch edit.
+        app.buttons["book.menu.星之旅人 第 2 卷"].tap()
+        app.buttons["編輯資訊"].tap()
+        XCTAssertTrue(app.textFields["info.field.writer"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.textFields["info.field.writer"].value as? String, "King")
+        XCTAssertEqual(app.textFields["info.field.volume"].value as? String, "2016")
+        app.buttons["取消"].firstMatch.tap()
+
+        // Writer is searchable.
+        app.searchFields.firstMatch.tap()
+        app.searchFields.firstMatch.typeText("King")
+        XCTAssertTrue(app.buttons["book.星之旅人 第 2 卷"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["book.星之旅人 第 3 卷"].exists)
     }
 
     func test07RepeatedOpenClose() {

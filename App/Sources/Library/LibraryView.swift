@@ -31,6 +31,10 @@ struct LibraryView: View {
     @State private var deleting: BookRecord?
     @State private var resetting: BookRecord?
     @State private var dropTargeted = false
+    @State private var infoBook: BookRecord?
+    @State private var batch: BatchSelection?
+    /// nil when not selecting.
+    @State private var selection: Set<UUID>?
 
     private var books: [BookRecord] {
         library.visibleBooks(search: search, sort: settings.sort, filter: settings.filter)
@@ -52,8 +56,8 @@ struct LibraryView: View {
                         .padding(8).allowsHitTesting(false)
                 }
             }
-            .navigationTitle(L10n.libraryTitle)
-            .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .automatic), prompt: L10n.searchPrompt)
+            .navigationTitle(selection.map { L10n.selectedCount($0.count) } ?? L10n.libraryTitle)
+            .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: L10n.searchPrompt)
             .toolbar { toolbar }
             .fileImporter(isPresented: $showPicker, allowedContentTypes: UTType.comicImportTypes, allowsMultipleSelection: true) { result in
                 if case .success(let urls) = result { importer.importFiles(urls, securityScoped: true) }
@@ -62,6 +66,9 @@ struct LibraryView: View {
                 DropImporter.handle(providers, importer: importer)
             }
             .sheet(isPresented: $showSettings) { SettingsView() }
+            .sheet(item: $infoBook) { BookInfoView(book: library.book($0.id) ?? $0) }
+            .sheet(item: $batch) { BatchInfoView(books: $0.books) { selection = nil } }
+            .onChange(of: library.books.isEmpty) { _, empty in if empty { selection = nil } }
             .fullScreenCover(item: $openBook) { book in
                 ReaderScreen(record: library.book(book.id) ?? book, library: library)
             }
@@ -92,29 +99,53 @@ struct LibraryView: View {
         }
     }
 
+    /// The item structure stays the same in and out of selection mode (only the
+    /// contents change); swapping whole toolbars hides the search drawer.
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
-            Menu {
-                Picker(L10n.sortMenu, selection: $settings.sort) {
-                    ForEach(LibrarySort.allCases) { Text($0.title).tag($0) }
+            if let selection {
+                Button(L10n.menuEditInfo) {
+                    batch = BatchSelection(books: library.books.filter { selection.contains($0.id) })
                 }
-                Picker(L10n.filterAll, selection: $settings.filter) {
-                    ForEach(LibraryFilter.allCases) { Text($0.title).tag($0) }
+                .disabled(selection.isEmpty)
+                .accessibilityIdentifier("library.batchinfo")
+                Button(L10n.done) { self.selection = nil }
+                    .accessibilityIdentifier("library.select.done")
+            } else {
+                if !library.books.isEmpty {
+                    Button(L10n.select) { selection = [] }
+                        .accessibilityIdentifier("library.select")
                 }
-            } label: {
-                Label(L10n.sortMenu, systemImage: "line.3.horizontal.decrease.circle")
+                Menu {
+                    Picker(L10n.sortMenu, selection: $settings.sort) {
+                        ForEach(LibrarySort.allCases) { Text($0.title).tag($0) }
+                    }
+                    Picker(L10n.filterAll, selection: $settings.filter) {
+                        ForEach(LibraryFilter.allCases) { Text($0.title).tag($0) }
+                    }
+                } label: {
+                    Label(L10n.sortMenu, systemImage: "line.3.horizontal.decrease.circle")
+                }
+                .accessibilityIdentifier("library.sort")
+                Button { showPicker = true } label: {
+                    Label(L10n.importButton, systemImage: "plus")
+                }
+                .accessibilityLabel(L10n.importAccessibility)
+                .accessibilityIdentifier("library.import")
             }
-            .accessibilityIdentifier("library.sort")
-            Button { showPicker = true } label: {
-                Label(L10n.importButton, systemImage: "plus")
-            }
-            .accessibilityLabel(L10n.importAccessibility)
-            .accessibilityIdentifier("library.import")
         }
         ToolbarItem(placement: .topBarLeading) {
-            Button { showSettings = true } label: { Label(L10n.settings, systemImage: "gearshape") }
-                .accessibilityIdentifier("library.settings")
+            if let selection {
+                let all = !books.isEmpty && books.allSatisfy { selection.contains($0.id) }
+                Button(all ? L10n.deselectAll : L10n.selectAll) {
+                    self.selection = all ? [] : Set(books.map(\.id))
+                }
+                .accessibilityIdentifier("library.selectall")
+            } else {
+                Button { showSettings = true } label: { Label(L10n.settings, systemImage: "gearshape") }
+                    .accessibilityIdentifier("library.settings")
+            }
         }
     }
 
@@ -139,7 +170,7 @@ struct LibraryView: View {
         ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     if !importer.jobs.isEmpty { ImportJobsSection() }
-                    if search.isEmpty, settings.filter == .all, let book = library.continueReading {
+                    if selection == nil, search.isEmpty, settings.filter == .all, let book = library.continueReading {
                         ContinueReadingCard(book: book) { openBook = book }
                     }
                     if !books.isEmpty {
@@ -147,14 +178,20 @@ struct LibraryView: View {
                                   alignment: .leading, spacing: 28) {
                             ForEach(books) { book in
                                 BookCell(book: book,
-                                         open: { openBook = book },
+                                         open: {
+                                             if selection == nil { openBook = book }
+                                             else if selection!.contains(book.id) { selection!.remove(book.id) }
+                                             else { selection!.insert(book.id) }
+                                         },
                                          readFromStart: {
                                              library.resetProgress(book.id)
                                              openBook = library.book(book.id)
                                          },
                                          rename: { renameText = book.displayName; renaming = book },
+                                         editInfo: { infoBook = book },
                                          reset: { resetting = book },
-                                         delete: { deleting = book })
+                                         delete: { deleting = book },
+                                         selected: selection.map { $0.contains(book.id) })
                             }
                         }
                     }

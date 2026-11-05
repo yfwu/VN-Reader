@@ -60,8 +60,11 @@ struct BookCell: View {
     let open: () -> Void
     let readFromStart: () -> Void
     let rename: () -> Void
+    let editInfo: () -> Void
     let reset: () -> Void
     let delete: () -> Void
+    /// nil outside selection mode; then `open` toggles the selection instead.
+    var selected: Bool? = nil
     @EnvironmentObject private var library: LibraryStore
 
     var body: some View {
@@ -70,7 +73,14 @@ struct BookCell: View {
                 CoverView(book: book)
                     .overlay(alignment: .topLeading) { StatusBadge(status: book.status).padding(6) }
                     .overlay(alignment: .topTrailing) {
-                        if book.isFavorite {
+                        if let selected {
+                            Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                                .font(.title2)
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(Color.white, selected ? Color.accentColor : Color.black.opacity(0.25))
+                                .shadow(radius: 2)
+                                .padding(8)
+                        } else if book.isFavorite {
                             Image(systemName: "heart.fill").font(.caption).foregroundStyle(.pink)
                                 .padding(6).background(.thinMaterial, in: Circle()).padding(6)
                         }
@@ -82,10 +92,16 @@ struct BookCell: View {
                                 .padding(.horizontal, 8).padding(.bottom, 8)
                         }
                     }
+                    .overlay {
+                        if selected == true {
+                            RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(Color.accentColor, lineWidth: 3)
+                        }
+                    }
                     .shadow(color: .black.opacity(0.12), radius: 4, y: 2)
             }
             .buttonStyle(.plain)
-            .contextMenu { menuItems }
+            .contextMenu { if selected == nil { menuItems } }
+            .accessibilityAddTraits(selected == true ? .isSelected : [])
             .accessibilityLabel(accessibilitySummary)
             .accessibilityHint(L10n.menuOpen)
             .accessibilityIdentifier("book.\(book.displayName)")
@@ -112,6 +128,9 @@ struct BookCell: View {
                 .accessibilityIdentifier("book.menu.\(book.displayName)")
                 .padding(.trailing, -10)
                 .padding(.top, -10)
+                .opacity(selected == nil ? 1 : 0)
+                .disabled(selected != nil)
+                .accessibilityHidden(selected != nil)
             }
         }
     }
@@ -141,6 +160,7 @@ struct BookCell: View {
             Button(action: readFromStart) { Label(L10n.menuReadFromStart, systemImage: "arrow.counterclockwise") }
         }
         Button(action: rename) { Label(L10n.menuRename, systemImage: "pencil") }
+        Button(action: editInfo) { Label(L10n.menuEditInfo, systemImage: "info.circle") }
         Button { library.toggleFavorite(book.id) } label: {
             Label(book.isFavorite ? L10n.menuUnfavorite : L10n.menuFavorite, systemImage: book.isFavorite ? "heart.slash" : "heart")
         }

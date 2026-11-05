@@ -40,7 +40,7 @@ VN-Reader/
 | Reading pipeline | `ComicCore/Reading/BookPageSource` | Random access for ZIP/non-solid RAR; sequential background extraction to `Caches/Extracted/<id>/` for solid RAR with waiters. |
 | Image decode | `App/Imaging` | ImageIO thumbnail API decodes straight to display size on a background task. `NSCache` with a cost limit (≈10 % RAM, ≤400 MB), purge on memory warning, prefetch window = current ± (2 ahead, 1 behind), stale tasks cancelled. |
 | Reader UI | `App/Reader` | `UIPageViewController` (scroll style) hosting `SpreadPageController` (1 page or a spread) with a zoomable `SpreadZoomView`. Paging is disabled while zoomed in so drags pan. SwiftUI overlay for toolbars/sheets. |
-| Library UI | `App/Library` | SwiftUI adaptive grid, search, sort/filter menu, continue-reading card, import status rows. |
+| Library UI | `App/Library` | SwiftUI adaptive grid, search, sort/filter menu, continue-reading card, import status rows, selection mode, book info and batch info editors (`BookInfoView`). Naming styles, batch field changes, sequential numbering and series order live in `ComicCore/Library/MetadataEditing`. |
 
 ## Threading
 

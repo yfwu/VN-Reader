@@ -25,13 +25,14 @@ enum ReaderBackground: String, CaseIterable, Identifiable {
 }
 
 enum LibrarySort: String, CaseIterable, Identifiable {
-    case recentlyRead, imported, title
+    case recentlyRead, imported, title, series
     var id: String { rawValue }
     var title: String {
         switch self {
         case .recentlyRead: return L10n.sortRecent
         case .imported: return L10n.sortImported
         case .title: return L10n.sortTitle
+        case .series: return L10n.sortSeries
         }
     }
 }

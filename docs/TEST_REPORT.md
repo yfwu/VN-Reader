@@ -26,13 +26,14 @@ and apart from the owner's hands-on check (see the last row of the status table)
 | S-mini | Simulator "VN iPad mini 6" (iPad mini 6th generation, 744×1133 pt), iOS 26.2 | core tests on iOS, UI tests, screenshots |
 | S-pro | Simulator "VN iPad Pro 13" (iPad Pro 13-inch M4, 1032×1376 pt), iOS 26.2 | UI tests, screenshots |
 
-## Unit tests (Packages/ComicCore, 53 tests)
+## Unit tests (Packages/ComicCore, 59 tests)
 
 | Suite | Covers |
 |---|---|
 | ArchiveReadingTests (17) | real CBZ / RAR4 / RAR5 solid & non-solid decoding, byte equality across formats, sequential solid extraction + early stop, CJK names, Shift_JIS names, WebP/PNG/GIF, ZIP64, encryption (4 kinds), multi-volume (RAR4/RAR5), truncated ZIP/RAR, corrupt RAR data, PDF/7z/no-images, BZIP2 method, broken image listed, entry/entry-count limits |
 | PageOrderingTests (11) | unpadded / padded / mixed padding, prefixes, sub-folders & root-first, CJK + full-width digits, same names in different folders, exact duplicates (stable), case-only differences, system-file filtering, manifest round trip, `../` names |
 | LibraryAndImportTests (11) | import of every format then offline read (source deleted), ComicInfo → RTL, duplicate rule, same-name rule ("(2)", "(3)"), every failure leaves no files, cancel cleans up, insufficient disk space, unreadable source, delete keeps user's original byte-identical, launch cleanup of staging/orphans, DB round trip + corrupt-file recovery, old records decode |
+| MetadataEditingTests (6) | name styles (US issue, manga volume, title), batch changes keep other fields and clear empty ones, sequential numbering in natural file order, series sort, old metadata decodes, ComicInfo credits/year |
 | NavigationTests (8) | tap zones, LTR/RTL taps & swipes, boundaries & rapid "next", direction change keeps logical page (RTL starts at page 1), prefetch window, spreads (cover alone, shift, wide pages, RTL screen order), progress/status |
 | PageSourceTests (4) | solid preparation waits then serves from cache, cancelled waiter returns, concurrent random reads, solid extraction needs disk space |
 | StressTests (2, opt-in) | 1 GB / 1000-page ZIP, RAR5 non-solid, RAR5 solid, RAR4 solid |
@@ -56,6 +57,7 @@ in the `*-tests.json` files.
 | test06RenameDeleteAndMenu | rename via menu, delete with confirmation, search |
 | test07RepeatedOpenClose | open/close two books 5× with page turns |
 | test08VerticalScrollMode | vertical continuous mode advances logical page, jump works |
+| test09EditInfoAndBatchEdit | book info editor + generated US-style name, writer search, select all → batch series + auto-numbering + manga-style names, per-book fields survive the batch |
 
 ### Results — CI run 41896232490 (commit 95220b9, Xcode 26.3, iOS 26.2 simulators)
 

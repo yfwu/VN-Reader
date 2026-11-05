@@ -38,22 +38,32 @@ public struct ReadingProgress: Codable, Equatable, Sendable {
 }
 
 public struct ComicMetadata: Codable, Equatable, Sendable {
+    /// This book's own title (story or volume name), not the series.
     public var title: String?
     public var series: String?
+    /// Position in the series: the issue for US comics, the volume for manga.
     public var number: String?
+    /// ComicInfo "Volume": which run of a US series, usually its start year ("2016").
     public var volume: String?
     public var writer: String?
+    public var penciller: String?
+    public var publisher: String?
+    public var year: Int?
     public var summary: String?
     /// ComicInfo "Manga" == "YesAndRightToLeft".
     public var prefersRightToLeft: Bool = false
 
     public init(title: String? = nil, series: String? = nil, number: String? = nil, volume: String? = nil,
-                writer: String? = nil, summary: String? = nil, prefersRightToLeft: Bool = false) {
+                writer: String? = nil, penciller: String? = nil, publisher: String? = nil, year: Int? = nil,
+                summary: String? = nil, prefersRightToLeft: Bool = false) {
         self.title = title
         self.series = series
         self.number = number
         self.volume = volume
         self.writer = writer
+        self.penciller = penciller
+        self.publisher = publisher
+        self.year = year
         self.summary = summary
         self.prefersRightToLeft = prefersRightToLeft
     }

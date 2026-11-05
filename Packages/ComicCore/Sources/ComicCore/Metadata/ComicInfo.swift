@@ -16,7 +16,8 @@ public enum ComicInfoParser {
             return t
         }
         let meta = ComicMetadata(title: s("title"), series: s("series"), number: s("number"), volume: s("volume"),
-                                 writer: s("writer"), summary: s("summary"),
+                                 writer: s("writer"), penciller: s("penciller"), publisher: s("publisher"),
+                                 year: s("year").flatMap { Int($0) }, summary: s("summary"),
                                  prefersRightToLeft: s("manga")?.lowercased() == "yesandrighttoleft")
         if meta == ComicMetadata() { return nil }
         return meta

@@ -50,9 +50,10 @@ final class LibraryStore: ObservableObject {
             }
         }
         if !q.isEmpty {
-            list = list.filter {
-                $0.displayName.localizedStandardContains(q) || ($0.metadata?.series?.localizedStandardContains(q) ?? false)
-                    || $0.originalFileName.localizedStandardContains(q)
+            list = list.filter { b in
+                let m = b.metadata
+                return [b.displayName, b.originalFileName, m?.series, m?.title, m?.writer, m?.penciller, m?.publisher]
+                    .contains { $0?.localizedStandardContains(q) ?? false }
             }
         }
         switch sort {
@@ -65,6 +66,8 @@ final class LibraryStore: ObservableObject {
             list.sort { $0.importedAt > $1.importedAt }
         case .title:
             list.sort { NaturalSort.compareNames($0.displayName, $1.displayName) == .orderedAscending }
+        case .series:
+            list.sort(by: MetadataEditor.seriesOrder)
         }
         return list
     }
@@ -96,6 +99,36 @@ final class LibraryStore: ObservableObject {
         let n = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !n.isEmpty else { return }
         update(id, { $0.displayName = n }, immediate: true)
+    }
+
+    /// Saves the single-book info editor: display name plus all metadata fields.
+    func saveInfo(_ id: UUID, displayName: String, metadata: ComicMetadata) {
+        let n = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        update(id, { r in
+            if !n.isEmpty { r.displayName = n }
+            r.metadata = metadata == ComicMetadata() ? nil : metadata
+        }, immediate: true)
+    }
+
+    /// Batch edit: sets `changes` on every book, optionally numbers them in file-name
+    /// order from `numberFrom`, then optionally rebuilds their display names.
+    func batchEdit(_ ids: Set<UUID>, changes: [MetadataField: String], numberFrom: Int?, nameStyle: BookNameStyle?) {
+        let selected = books.filter { ids.contains($0.id) }
+        let numbers = numberFrom.map { MetadataEditor.sequentialNumbers(for: selected, start: $0) } ?? [:]
+        for i in books.indices where ids.contains(books[i].id) {
+            var c = changes
+            if let n = numbers[books[i].id] { c[.number] = n }
+            MetadataEditor.apply(c, to: &books[i])
+            if let style = nameStyle, let name = Self.generatedName(style, books[i].metadata) {
+                books[i].displayName = name
+            }
+        }
+        saveNow()
+    }
+
+    static func generatedName(_ style: BookNameStyle, _ metadata: ComicMetadata?) -> String? {
+        guard let metadata else { return nil }
+        return MetadataEditor.displayName(style: style, metadata: metadata, volumeFormat: L10n.volumeName)
     }
 
     func resetProgress(_ id: UUID) { update(id, { $0.resetProgress() }, immediate: true) }

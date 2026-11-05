@@ -30,13 +30,15 @@
 | 2 | Continuous vertical scrolling | Implemented (`VerticalReaderController`), shares page numbers. No pinch-zoom inside vertical mode yet. |
 | 3 | Bookmarks | Implemented (toolbar button, "書籤" tab in the thumbnail sheet). |
 | 4 | Favourites | Implemented (menu + filter). No custom collections yet. |
-| 5 | ComicInfo.xml | Title/series/number/writer/summary/manga read; `Manga=YesAndRightToLeft` sets RTL. Metadata not yet shown in a detail view. |
+| 5 | ComicInfo.xml | Title/series/number/volume/writer/penciller/publisher/year/summary/manga read; `Manga=YesAndRightToLeft` sets RTL. Editable per book and in batch (stored in `library.json`, never written back into the archive). Import still names books after the file, not the ComicInfo title. |
 | 6 | Open-in / drag-and-drop import | Implemented (document types, `onOpenURL`, `.onDrop`). Not covered by UI tests. |
 | 7 | iPhone layout | Not started; `TARGETED_DEVICE_FAMILY = 2` (iPad only) so nobody gets an untested iPhone layout. |
 
 ## Other known issues / ideas
 
 * Sample books (≈1.6 MB) are bundled for UI tests and screenshots (`App/Resources/Samples`). They are only imported with the `-seed-samples` launch argument; remove the folder before an App Store release if size matters.
+* iOS 27: the library search drawer with `displayMode: .automatic` never appeared, so it is now `.always`.
+* iOS 27.2 simulator (Xcode 27.2): in `test06RenameDeleteAndMenu` the tap on 儲存 in the rename alert does not land while the keyboard shows its suggestion bar; the same failure happens on the commit before metadata editing. It passes on the CI simulators (iOS 26.2). A simulator whose language is zh-Hant also gets the Zhuyin keyboard, which holds typed Latin text in composition; set its keyboard to US QWERTY before running UI tests locally.
 * Page turn animation can be disabled in Settings; rapid taps during an animation jump without animation (to avoid UIPageViewController glitches).
 * The library JSON is rewritten as a whole (fine for thousands of books; consider SQLite if libraries grow far beyond that).
 * The English, Simplified Chinese and Japanese translations in `App/Resources/Localizable.xcstrings` have not been reviewed by native speakers yet. Licence texts in Settings stay in English on purpose.
