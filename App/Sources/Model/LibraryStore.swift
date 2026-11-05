@@ -155,8 +155,11 @@ final class LibraryStore: ObservableObject {
         if sync {
             if let e = writeQueue.sync(execute: work) { notice = ErrorMessages.explain(e).message }
         } else {
+            // LibraryStore lives as long as the app (it is the App's @StateObject) and,
+            // being @MainActor, is Sendable: a plain strong capture is correct here.
             writeQueue.async {
-                if let e = work() { onMain { [weak self] in self?.notice = ErrorMessages.explain(e).message } }
+                guard let e = work() else { return }
+                onMain { self.notice = ErrorMessages.explain(e).message }
             }
         }
     }

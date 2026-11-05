@@ -185,13 +185,15 @@ enum DropImporter {
         var accepted = false
         for p in providers where p.hasItemConformingToTypeIdentifier(UTType.data.identifier) {
             accepted = true
+            // Read on this thread; the completion handler only captures the String.
+            let suggestedName = p.suggestedName
             _ = p.loadFileRepresentation(forTypeIdentifier: UTType.data.identifier) { url, _ in
                 guard let url else { return }
                 // The provided file is deleted when this block returns: copy it first.
                 let dir = FileManager.default.temporaryDirectory.appendingPathComponent("Dropped/\(UUID().uuidString)")
                 try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
                 var name = url.lastPathComponent
-                if let suggested = p.suggestedName, !suggested.isEmpty {
+                if let suggested = suggestedName, !suggested.isEmpty {
                     name = (suggested as NSString).pathExtension.isEmpty && !url.pathExtension.isEmpty
                         ? suggested + "." + url.pathExtension : suggested
                 }
