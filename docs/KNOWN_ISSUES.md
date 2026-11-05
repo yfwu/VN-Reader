@@ -39,7 +39,7 @@
 * Sample books (≈1.6 MB) are bundled for UI tests and screenshots (`App/Resources/Samples`). They are only imported with the `-seed-samples` launch argument; remove the folder before an App Store release if size matters.
 * Page turn animation can be disabled in Settings; rapid taps during an animation jump without animation (to avoid UIPageViewController glitches).
 * The library JSON is rewritten as a whole (fine for thousands of books; consider SQLite if libraries grow far beyond that).
-* No English localisation yet: all strings are in `App/Sources/Shared/L10n.swift` with zh-Hant defaults; adding a String Catalog with `en` is enough.
+* The English, Simplified Chinese and Japanese translations in `App/Resources/Localizable.xcstrings` have not been reviewed by native speakers yet. Licence texts in Settings stay in English on purpose.
 
 ## What you need to provide for real-device delivery
 

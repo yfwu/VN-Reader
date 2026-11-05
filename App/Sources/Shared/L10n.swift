@@ -1,7 +1,9 @@
 import Foundation
 
 /// All user-facing strings. Traditional Chinese is the development language;
-/// add other languages through a String Catalog without touching call sites.
+/// translations (en, zh-Hans, ja) live in Resources/Localizable.xcstrings.
+/// Info.plist sets CFBundleDevelopmentRegion to en, so other system languages
+/// fall back to English.
 enum L10n {
     // MARK: Library
     static let libraryTitle = String(localized: "library.title", defaultValue: "書庫")

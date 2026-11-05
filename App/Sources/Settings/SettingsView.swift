@@ -79,13 +79,13 @@ struct LicensesView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text("unRAR source code").font(.headline)
-                Text("This app uses the unRAR source code (version \(RarArchive.unrarVersion)) by Alexander Roshal, used under the unRAR license: it may be used in any software to handle RAR archives without limitations free of charge, but cannot be used to develop RAR (WinRAR) compatible archiver and to re-create RAR compression algorithm, which is proprietary.")
+                Text(verbatim: "unRAR source code").font(.headline)
+                Text(verbatim: "This app uses the unRAR source code (version \(RarArchive.unrarVersion)) by Alexander Roshal, used under the unRAR license: it may be used in any software to handle RAR archives without limitations free of charge, but cannot be used to develop RAR (WinRAR) compatible archiver and to re-create RAR compression algorithm, which is proprietary.")
                     .font(.footnote)
-                Text("zlib").font(.headline)
-                Text("Deflate decompression uses the zlib library provided by the operating system (zlib license, © Jean-loup Gailly and Mark Adler).")
+                Text(verbatim: "zlib").font(.headline)
+                Text(verbatim: "Deflate decompression uses the zlib library provided by the operating system (zlib license, © Jean-loup Gailly and Mark Adler).")
                     .font(.footnote)
-                Text("See THIRD_PARTY_NOTICES.md in the source repository for full texts.")
+                Text(verbatim: "See THIRD_PARTY_NOTICES.md in the source repository for full texts.")
                     .font(.footnote).foregroundStyle(.secondary)
             }
             .padding()

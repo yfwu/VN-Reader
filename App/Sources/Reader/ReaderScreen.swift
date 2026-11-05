@@ -236,7 +236,7 @@ struct ThumbnailSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                Picker("", selection: $tab) {
+                Picker(L10n.thumbnails, selection: $tab) {
                     Text(L10n.allPages).tag(0)
                     Text(L10n.bookmarks).tag(1)
                 }
@@ -304,7 +304,7 @@ struct ThumbnailCell: View {
             .overlay(RoundedRectangle(cornerRadius: 6).stroke(isCurrent ? Color.accentColor : .clear, lineWidth: 3))
             HStack(spacing: 2) {
                 if model.record.bookmarks.contains(page) { Image(systemName: "bookmark.fill").font(.caption2) }
-                Text("\(page + 1)").font(.caption.monospacedDigit())
+                Text(verbatim: "\(page + 1)").font(.caption.monospacedDigit())
             }
             .foregroundStyle(isCurrent ? Color.accentColor : .secondary)
         }

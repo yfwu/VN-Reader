@@ -30,8 +30,10 @@ final class ReaderUITests: XCTestCase {
         add(a)
     }
 
-    private func launch(seed: Bool, reset: Bool = true) {
-        var args: [String] = []
+    /// Tests look elements up by their Traditional Chinese labels, so the app
+    /// language is pinned regardless of the simulator's.
+    private func launch(seed: Bool, reset: Bool = true, language: String = "zh-Hant", locale: String = "zh_TW") {
+        var args: [String] = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale]
         if reset { args.append("-ui-testing") }
         if seed { args.append("-seed-samples") }
         app.launchArguments = args
@@ -121,6 +123,13 @@ final class ReaderUITests: XCTestCase {
         XCUIDevice.shared.orientation = .landscapeLeft
         sleep(1)
         screenshot("01-empty-library")
+    }
+
+    func test01bEnglishLocalization() {
+        launch(seed: false, language: "en", locale: "en_US")
+        XCTAssertTrue(app.buttons["library.empty.import"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.navigationBars["Library"].exists)
+        XCTAssertTrue(app.staticTexts["Your Library Is Empty"].exists)
     }
 
     func test02ImportAndLibrary() {

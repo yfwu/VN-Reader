@@ -2,7 +2,7 @@
 
 A native iPadOS comic reader focused on three things: **import your own comics, start
 reading fast, continue where you left off.** No account, no network, no ads, no tracking.
-UI language: Traditional Chinese (all strings centralised for later English).
+UI languages: Traditional Chinese (source), English, Simplified Chinese and Japanese, from `App/Resources/Localizable.xcstrings`; other system languages fall back to English.
 
 | | |
 |---|---|

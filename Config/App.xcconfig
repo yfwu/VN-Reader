@@ -5,6 +5,8 @@ PRODUCT_BUNDLE_IDENTIFIER = $(VN_BUNDLE_ID)
 INFOPLIST_FILE = Config/Info.plist
 GENERATE_INFOPLIST_FILE = YES
 INFOPLIST_KEY_CFBundleDisplayName = VN Reader
+// Strings are authored in zh-Hant, but system languages without a translation fall back to English.
+DEVELOPMENT_LANGUAGE = en
 INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.books
 INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES
 INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES

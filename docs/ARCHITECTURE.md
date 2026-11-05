@@ -11,7 +11,7 @@ VN-Reader/
 │  ├─ Reader/                  ReaderScreen (SwiftUI chrome) + ReaderViewController (UIKit pager)
 │  ├─ Imaging/                 ImageIO decoding, page cache, thumbnails, covers
 │  ├─ Settings/                settings & licenses
-│  └─ Shared/                  L10n (all strings), ErrorMessages
+│  └─ Shared/                  L10n (all strings; translations in Resources/Localizable.xcstrings), ErrorMessages
 ├─ App/Resources/              asset catalog, sample books used by UI tests
 ├─ UITests/                    XCUITest end-to-end tests (+ screenshots)
 ├─ Packages/ComicCore/         platform-independent core (Swift package, builds on Linux too)
