@@ -12,6 +12,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  localization:
+    name: Localization completeness
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check-localization.py | tee -a "$GITHUB_STEP_SUMMARY"; test "${PIPESTATUS[0]}" -eq 0
+
   core-linux:
     name: ComicCore tests (Linux)
     runs-on: ubuntu-24.04

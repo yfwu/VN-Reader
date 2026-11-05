@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/scripts/check-localization.py --hook",
+            "timeout": 30,
+            "statusMessage": "Checking localization"
+          }
+        ]
+      }
+    ]
+  }
+}
