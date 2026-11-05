@@ -3,7 +3,7 @@
 Latest CI numbers are regenerated on every publishing run in
 `docs/test-results/ci/SUMMARY.md` (plus per-test JSON); this page explains them and maps
 them to the acceptance criteria. **Simulator results are not iPad-mini performance results**,
-and nothing in this report was run on a physical iPad.
+and apart from the owner's hands-on check (see the last row of the status table) nothing in this report was run on a physical iPad.
 
 ## Delivery status
 
@@ -14,7 +14,7 @@ and nothing in this report was run on a physical iPad.
 | 模擬器測試通過 (simulator tests) | ✅ core 53 tests (51 run + 2 opt-in stress skipped) pass on macOS host and iPad mini 6 simulator; **UI 8/8 on iPad mini 6 and 8/8 on iPad Pro 13** (iOS 26.2), all on the first iteration (no retries) — [run 41896232490](https://github.com/yfwu/VN-Reader/actions/runs/41896232490), commit `95220b9`; re-verified after the static-review fixes in [run 41965308253](https://github.com/yfwu/VN-Reader/actions/runs/41965308253), commit `9a99072` (8/8 + 8/8) | `docs/test-results/ci/` |
 | 實機 Archive 成功 (device archive) | ✅ **unsigned** archive (`CODE_SIGNING_ALLOWED=NO`); ❌ signed archive not done — no Team / certificate available | `deliverables/UNSIGNED-IPA-INFO.txt` |
 | IPA 匯出成功 (IPA export) | ⚠️ Only `VNReader-0.1.0-1-UNSIGNED.ipa` (packaged, **cannot be installed**). Signed export: pending your Team ID | `deliverables/` |
-| 指定 iPad 安裝並啟動成功 (installed on iPad) | ❌ Not done — no signed build, no device | — |
+| 指定 iPad 安裝並啟動成功 (installed on iPad) | ✅ **Reported by the owner (2026-11-05):** built from Xcode on a Mac and installed on their iPad; "運作良好" (works well). Not an automated test; iPad model, iPadOS version and signing method (Personal Team vs paid Team) not recorded; no performance numbers taken | owner report |
 
 ## Environments
 
@@ -108,7 +108,7 @@ Expect the iPad mini 6 (A15) to be slower for solid preparation; measure on the 
 
 ## Not tested
 
-* Anything on a physical iPad (install, launch, gestures by hand, memory/thermal behaviour, performance).
+* Systematic checks on a physical iPad: the owner confirmed the app installs and works well, but there is no recorded per-criterion pass/fail, no memory/thermal/performance measurement, and no test of large (≈1 GB) books on the device.
 * iCloud Drive / third-party File Provider downloads (code path present, needs a signed-in device).
 * VoiceOver end-to-end audit; Dynamic Type at the largest accessibility sizes.
 * Split View / Stage Manager window resizing (supported in code; not exercised in UI tests).

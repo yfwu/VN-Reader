@@ -4,7 +4,7 @@
 
 | Item | Status | What is missing |
 |---|---|---|
-| Real-device verification (install, launch, import, read on iPad mini 6) | **Not done** | Needs a signing Team + a physical iPad. Everything was verified on simulators and the device *build* (arm64) only. |
+| Real-device verification (install, launch, import, read on iPad mini 6) | **Owner reported "works well" on their iPad (2026-11-05)** | Record model / iPadOS version; walk through the acceptance list on the device; signed IPA export still needs a paid Team. |
 | Performance on iPad mini hardware | **Not measured** | Only Linux-container and simulator numbers exist; they are not iPad numbers. Measure with Instruments (Allocations, Time Profiler) on the device. |
 | Low-disk behaviour on a device | Unit-tested with an injected disk-space provider | Not exercised with a truly full device. |
 | Cloud (iCloud Drive / third-party File Provider) not-yet-downloaded files | Implemented (`NSFileCoordinator` + "正在從雲端下載…" state, cancellable) | Not exercised in CI (simulator has no signed-in iCloud). |
