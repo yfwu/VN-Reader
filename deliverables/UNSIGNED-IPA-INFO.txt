@@ -7,6 +7,6 @@ Minimum OS: 18.0
 Archs: arm64
 Built with: Xcode 26.3 Build version 17C529 
 SDK: 26.2
-Date: 2026-11-04T20:44:10Z
-Commit: 95220b9
+Date: 2026-11-05T04:42:49Z
+Commit: 9a99072
 Size: 1.6M

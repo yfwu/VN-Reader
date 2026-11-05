@@ -3,7 +3,7 @@
     {
       "device" : {
         "architecture" : "arm64",
-        "deviceId" : "0E2D1C5B-0B2E-417A-8225-D7AA2C2917EB",
+        "deviceId" : "0BCD6E25-EC73-40F7-8165-8B55CE6500DF",
         "deviceName" : "VN iPad Pro 13",
         "modelName" : "iPad Pro 13-inch (M4)",
         "osBuildNumber" : "23C54",
@@ -23,11 +23,11 @@
   "environmentDescription" : "VNReader · Built with macOS 15.8.2",
   "expectedFailures" : 0,
   "failedTests" : 0,
-  "finishTime" : 1793824847.777,
+  "finishTime" : 1793853521.714,
   "passedTests" : 8,
   "result" : "Passed",
   "skippedTests" : 0,
-  "startTime" : 1793823667.344,
+  "startTime" : 1793852725.509,
   "statistics" : [
     {
       "subtitle" : "8 test runs",

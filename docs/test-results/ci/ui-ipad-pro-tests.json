@@ -2,7 +2,7 @@
   "devices" : [
     {
       "architecture" : "arm64",
-      "deviceId" : "0E2D1C5B-0B2E-417A-8225-D7AA2C2917EB",
+      "deviceId" : "0BCD6E25-EC73-40F7-8165-8B55CE6500DF",
       "deviceName" : "VN iPad Pro 13",
       "modelName" : "iPad Pro 13-inch (M4)",
       "osBuildNumber" : "23C54",
@@ -18,8 +18,8 @@
             {
               "children" : [
                 {
-                  "duration" : "1m 14s",
-                  "durationInSeconds" : 74.13457608222961,
+                  "duration" : "1m 2s",
+                  "durationInSeconds" : 62.36985492706299,
                   "name" : "test01EmptyLibrary()",
                   "nodeIdentifier" : "ReaderUITests/test01EmptyLibrary()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test01EmptyLibrary",
@@ -27,8 +27,8 @@
                   "result" : "Passed"
                 },
                 {
-                  "duration" : "20s",
-                  "durationInSeconds" : 20.614192962646484,
+                  "duration" : "43s",
+                  "durationInSeconds" : 43.831786036491394,
                   "name" : "test02ImportAndLibrary()",
                   "nodeIdentifier" : "ReaderUITests/test02ImportAndLibrary()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test02ImportAndLibrary",
@@ -42,8 +42,8 @@
                       "nodeType" : "Runtime Warning"
                     }
                   ],
-                  "duration" : "2m 48s",
-                  "durationInSeconds" : 168.53109896183014,
+                  "duration" : "2m 52s",
+                  "durationInSeconds" : 172.13704991340637,
                   "name" : "test03LTRPagingZoomThumbnailsAndProgress()",
                   "nodeIdentifier" : "ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress",
@@ -57,8 +57,8 @@
                       "nodeType" : "Runtime Warning"
                     }
                   ],
-                  "duration" : "1m 5s",
-                  "durationInSeconds" : 65.60865592956543,
+                  "duration" : "1m 21s",
+                  "durationInSeconds" : 81.5470370054245,
                   "name" : "test04RTLAndDirectionSwitchKeepsPage()",
                   "nodeIdentifier" : "ReaderUITests/test04RTLAndDirectionSwitchKeepsPage()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test04RTLAndDirectionSwitchKeepsPage",
@@ -72,8 +72,8 @@
                       "nodeType" : "Runtime Warning"
                     }
                   ],
-                  "duration" : "57s",
-                  "durationInSeconds" : 57.80698204040527,
+                  "duration" : "56s",
+                  "durationInSeconds" : 56.433887004852295,
                   "name" : "test05ProgressSurvivesBackgroundAndRelaunch()",
                   "nodeIdentifier" : "ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch",
@@ -81,8 +81,8 @@
                   "result" : "Passed"
                 },
                 {
-                  "duration" : "51s",
-                  "durationInSeconds" : 51.29765498638153,
+                  "duration" : "47s",
+                  "durationInSeconds" : 47.98621094226837,
                   "name" : "test06RenameDeleteAndMenu()",
                   "nodeIdentifier" : "ReaderUITests/test06RenameDeleteAndMenu()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test06RenameDeleteAndMenu",
@@ -96,8 +96,8 @@
                       "nodeType" : "Runtime Warning"
                     }
                   ],
-                  "duration" : "1m 29s",
-                  "durationInSeconds" : 89.51950204372406,
+                  "duration" : "1m 44s",
+                  "durationInSeconds" : 104.13869202136993,
                   "name" : "test07RepeatedOpenClose()",
                   "nodeIdentifier" : "ReaderUITests/test07RepeatedOpenClose()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test07RepeatedOpenClose",
@@ -111,8 +111,8 @@
                       "nodeType" : "Runtime Warning"
                     }
                   ],
-                  "duration" : "1m 9s",
-                  "durationInSeconds" : 69.23369610309601,
+                  "duration" : "1m 14s",
+                  "durationInSeconds" : 74.66478407382965,
                   "name" : "test08VerticalScrollMode()",
                   "nodeIdentifier" : "ReaderUITests/test08VerticalScrollMode()",
                   "nodeIdentifierURL" : "test://com.apple.xcode/VNReader/VNReaderUITests/ReaderUITests/test08VerticalScrollMode",
