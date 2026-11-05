@@ -33,6 +33,10 @@ let package = Package(
                 .define("_LARGEFILE_SOURCE"),
                 .define("RAR_SMP"),
                 .headerSearchPath("unrar"),
+                // Vendored upstream code is kept unmodified; silence its style warnings
+                // (same intent as the -Wno-* flags in unrar's own makefile). Allowed
+                // because this package is only ever used as a local/root package.
+                .unsafeFlags(["-w"]),
             ],
             linkerSettings: [.linkedLibrary("pthread", .when(platforms: [.linux]))]
         ),
