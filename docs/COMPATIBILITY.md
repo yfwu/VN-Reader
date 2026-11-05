@@ -74,7 +74,8 @@ Decoding uses ImageIO on Apple platforms; tests on M and S.
 | HEIC / HEIF, AVIF | ✅ (by ImageIO) | AVIF needs iOS 16+; no fixture yet |
 | BMP / TIFF | ✅ (by ImageIO) | no fixture yet |
 | Broken image data | ⚠️ | page shows "此頁無法顯示" with reason; other pages readable (`cbz_broken_image.cbz`) |
-| Images > 400 megapixels | ⛔ | refused for memory safety ("圖片尺寸 … 超過安全上限") |
+| Images > 200 MP (JPEG) / > 64 MP (PNG, WebP, others) | ⛔ | refused for memory safety ("圖片尺寸 … 超過安全上限"); non-JPEG formats are fully decoded by ImageIO before scaling |
+| Very tall strips (> 16 384 px after scaling) | ⚠️ | downscaled so the longest side is 16 384 px (GPU texture limit); e.g. 800×60 000 shows at ~218 px wide |
 
 ## Limits (configurable in code)
 
@@ -84,6 +85,6 @@ Decoding uses ImageIO on Apple platforms; tests on M and S.
 | Entries per archive | 20 000 | `ArchiveLimits.maxEntries` |
 | Pages per book | 10 000 | `ImportLimits.maxPages` |
 | Single decompressed entry | 256 MB | `ArchiveLimits.maxEntrySize` |
-| Decoded bitmap per page | 24 MP (~96 MB) | `ImageDecoder.maxDecodedPixels` |
+| Decoded bitmap per page | 24 MP (~96 MB), longest side ≤ 16 384 px | `ImageDecoder.maxDecodedPixels`, `maxDecodedSide` |
 | Free space kept in reserve | 200 MB | `DiskSpacePolicy.reserve` |
 | Solid-RAR cache (LRU, all books) | 3 GB | `LibraryStore.init` |

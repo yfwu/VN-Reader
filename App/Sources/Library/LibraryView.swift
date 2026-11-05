@@ -195,6 +195,9 @@ enum DropImporter {
                     name = (suggested as NSString).pathExtension.isEmpty && !url.pathExtension.isEmpty
                         ? suggested + "." + url.pathExtension : suggested
                 }
+                // Only a bare file name from another app; never a path.
+                name = (name as NSString).lastPathComponent
+                if name.isEmpty || name == "." || name == ".." { name = url.lastPathComponent }
                 let dest = dir.appendingPathComponent(name)
                 guard (try? FileManager.default.copyItem(at: url, to: dest)) != nil else { return }
                 onMain { importer.importFiles([dest], securityScoped: false, deleteAfterImport: true) }

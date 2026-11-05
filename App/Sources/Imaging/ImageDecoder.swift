@@ -13,10 +13,20 @@ enum ImageDecodeError: Error, Equatable {
 /// Never decodes a full-resolution bitmap unless it is needed: the image is
 /// decoded straight to the requested pixel size on the calling (background) thread.
 enum ImageDecoder {
-    /// Images above this many source pixels are refused (memory safety).
-    static let maxSourcePixels = 400_000_000
+    /// Images above this many source pixels are refused (memory safety). JPEG can be
+    /// decoded straight to a reduced size; PNG / WebP / others are fully decoded by
+    /// ImageIO before downscaling, so their limit is lower (~256 MB transient).
+    static let maxSourcePixelsJPEG = 200_000_000
+    static let maxSourcePixelsOther = 64_000_000
     /// Upper bound for a decoded page bitmap (~96 MB at 4 bytes/pixel).
     static let maxDecodedPixels = 24_000_000
+    /// Longest decoded side; larger layers exceed the GPU texture limit.
+    static let maxDecodedSide = 16_384
+
+    static func sourceLimit(_ src: CGImageSource) -> Int {
+        let type = CGImageSourceGetType(src) as String?
+        return type == UTType.jpeg.identifier ? maxSourcePixelsJPEG : maxSourcePixelsOther
+    }
 
     struct Info { let width: Int; let height: Int }
 
@@ -35,7 +45,7 @@ enum ImageDecoder {
         guard let src = CGImageSourceCreateWithData(data as CFData, opts),
               CGImageSourceGetCount(src) > 0, let info = info(src),
               info.width > 0, info.height > 0 else { throw ImageDecodeError.undecodable }
-        if info.width * info.height > maxSourcePixels {
+        if info.width * info.height > sourceLimit(src) {
             throw ImageDecodeError.tooLarge(width: info.width, height: info.height)
         }
         let w = CGFloat(info.width), h = CGFloat(info.height)
@@ -43,14 +53,14 @@ enum ImageDecoder {
         var scale = min(1, max(targetWidth / w, targetHeight / h))
         let decodedPixels = w * h * scale * scale
         if decodedPixels > CGFloat(maxDecodedPixels) { scale *= sqrt(CGFloat(maxDecodedPixels) / decodedPixels) }
-        let maxPixel = max(1, Int((max(w, h) * scale).rounded(.up)))
+        let maxPixel = min(maxDecodedSide, max(1, Int((max(w, h) * scale).rounded(.up))))
         return try thumbnail(src, maxPixel: maxPixel)
     }
 
     static func decodeThumbnail(_ data: Data, maxPixel: Int) throws -> UIImage {
         guard let src = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary),
               CGImageSourceGetCount(src) > 0, let info = info(src) else { throw ImageDecodeError.undecodable }
-        if info.width * info.height > maxSourcePixels {
+        if info.width * info.height > sourceLimit(src) {
             throw ImageDecodeError.tooLarge(width: info.width, height: info.height)
         }
         return try thumbnail(src, maxPixel: maxPixel)

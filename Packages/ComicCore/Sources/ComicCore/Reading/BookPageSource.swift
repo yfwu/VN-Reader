@@ -264,6 +264,12 @@ final class SolidPageCache: @unchecked Sendable {
                     cont.resume(throwing: e)
                     return
                 }
+                // onCancel may already have run (before this waiter existed).
+                if Task.isCancelled {
+                    lock.unlock()
+                    cont.resume(throwing: CancellationError())
+                    return
+                }
                 waiters[page, default: [:]][token] = cont
                 let needsStart = !running
                 lock.unlock()

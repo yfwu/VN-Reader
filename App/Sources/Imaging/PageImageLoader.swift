@@ -49,7 +49,7 @@ final class PageImageLoader {
 
     func image(for page: Int) async throws -> UIImage {
         if let img = cachedImage(page) { return img }
-        if let t = inFlight[page] { return try await t.value }
+        if let t = inFlight[page] { return try await awaitShared(t, page: page) }
         let source = self.source
         let target = self.target
         let path = source.manifest.pages.indices.contains(page) ? source.manifest.pages[page].path : "?"
@@ -66,11 +66,22 @@ final class PageImageLoader {
         }
         inFlight[page] = task
         defer { if inFlight[page] == task { inFlight[page] = nil } }
-        let img = try await task.value
+        let img = try await awaitShared(task, page: page)
         let cost = Int(img.size.width * img.size.height * img.scale * img.scale * 4)
         cache.setObject(img, forKey: NSNumber(value: page), cost: cost)
         onDecoded?(page, img.size)
         return img
+    }
+
+    /// Awaits a shared decode task. If the prefetch window cancelled it while this
+    /// caller still needs the page (caller not cancelled), the load is restarted.
+    private func awaitShared(_ t: Task<UIImage, Error>, page: Int) async throws -> UIImage {
+        do {
+            return try await t.value
+        } catch is CancellationError where !Task.isCancelled {
+            if inFlight[page] == t { inFlight[page] = nil }
+            return try await image(for: page)
+        }
     }
 
     /// Keeps only work for pages in `keep` running; starts loads for missing ones.

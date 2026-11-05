@@ -23,11 +23,13 @@ final class LibraryStore: ObservableObject {
             books = b
             notice = L10n.libraryRecovered
         }
-        // Interrupted imports / orphaned folders from a previous run.
-        let known = Set(books.map(\.id))
+        // Interrupted imports / orphaned folders from a previous run. Synchronous on
+        // purpose: it must finish before any import (e.g. a cold launch from "Open in…")
+        // creates new staging or book folders that are not in this snapshot yet.
+        StorageMaintenance.cleanUp(paths: paths, knownBooks: Set(books.map(\.id)))
         let paths = self.paths
         DispatchQueue.global(qos: .utility).async {
-            StorageMaintenance.cleanUp(paths: paths, knownBooks: known)
+            // Only touches the purgeable solid-RAR cache.
             StorageMaintenance.trimExtractedCache(paths: paths, limit: 3 << 30, keep: [])
         }
     }
@@ -127,21 +129,35 @@ final class LibraryStore: ObservableObject {
 
     // MARK: Persistence
 
-    /// Coalesces frequent updates (page turns) into one write shortly after.
+    /// Coalesces frequent updates (page turns) into one background write shortly after.
     private func scheduleSave() {
         saveWorkItem?.cancel()
-        let item = DispatchWorkItem { [weak self] in self?.saveNow() }
+        let item = DispatchWorkItem { [weak self] in self?.write(sync: false) }
         saveWorkItem = item
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: item)
     }
 
-    /// Writes immediately (synchronously, atomic). Used on background / disappear.
+    /// Writes immediately and waits (atomic). Used for edits, background and reader close.
     func saveNow() {
         saveWorkItem?.cancel()
         saveWorkItem = nil
+        write(sync: true)
+    }
+
+    /// All writes go through one serial queue, so a newer snapshot can never be
+    /// overwritten by an older one that was still in flight.
+    private func write(sync: Bool) {
         let snapshot = books
-        do { try db.save(snapshot) } catch {
-            notice = ErrorMessages.explain(error).message
+        let db = self.db
+        let work = { () -> Error? in
+            do { try db.save(snapshot); return nil } catch { return error }
+        }
+        if sync {
+            if let e = writeQueue.sync(execute: work) { notice = ErrorMessages.explain(e).message }
+        } else {
+            writeQueue.async {
+                if let e = work() { onMain { [weak self] in self?.notice = ErrorMessages.explain(e).message } }
+            }
         }
     }
 
