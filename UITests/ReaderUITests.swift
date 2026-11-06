@@ -400,6 +400,8 @@ final class ReaderUITests: XCTestCase {
         batchSeries.clearAndType("星之旅人\n")
         waitForKeyboardToHide()
         app.switches["info.autonumber"].switches.firstMatch.tap()
+        // The name style row starts below the fold of the sheet.
+        app.switches["info.autonumber"].swipeUp()
         app.buttons["info.namestyle"].tap()
         app.buttons["日漫：系列 第 N 卷"].tap()
         screenshot("13-batch-info")
