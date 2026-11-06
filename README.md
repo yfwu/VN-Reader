@@ -27,6 +27,8 @@ UI languages: Traditional Chinese (source), English, Simplified Chinese and Japa
 
 P1 already included: landscape **two-page spreads** (cover alone, pair shift, RTL order, wide pages alone), **vertical continuous scrolling**, **bookmarks**, **favourites**, **ComicInfo.xml** (title/series/RTL hint), **Open in… / AirDrop** and **drag-and-drop** import. iPhone layout is not done (the app targets iPad only).
 
+A new library starts with a Chinese-English user guide (`App/Resources/Guide`), imported like any other book. It can be deleted and added back from Settings.
+
 ## Repository map
 
 ```

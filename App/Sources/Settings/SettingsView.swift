@@ -3,6 +3,7 @@ import ComicCore
 
 struct SettingsView: View {
     @EnvironmentObject private var library: LibraryStore
+    @EnvironmentObject private var importer: ImportCoordinator
     @ObservedObject private var settings = AppSettings.shared
     @Environment(\.dismiss) private var dismiss
     @State private var usage: (books: Int64, caches: Int64)?
@@ -54,6 +55,12 @@ struct SettingsView: View {
                         Text(L10n.settingsFormatsValue).font(.footnote).foregroundStyle(.secondary)
                     }
                     Text(L10n.settingsPrivacy).font(.footnote).foregroundStyle(.secondary)
+                    // Closes settings so the new book, or the duplicate notice, is visible.
+                    Button(L10n.guideAdd) {
+                        UserGuide.add(to: importer)
+                        dismiss()
+                    }
+                    .accessibilityIdentifier("settings.guide")
                     NavigationLink(L10n.settingsLicenses) { LicensesView() }
                 }
             }

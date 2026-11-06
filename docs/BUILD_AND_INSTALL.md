@@ -40,7 +40,7 @@ scripts/build-sim.sh "iPad mini (A17 Pro)"
 
 Or open `VNReader.xcodeproj`, choose the **VNReader** scheme and an iPad simulator, press ⌘R.
 The simulator needs no signing. To try the app with sample books, edit the scheme
-(Product ▸ Scheme ▸ Edit Scheme ▸ Run ▸ Arguments) and add `-ui-testing -seed-samples`.
+(Product ▸ Scheme ▸ Edit Scheme ▸ Run ▸ Arguments) and add `-ui-testing -seed-samples /path/to/UITests/Samples`.
 
 UI tests (also export screenshots to `artifacts/ui/attachments`):
 
@@ -139,7 +139,8 @@ must be signed first (sections 3/4). CI uploads this file as an artifact on ever
 ```bash
 pip install pillow
 python3 scripts/fixtures/generate_fixtures.py --rar /path/to/rar --out Packages/ComicCore/Tests/ComicCoreTests/Fixtures
-python3 scripts/fixtures/generate_samples.py  --rar /path/to/rar --out App/Resources/Samples
+python3 scripts/fixtures/generate_samples.py  --rar /path/to/rar --out UITests/Samples
+python3 scripts/guide/generate_guide.py   # user guide, macOS fonts, App/Resources/Guide
 python3 scripts/fixtures/generate_stress.py   --rar /path/to/rar --out /tmp/vn-stress
 VN_STRESS_DIR=/tmp/vn-stress swift test -c release -Xswiftc -enable-testing --filter StressTests   # in Packages/ComicCore
 ```

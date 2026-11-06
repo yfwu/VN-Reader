@@ -36,7 +36,7 @@
 
 ## Other known issues / ideas
 
-* Sample books (≈1.6 MB) are bundled for UI tests and screenshots (`App/Resources/Samples`). They are only imported with the `-seed-samples` launch argument; remove the folder before an App Store release if size matters.
+* Sample books (≈1.6 MB, `UITests/Samples`) are test data for UI tests and screenshots. They are not part of the app; the `-seed-samples <folder>` launch argument imports them on the simulator.
 * iOS 27: the library search drawer with `displayMode: .automatic` never appeared, so it is now `.always`.
 * iOS 27.2 simulator (Xcode 27.2): in `test06RenameDeleteAndMenu` the tap on 儲存 in the rename alert does not land while the keyboard shows its suggestion bar; the same failure happens on the commit before metadata editing. It passes on the CI simulators (iOS 26.2). A simulator whose language is zh-Hant also gets the Zhuyin keyboard, which holds typed Latin text in composition; set its keyboard to US QWERTY before running UI tests locally.
 * Page turn animation can be disabled in Settings; rapid taps during an animation jump without animation (to avoid UIPageViewController glitches).

@@ -4,11 +4,15 @@ import ComicCore
 /// Launch arguments used by UI tests and screenshot runs. They have no effect
 /// in normal use.
 ///   -ui-testing     start from an empty library and default settings
-///   -seed-samples   import the bundled sample books (Resources/Samples)
+///   -seed-samples <folder>   import the books in that folder (UITests/Samples, simulator only)
 ///   -open-first     open the first book after seeding
 enum UITestSupport {
     static var isUITesting: Bool { ProcessInfo.processInfo.arguments.contains("-ui-testing") }
-    static var shouldSeed: Bool { ProcessInfo.processInfo.arguments.contains("-seed-samples") }
+    static var seedFolder: URL? {
+        let arguments = ProcessInfo.processInfo.arguments
+        guard let i = arguments.firstIndex(of: "-seed-samples"), i + 1 < arguments.count else { return nil }
+        return URL(fileURLWithPath: arguments[i + 1], isDirectory: true)
+    }
 
     static func prepareEnvironment() {
         guard isUITesting else { return }
@@ -22,9 +26,9 @@ enum UITestSupport {
 
     @MainActor
     static func seedIfRequested(library: LibraryStore, importer: ImportCoordinator) {
-        guard shouldSeed, library.books.isEmpty else { return }
-        // Synchronized Xcode groups flatten resources into the bundle root.
-        let urls = ["cbz", "cbr"].flatMap { Bundle.main.urls(forResourcesWithExtension: $0, subdirectory: nil) ?? [] }
+        guard let seedFolder, library.books.isEmpty else { return }
+        let files = (try? FileManager.default.contentsOfDirectory(at: seedFolder, includingPropertiesForKeys: nil)) ?? []
+        let urls = files.filter { ["cbz", "cbr"].contains($0.pathExtension) }
             .sorted { $0.lastPathComponent < $1.lastPathComponent }
         importer.importFiles(urls, securityScoped: false)
     }

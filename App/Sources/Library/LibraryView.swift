@@ -162,6 +162,8 @@ struct LibraryView: View {
             }
             .buttonStyle(.borderedProminent)
             .accessibilityIdentifier("library.empty.import")
+            Button(L10n.guideAdd) { UserGuide.add(to: importer) }
+                .accessibilityIdentifier("library.empty.guide")
         }
         .frame(maxWidth: 520)
     }

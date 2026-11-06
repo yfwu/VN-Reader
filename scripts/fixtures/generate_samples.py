@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Generates the sample books bundled for UI tests / screenshots.
+"""Generates the sample books used by UI tests / screenshots.
 
 All artwork is procedurally drawn here (no third-party images).
-    python3 scripts/fixtures/generate_samples.py --rar /path/to/rar --out App/Resources/Samples
+    python3 scripts/fixtures/generate_samples.py --rar /path/to/rar --out UITests/Samples
 """
 import argparse, io, os, random, subprocess, tempfile, zipfile
 from PIL import Image, ImageDraw, ImageFont

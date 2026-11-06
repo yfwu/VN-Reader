@@ -28,7 +28,10 @@ struct VNReaderApp: App {
                     let inbox = url.path.contains("/Documents/Inbox/")
                     importer.importFiles([url], securityScoped: !inbox, deleteAfterImport: inbox)
                 }
-                .task { UITestSupport.seedIfRequested(library: library, importer: importer) }
+                .task {
+                    UITestSupport.seedIfRequested(library: library, importer: importer)
+                    UserGuide.addOnFirstLaunch(library: library, importer: importer)
+                }
         }
     }
 }

@@ -14,6 +14,7 @@ enum L10n {
     static let emptyTitle = String(localized: "library.empty.title", defaultValue: "書庫是空的")
     static let emptyMessage = String(localized: "library.empty.message", defaultValue: "從「檔案」App 選擇 CBZ 或 CBR 漫畫，匯入後即可離線閱讀。可一次選擇多本。")
     static let noResultsTitle = String(localized: "library.noresults", defaultValue: "沒有符合的書")
+    static let guideAdd = String(localized: "guide.add", defaultValue: "加入使用說明")
     static let sortMenu = String(localized: "library.sort", defaultValue: "排序與篩選")
     static let sortRecent = String(localized: "library.sort.recent", defaultValue: "最近閱讀")
     static let sortImported = String(localized: "library.sort.imported", defaultValue: "匯入時間")

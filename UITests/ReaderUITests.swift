@@ -35,7 +35,8 @@ final class ReaderUITests: XCTestCase {
     private func launch(seed: Bool, reset: Bool = true, language: String = "zh-Hant", locale: String = "zh_TW") {
         var args: [String] = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale]
         if reset { args.append("-ui-testing") }
-        if seed { args.append("-seed-samples") }
+        // Synchronized Xcode groups flatten UITests/Samples into the test bundle root.
+        if seed { args += ["-seed-samples", Bundle(for: ReaderUITests.self).resourcePath!] }
         app.launchArguments = args
         app.launch()
     }
@@ -138,6 +139,14 @@ final class ReaderUITests: XCTestCase {
         XCTAssertTrue(app.buttons["library.empty.import"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.navigationBars["Library"].exists)
         XCTAssertTrue(app.staticTexts["Your Library Is Empty"].exists)
+    }
+
+    func test01cAddUserGuide() {
+        launch(seed: false)
+        let add = app.buttons["library.empty.guide"]
+        XCTAssertTrue(add.waitForExistence(timeout: 10))
+        add.tap()
+        waitForBooks(["VN Reader 使用說明 User Guide"])
     }
 
     func test02ImportAndLibrary() {
@@ -315,6 +324,8 @@ final class ReaderUITests: XCTestCase {
         let field = app.alerts.textFields.firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.clearAndType("Webtoon")
+        // The alert drops a tap that comes right after typing.
+        sleep(3)
         app.alerts.buttons["儲存"].tap()
         XCTAssertTrue(app.buttons["book.Webtoon"].waitForExistence(timeout: 5))
         app.buttons["book.menu.Webtoon"].tap()
