@@ -44,7 +44,8 @@ TEXT = {
             ("匯入漫畫", None, "import", [
                 "1:點書庫右上角的「+」，從「檔案」App 選擇一本或多本。iCloud 雲碟的檔案會先下載。",
                 "2:也可以把檔案拖進書庫，或從其他 App 用「打開方式」、AirDrop 傳給 VN Reader。",
-                "3:檔案會複製到 App 內，之後可離線閱讀，原始檔不受影響。內容相同的檔案不會重複匯入。"]),
+                "3:檔案會複製到 App 內，之後可離線閱讀，原始檔不受影響。內容相同的檔案不會重複匯入。",
+                "數 GB 的檔案也能匯入。檔案很大時可能需要一點時間，建議留在 VN Reader 直到完成。"]),
             ("書庫", None, "library", [
                 "1:「{library.continue}」帶你回到上次讀到的地方。",
                 "2:用搜尋列找書名、系列、作者或出版社。",
@@ -58,14 +59,24 @@ TEXT = {
                 "接上實體鍵盤時，可以用方向鍵和空白鍵翻頁。",
                 "不想點按翻頁的話，可以在「{settings.title}」關閉「{settings.tap}」。"]),
             ("工具列", "點畫面中央叫出工具列。", "toolbar", [
-                "1:{reader.back}", "2:{reader.bookmark.add}", "3:{reader.settings}",
-                "4:{reader.thumbnails}：瀏覽所有頁面，點一下就跳過去。",
-                "5:拖動滑桿，快速移到任何一頁。",
-                "6:點頁碼，輸入數字跳頁。"]),
+                "1:{reader.back}", "2:{reader.jump}：輸入頁碼，直接跳到那一頁。", "3:{reader.bookmark.add}", "4:{reader.settings}",
+                "5:{reader.thumbnails}：瀏覽所有頁面，點一下就跳過去。",
+                "6:拖動滑桿，快速移到任何一頁。",
+                "7:目前頁碼。點一下也可以跳頁。"]),
+            ("滑桿預覽", "拖動滑桿時，不必放開手指就能看到要去的頁面。", "fan", [
+                "1:按住滑桿左右拖動，上方會展開目標頁和前後的頁面。",
+                "2:最前面那張是目標頁，下方會顯示頁碼。放開手指就跳到這一頁。",
+                "有書籤的頁面會顯示書籤標記。由右至左的書，滑桿和頁面方向都會對調。"]),
             ("縮放", None, "zoom", [
                 "兩指開合可以縮放，放大後用手指拖動畫面。",
                 "點兩下放大，再點兩下還原。",
                 "放大時不會翻頁，縮回原本大小後才能繼續翻頁。"]),
+            ("放大鏡", "只想看清楚一小塊地方時，長按頁面就能打開放大鏡，不必縮放整頁。", "lens", [
+                "1:手指不放就能移動鏡片，放開後也可以直接拖動。兩指開合可以微調倍率。",
+                "2:點關閉按鈕，收起放大鏡。",
+                "3:拖動把手，改變鏡片大小。",
+                "4:點倍率，切換 1.5、2.5、4、6 倍。",
+                "鏡片以外的地方照常操作，可以繼續翻頁和捲動。鏡片的大小和倍率會記住。"]),
             ("閱讀設定", "在工具列打開「{reader.settings}」。每本書會各自記住方向、頁面顯示和版面。", "layouts", [
                 "{reader.direction}：日本漫畫選「{reader.direction.rtl}」，切換後仍停在同一頁。",
                 "{reader.fit}：「{reader.fit.page}」看完整頁面，「{reader.fit.width}」適合文字小的頁面，長條頁面可以上下捲動。",
@@ -95,7 +106,8 @@ TEXT = {
             ("Import Comics", None, "import", [
                 "1:Tap + at the top right of the library and pick one or more books in the Files app. Files in iCloud Drive are downloaded first.",
                 "2:You can also drag files into the library, or send them to VN Reader with Open in or AirDrop from another app.",
-                "3:Books are copied into the app so they read offline, and your original files stay as they are. A file with identical content isn't imported twice."]),
+                "3:Books are copied into the app so they read offline, and your original files stay as they are. A file with identical content isn't imported twice.",
+                "Files of several GB can be imported too. Very large files can take a while, so stay in VN Reader until it finishes."]),
             ("Library", None, "library", [
                 "1:{library.continue} takes you back to where you stopped.",
                 "2:Search by title, series, writer or publisher.",
@@ -109,14 +121,24 @@ TEXT = {
                 "With a hardware keyboard, use the arrow keys and the space bar.",
                 "Prefer swiping only? Turn off “{settings.tap}” in {settings.title}."]),
             ("Toolbar", "Tap the center of the page to bring up the toolbar.", "toolbar", [
-                "1:{reader.back}", "2:{reader.bookmark.add}", "3:{reader.settings}",
-                "4:{reader.thumbnails}: browse all pages and tap one to jump to it.",
-                "5:Drag the slider to move quickly to any page.",
-                "6:Tap the page number and type a page to go to."]),
+                "1:{reader.back}", "2:{reader.jump}: type a page number to go straight there.", "3:{reader.bookmark.add}", "4:{reader.settings}",
+                "5:{reader.thumbnails}: browse all pages and tap one to jump to it.",
+                "6:Drag the slider to move quickly to any page.",
+                "7:The current page. Tap it to jump to a page, too."]),
+            ("Slider Preview", "See the page you're heading for while your finger is still on the slider.", "fan", [
+                "1:Hold the slider and drag. The target page and its neighbors fan out above it.",
+                "2:The card in front is the target, with its page number below. Lift your finger to go there.",
+                "Bookmarked pages show a bookmark. In right-to-left books, the slider and the pages run the other way."]),
             ("Zoom", None, "zoom", [
                 "Pinch to zoom, then drag to move around the page.",
                 "Double-tap to zoom in, and double-tap again to reset.",
                 "Pages don't turn while zoomed in. Zoom back out to keep reading."]),
+            ("Magnifier", "To see one small area clearly without zooming the page, long-press the page.", "lens", [
+                "1:Keep your finger down to move the lens, or drag it after you let go. Pinch on it for finer control of the magnification.",
+                "2:Tap the close button to put the magnifier away.",
+                "3:Drag the handle to resize the lens.",
+                "4:Tap the magnification to switch between 1.5, 2.5, 4 and 6×.",
+                "Everything outside the lens works as usual, so pages still turn and scroll. The lens remembers its size and magnification."]),
             ("Reader Settings", "Open {reader.settings} in the toolbar. Each book remembers its own direction, page fit and layout.", "layouts", [
                 "{reader.direction}: choose “{reader.direction.rtl}” for Japanese manga. You stay on the same page when you switch.",
                 "{reader.fit}: {reader.fit.page} shows the whole page, {reader.fit.width} suits small text, and tall pages scroll up and down.",
@@ -219,6 +241,15 @@ def plus(d, cx, cy, r, color, width=8):
     d.line([cx, cy - r, cx, cy + r], fill=color, width=width)
 
 
+def tilted_page(base, center, size, degrees, seed, dim):
+    w, h = size
+    card = Image.new("RGBA", size, (0, 0, 0, 0))
+    mini_page(ImageDraw.Draw(card), (0, 0, w - 1, h - 1), seed)
+    card = Image.alpha_composite(card, Image.new("RGBA", size, (0, 0, 0, dim)))
+    turned = card.rotate(degrees, expand=True, resample=Image.BICUBIC)
+    base.paste(turned, (int(center[0] - turned.width / 2), int(center[1] - turned.height / 2)), turned)
+
+
 def ribbon(d, cx, y0, w, h, color):
     d.polygon([(cx - w, y0), (cx + w, y0), (cx + w, y0 + h), (cx, y0 + h - w), (cx - w, y0 + h)], fill=color)
 
@@ -318,26 +349,91 @@ def diagram_toolbar(d, y, lang):
     d.rectangle([x0, y1 - 100, x1, y1], fill=BAR)
     d.line([(x0 + 54, y0 + 28), (x0 + 30, y0 + 50), (x0 + 54, y0 + 72)], fill=ACCENT, width=7, joint="curve")
     badge(d, x0 + 116, y0 + 50, 1, lang)
+    d.text((x1 - 380, y0 + 50), "#", fill=ACCENT, font=load_font("en", 56, True), anchor="mm")
+    badge(d, x1 - 310, y0 + 50, 2, lang)
     ribbon(d, x1 - 220, y0 + 26, 18, 52, ACCENT)
-    badge(d, x1 - 150, y0 + 50, 2, lang)
+    badge(d, x1 - 150, y0 + 50, 3, lang)
     for i, knob in enumerate((30, -14, 18)):
         ly = y0 + 34 + i * 16
         d.line([x1 - 96, ly, x1 - 36, ly], fill=ACCENT, width=4)
         d.ellipse([x1 - 66 + knob - 6, ly - 6, x1 - 66 + knob + 6, ly + 6], fill=ACCENT)
-    badge(d, x1 - 66, y0 + 142, 3, lang)
+    badge(d, x1 - 66, y0 + 142, 4, lang)
     by = y1 - 50
     for i in range(3):
         for j in range(3):
             gx, gy = x0 + 28 + i * 18, by - 24 + j * 18
             d.rectangle([gx, gy, gx + 12, gy + 12], fill=ACCENT)
-    badge(d, x0 + 130, by, 4, lang)
+    badge(d, x0 + 130, by, 5, lang)
     d.line([x0 + 210, by, x1 - 280, by], fill=LINE, width=8)
     d.line([x0 + 210, by, mid + 40, by], fill=ACCENT, width=8)
     d.ellipse([mid + 16, by - 24, mid + 64, by + 24], fill=SCREEN, outline=LINE, width=3)
-    badge(d, mid + 40, by - 76, 5, lang)
+    badge(d, mid + 40, by - 76, 6, lang)
     d.text((x1 - 180, by), "12 / 30", fill=INK, font=load_font("en", 36), anchor="mm")
-    badge(d, x1 - 58, by, 6, lang)
+    badge(d, x1 - 58, by, 7, lang)
     return 480
+
+
+def diagram_fan(d, y, lang):
+    box = (MARGIN + 22, y + 22, W - MARGIN - 22, y + 640)
+    tablet(d, box)
+    x0, y0, x1, y1 = box
+    by = y1 - 50
+    thumb = x0 + (x1 - x0) * 58 // 100
+    base = y1 - 100
+    d.rectangle([x0, y0, x1, y0 + 14], fill=BAR)
+    size, reach = (230, 330), 400
+    top = y0 + 52
+    pivot = (thumb, top + size[1] // 2 + reach)
+    for offset in (-2, 2, -1, 1, 0):
+        t = math.radians(offset * 11)
+        center = (pivot[0] + reach * math.sin(t), pivot[1] - reach * math.cos(t))
+        tilted_page(d._image, center, size, -offset * 11, offset + 2, 40 * abs(offset))
+    d.rectangle([x0, base, x1, y1], fill=BAR)
+    pill = (thumb - 72, base - 62, thumb + 72, base - 12)
+    d.rounded_rectangle(pill, radius=25, fill=(50, 54, 66))
+    d.text((thumb, base - 37), "12 / 30", fill=(255, 255, 255), font=load_font("en", 32), anchor="mm")
+    d.line([x0 + 60, by, x1 - 60, by], fill=LINE, width=8)
+    d.line([x0 + 60, by, thumb, by], fill=ACCENT, width=8)
+    d.ellipse([thumb - 26, by - 26, thumb + 26, by + 26], fill=SCREEN, outline=LINE, width=3)
+    badge(d, thumb + 84, by, 1, lang)
+    badge(d, thumb + 150, top + 60, 2, lang)
+    return 670
+
+
+def diagram_lens(d, y, lang):
+    box = (MARGIN + 22, y + 22, W - MARGIN - 22, y + 390)
+    tablet(d, box)
+    x0, y0, x1, y1 = box
+    for i in range(2):
+        mini_page(d, (x0 + 120 + i * 500, y0 + 24, x0 + 620 + i * 500 - (30 if i else 0), y1 - 24), 2 + i)
+    cx, cy, r, zoom = x0 + 560, (y0 + y1) // 2, 140, 2.5
+    span = r / zoom
+    glass = d._image.crop((int(cx - span), int(cy - span), int(cx + span), int(cy + span)))
+    side = r * 2
+    glass = glass.resize((side, side), Image.BICUBIC)
+    mask = Image.new("L", (side * 4, side * 4), 0)
+    ImageDraw.Draw(mask).ellipse([0, 0, side * 4 - 1, side * 4 - 1], fill=255)
+    d._image.paste(glass, (cx - r, cy - r), mask.resize((side, side), Image.LANCZOS))
+    d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=SCREEN, width=6)
+    d.ellipse([cx - r - 3, cy - r - 3, cx + r + 3, cy + r + 3], outline=MUTED, width=2)
+    chip = (34, 36, 44)
+    rim = int(r * math.sqrt(0.5))
+    close = (cx + rim, cy - rim)
+    d.ellipse([close[0] - 26, close[1] - 26, close[0] + 26, close[1] + 26], fill=chip)
+    for s in (1, -1):
+        d.line([close[0] - 10, close[1] - 10 * s, close[0] + 10, close[1] + 10 * s], fill=(255, 255, 255), width=5)
+    handle = (cx + rim, cy + rim)
+    d.ellipse([handle[0] - 26, handle[1] - 26, handle[0] + 26, handle[1] + 26], fill=chip)
+    arrow(d, (handle[0] - 1, handle[1] - 1), (handle[0] + 12, handle[1] + 12), (255, 255, 255), 4, 9)
+    arrow(d, (handle[0] + 1, handle[1] + 1), (handle[0] - 12, handle[1] - 12), (255, 255, 255), 4, 9)
+    py = cy + r
+    d.rounded_rectangle([cx - 52, py - 26, cx + 52, py + 26], radius=26, fill=chip)
+    d.text((cx, py), "2.5×", fill=(255, 255, 255), font=load_font("en", 30, True), anchor="mm")
+    badge(d, cx - r - 60, cy, 1, lang)
+    badge(d, close[0] + 72, close[1], 2, lang)
+    badge(d, handle[0] + 72, handle[1], 3, lang)
+    badge(d, cx - 104, py, 4, lang)
+    return 420
 
 
 def diagram_zoom(d, y, lang):
@@ -395,7 +491,7 @@ def diagram_shield(d, y, lang):
 
 
 DIAGRAMS = {"welcome": diagram_welcome, "import": diagram_import, "library": diagram_library, "zones": diagram_zones,
-            "toolbar": diagram_toolbar, "zoom": diagram_zoom, "layouts": diagram_layouts,
+            "toolbar": diagram_toolbar, "fan": diagram_fan, "zoom": diagram_zoom, "lens": diagram_lens, "layouts": diagram_layouts,
             "bookmarks": diagram_bookmarks, "shield": diagram_shield}
 
 

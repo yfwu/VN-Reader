@@ -11,6 +11,7 @@ protocol ReaderPaging: AnyObject {
     func go(toPage page: Int, animated: Bool)
     func reloadForSettings()
     func widePagesChanged()
+    func pagesOnScreen() -> [PageOnScreen]
 }
 
 final class ReaderViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, ReaderPaging {
@@ -51,10 +52,13 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
         view.addSubview(pageVC.view)
         pageVC.didMove(toParent: self)
         pagerScrollView?.semanticContentAttribute = .forceLeftToRight
+        view.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:))))
         rebuildUnits(size: view.bounds.size)
         showUnit(unitIndex(containing: model.currentPage), animated: false)
         model.pager = self
     }
+
+    @objc private func longPressed(_ press: UILongPressGestureRecognizer) { model.holdLoupe(press) }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -209,6 +213,11 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
     }
 
     func showToast(_ text: String) { model.flash(text) }
+
+    /// Includes the neighbour sliding in during a swipe, which is also a child of the pager.
+    func pagesOnScreen() -> [PageOnScreen] {
+        pageVC.children.compactMap { $0 as? SpreadPageController }.flatMap(\.pagesOnScreen)
+    }
 
     // MARK: UIPageViewControllerDataSource
 

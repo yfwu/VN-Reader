@@ -48,6 +48,16 @@ public final class RandomAccessFile: @unchecked Sendable {
         }
         return data
     }
+
+    /// Reads up to `buffer.count` bytes at `offset`. Returns 0 at the end of the file.
+    /// Reuses the caller's buffer, so streaming a whole file allocates nothing per read.
+    public func read(at offset: UInt64, into buffer: UnsafeMutableRawBufferPointer) throws -> Int {
+        while true {
+            let r = pread(fd, buffer.baseAddress, buffer.count, off_t(offset))
+            if r >= 0 { return r }
+            if errno != EINTR { throw ComicError.ioError(detail: String(cString: strerror(errno))) }
+        }
+    }
 }
 
 extension Data {

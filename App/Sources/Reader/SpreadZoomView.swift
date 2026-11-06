@@ -60,6 +60,11 @@ final class SpreadZoomView: UIScrollView, UIScrollViewDelegate {
 
     var isZoomedIn: Bool { zoomScale > baseScale * 1.02 }
 
+    /// The images and where they are drawn, in window coordinates.
+    var drawnImages: [(image: UIImage, frame: CGRect)] {
+        imageViews.compactMap { view in view.image.map { ($0, view.convert(view.bounds, to: nil)) } }
+    }
+
     private var baseScale: CGFloat = 1
 
     private var baseContentSize: CGSize {

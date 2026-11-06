@@ -5,7 +5,7 @@
 // App identity — the only values most people need to change.
 VN_BUNDLE_ID = org.yfwu.VNReader
 MARKETING_VERSION = 0.1.0
-CURRENT_PROJECT_VERSION = 2
+CURRENT_PROJECT_VERSION = 3
 
 SDKROOT = iphoneos
 SUPPORTED_PLATFORMS = iphoneos iphonesimulator

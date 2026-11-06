@@ -58,6 +58,9 @@ in the `*-tests.json` files.
 | test07RepeatedOpenClose | open/close two books 5× with page turns |
 | test08VerticalScrollMode | vertical continuous mode advances logical page, jump works |
 | test09EditInfoAndBatchEdit | book info editor + generated US-style name, writer search, select all → batch series + auto-numbering + manga-style names, per-book fields survive the batch |
+| test10SliderPreview | preview captured mid-drag in LTR portrait and RTL landscape, releasing jumps to the page under the thumb |
+| test11Magnifier | a long press opens the lens above the finger without turning the page and also drags it, toolbars hide, lens moves, magnification cycles, **pages still turn under the lens**, resize, size and magnification remembered after reopening |
+| test12JumpToPageButton | the toolbar's jump button goes to the page typed in |
 
 ### Results — CI run 41896232490 (commit 95220b9, Xcode 26.3, iOS 26.2 simulators)
 
@@ -106,11 +109,15 @@ From `docs/test-results/stress-linux.txt` (1000 pages × ~1 MB, release build):
 | RAR4 solid | 0.8 s | 0.03 s (from cache) | 0.014 s | 5.8 s | 9.4 s | 73 MB |
 
 Memory stays flat with book size because only single entries are ever held in memory.
+
+`LargeFileImportTests` measures `phys_footprint`, the number iOS holds against the app's memory limit, because
+Peak RSS on Linux above cannot see autoreleased memory. With `VN_LARGE_MB=3072` on macOS, importing a 3 GB file grows
+the footprint by 0 MB, by copy and by clone. Before the fix, a 128 MB file grew it by 129 MB.
 Expect the iPad mini 6 (A15) to be slower for solid preparation; measure on the device.
 
 ## Not tested
 
-* Systematic checks on a physical iPad: the owner confirmed the app installs and works well, but there is no recorded per-criterion pass/fail, no memory/thermal/performance measurement, and no test of large (≈1 GB) books on the device.
+* Systematic checks on a physical iPad: the owner confirmed the app installs and works well, but there is no recorded per-criterion pass/fail, no memory/thermal/performance measurement, and no test of large (≈1 GB or 3 GB) books on the device.
 * iCloud Drive / third-party File Provider downloads (code path present, needs a signed-in device).
 * VoiceOver end-to-end audit; Dynamic Type at the largest accessibility sizes.
 * Split View / Stage Manager window resizing (supported in code; not exercised in UI tests).

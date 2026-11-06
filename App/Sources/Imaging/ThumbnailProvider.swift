@@ -4,7 +4,8 @@ import ComicCore
 /// Page thumbnails for the grid: memory cache → disk cache → decode.
 /// Work runs on a small background queue; requests can be cancelled.
 final class ThumbnailProvider: @unchecked Sendable {
-    static let maxPixel = 320
+    /// Long side. Sharp enough for the slider preview's large cards.
+    static let maxPixel = 480
 
     private let source: BookPageSource
     private let dir: URL
@@ -20,6 +21,7 @@ final class ThumbnailProvider: @unchecked Sendable {
         self.source = source
         self.dir = cacheDir
         memory.countLimit = 300
+        memory.totalCostLimit = 64 << 20
         try? FileManager.default.createDirectory(at: cacheDir, withIntermediateDirectories: true)
     }
 
@@ -55,16 +57,21 @@ final class ThumbnailProvider: @unchecked Sendable {
     }
 
     fileprivate func produce(_ page: Int) -> UIImage? {
-        let file = dir.appendingPathComponent("\(page).jpg")
+        let file = dir.appendingPathComponent("\(page)-\(Self.maxPixel).jpg")
         if let data = try? Data(contentsOf: file), let img = UIImage(data: data) {
-            memory.setObject(img, forKey: NSNumber(value: page))
+            remember(img, page)
             return img
         }
         guard source.isPageReady(page), let data = try? source.pageDataSync(page),
               let img = try? ImageDecoder.decodeThumbnail(data, maxPixel: Self.maxPixel) else { return nil }
-        memory.setObject(img, forKey: NSNumber(value: page))
+        remember(img, page)
         if let jpeg = ImageDecoder.jpegData(img, quality: 0.7) { try? jpeg.write(to: file, options: .atomic) }
         return img
+    }
+
+    private func remember(_ image: UIImage, _ page: Int) {
+        let pixels = image.size.width * image.size.height * image.scale * image.scale
+        memory.setObject(image, forKey: NSNumber(value: page), cost: Int(pixels) * 4)
     }
 
     func cancelAll() { queue.cancelAllOperations() }

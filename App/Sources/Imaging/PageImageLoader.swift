@@ -14,6 +14,11 @@ final class PageImageLoader {
     private var inFlight: [Int: Task<UIImage, Error>] = [:]
     private var target: CGSize
     private var memoryObserver: NSObjectProtocol?
+    private var detail: [Int: UIImage] = [:]
+    private var detailOrder: [Int] = []
+    private var detailTasks: [Int: Task<Void, Never>] = [:]
+    private var detailFailed: Set<Int> = []
+    private var detailDisabled = false
 
     init(source: BookPageSource, targetPixelSize: CGSize) {
         self.source = source
@@ -43,6 +48,9 @@ final class PageImageLoader {
 
     func purge() {
         cache.removeAllObjects()
+        // Full-resolution bitmaps are a luxury: under memory pressure, do without them.
+        endDetail()
+        detailDisabled = true
     }
 
     func cachedImage(_ page: Int) -> UIImage? { cache.object(forKey: NSNumber(value: page)) }
@@ -99,5 +107,54 @@ final class PageImageLoader {
     func cancelAll() {
         for t in inFlight.values { t.cancel() }
         inFlight.removeAll()
+        endDetail()
+    }
+
+    // MARK: Full resolution (magnifier)
+
+    /// A page decoded at the file's own resolution, if it is ready.
+    func detailImage(_ page: Int) -> UIImage? { detail[page] }
+
+    /// Starts decoding `pages` at full resolution (at most the two sides of a spread).
+    /// Up to two such bitmaps are kept: each can take ~96 MB.
+    func requestDetail(_ pages: Set<Int>) {
+        guard !detailDisabled else { return }
+        for (p, t) in detailTasks where !pages.contains(p) {
+            t.cancel()
+            detailTasks[p] = nil
+        }
+        for p in pages where detail[p] == nil && detailTasks[p] == nil && !detailFailed.contains(p) {
+            let source = self.source
+            detailTasks[p] = Task { [weak self] in
+                // A page only passing under the lens is not worth decoding.
+                try? await Task.sleep(nanoseconds: 150_000_000)
+                if Task.isCancelled { return }
+                let image = await Task.detached(priority: .userInitiated) { () -> UIImage? in
+                    let side = CGFloat(ImageDecoder.maxDecodedSide)
+                    guard let data = try? await source.pageData(p) else { return nil }
+                    return try? ImageDecoder.decode(data, targetWidth: side, targetHeight: side)
+                }.value
+                guard let self, !Task.isCancelled else { return }
+                self.detailTasks[p] = nil
+                guard let image else {
+                    self.detailFailed.insert(p)
+                    return
+                }
+                self.detail[p] = image
+                self.detailOrder.removeAll { $0 == p }
+                self.detailOrder.append(p)
+                while self.detailOrder.count > 2 { self.detail[self.detailOrder.removeFirst()] = nil }
+            }
+        }
+    }
+
+    /// Frees everything the magnifier was using.
+    func endDetail() {
+        for t in detailTasks.values { t.cancel() }
+        detailTasks.removeAll()
+        detail.removeAll()
+        detailOrder.removeAll()
+        detailFailed.removeAll()
+        detailDisabled = false
     }
 }

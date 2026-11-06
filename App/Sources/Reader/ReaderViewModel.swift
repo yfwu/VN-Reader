@@ -13,6 +13,7 @@ final class ReaderViewModel: ObservableObject {
     @Published private(set) var preparation: BookPageSource.Preparation = .notNeeded
     @Published private(set) var toast: String?
     @Published private(set) var widePages: Set<Int> = []
+    @Published private(set) var loupeVisible = false
 
     let library: LibraryStore
     let settings: AppSettings
@@ -112,6 +113,38 @@ final class ReaderViewModel: ObservableObject {
 
     func setChrome(_ visible: Bool) {
         withAnimation(.easeOut(duration: 0.18)) { chromeVisible = visible }
+    }
+
+    /// Where a finger is holding the lens, in window coordinates, for as long as it does.
+    /// A plain property: the lens reads it every frame, and may not exist yet on the first.
+    private(set) var loupeHold: CGPoint?
+
+    /// A long press on a page opens the lens, and the same press then moves it.
+    func holdLoupe(_ press: UILongPressGestureRecognizer) {
+        switch press.state {
+        case .began, .changed:
+            loupeHold = press.location(in: nil)
+            if !loupeVisible { setLoupe(true) }
+        default:
+            loupeHold = nil
+        }
+    }
+
+    /// VoiceOver's way to open the lens, which has no use for a long press.
+    var loupeAccessibilityAction: UIAccessibilityCustomAction {
+        UIAccessibilityCustomAction(name: L10n.loupeShow) { [weak self] _ in
+            self?.setLoupe(true)
+            return true
+        }
+    }
+
+    /// Hides the toolbars when the lens opens, so the whole page is in view.
+    func setLoupe(_ visible: Bool) {
+        withAnimation(.easeOut(duration: 0.18)) {
+            loupeVisible = visible
+            if visible { chromeVisible = false }
+        }
+        if !visible { loader?.endDetail() }
     }
 
     func flash(_ text: String) {

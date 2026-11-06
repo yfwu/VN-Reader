@@ -171,6 +171,7 @@ final class ReaderUITests: XCTestCase {
         // Tap right zone = next (LTR); left zone = previous.
         tapScreen(0.92)
         waitForPage(2)
+        screenshot("13-magnifier-toolbar")
         hideChrome()
         tapScreen(0.08)
         waitForPage(1)
@@ -422,6 +423,122 @@ final class ReaderUITests: XCTestCase {
         app.searchFields.firstMatch.typeText("King")
         XCTAssertTrue(app.buttons["book.星之旅人 第 2 卷"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["book.星之旅人 第 3 卷"].exists)
+    }
+
+    /// The preview only exists under the finger, so it is captured during the drag.
+    private func dragSlider(from start: CGFloat, to end: CGFloat, capturing name: String) {
+        let slider = app.sliders.firstMatch
+        XCTAssertTrue(slider.waitForExistence(timeout: 5))
+        let shot = expectation(description: "preview captured")
+        let tag = deviceTag
+        DispatchQueue.global().asyncAfter(deadline: .now() + 4) { [self] in
+            let a = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+            a.name = "\(name)-\(tag)"
+            a.lifetime = .keepAlways
+            add(a)
+            shot.fulfill()
+        }
+        slider.coordinate(withNormalizedOffset: CGVector(dx: start, dy: 0.5))
+            .press(forDuration: 0.3, thenDragTo: slider.coordinate(withNormalizedOffset: CGVector(dx: end, dy: 0.5)),
+                   withVelocity: .slow, thenHoldForDuration: 6)
+        wait(for: [shot], timeout: 5)
+    }
+
+    func test10SliderPreview() {
+        launch(seed: true)
+        waitForBooks(["02 城市速寫", "01 星之旅人 第1卷"])
+        openBook("02 城市速寫")
+        showChrome()
+        dragSlider(from: 0.02, to: 0.6, capturing: "12-slider-preview")
+        XCTAssertGreaterThan(currentPage(), 5, "releasing should jump to the page under the thumb")
+        closeReader()
+
+        // RTL: page 1 is at the right end of the slider, and the fan opens the other way.
+        openBook("01 星之旅人 第1卷")
+        waitForPreparation()
+        XCUIDevice.shared.orientation = .landscapeLeft
+        sleep(1)
+        showChrome()
+        dragSlider(from: 0.98, to: 0.15, capturing: "12-slider-preview-rtl")
+        XCTAssertGreaterThan(currentPage(), 5)
+    }
+
+    func test11Magnifier() {
+        launch(seed: true)
+        waitForBooks(["02 城市速寫"])
+        openBook("02 城市速寫")
+        showChrome()
+        screenshot("13-reader-toolbar")
+
+        // Held on the side that turns pages: this must open the lens, not turn the page.
+        let finger = app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.6))
+        finger.press(forDuration: 0.8)
+        let lens = app.descendants(matching: .any)["reader.loupe.lens"]
+        XCTAssertTrue(lens.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["reader.jump"].exists, "the toolbars should get out of the way")
+        XCTAssertLessThan(lens.frame.maxY, app.windows.firstMatch.frame.height * 0.6, "the lens sits above the finger")
+        XCTAssertEqual(currentPage(), 1)
+        hideChrome()
+
+        // The same long press also moves the lens, without lifting the finger.
+        let held = lens.frame
+        finger.press(forDuration: 0.8, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.6)))
+        XCTAssertLessThan(lens.frame.midX, held.midX - 100)
+        XCTAssertEqual(currentPage(), 1)
+        hideChrome()
+        sleep(1) // Lets the full-resolution page arrive.
+        screenshot("13-magnifier")
+
+        // The lens goes where it is dragged.
+        let before = lens.frame
+        lens.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            .press(forDuration: 0.1, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.68, dy: 0.34)))
+        XCTAssertGreaterThan(lens.frame.midX, before.midX + 40)
+        XCTAssertLessThan(lens.frame.midY, before.midY - 40)
+
+        // The magnification cycles through its presets, and can be chosen with VoiceOver.
+        let zoom = app.buttons["reader.loupe.zoom"]
+        let start = zoom.label
+        zoom.tap()
+        XCTAssertNotEqual(zoom.label, start)
+
+        // The lens is a tool, not a mode: the book underneath still turns.
+        tapScreen(0.92)
+        waitForPage(2)
+        screenshot("13-magnifier-toolbar")
+        hideChrome()
+        tapScreen(0.08)
+        waitForPage(1)
+        XCTAssertTrue(lens.exists)
+
+        // Size and magnification are remembered; the position starts fresh.
+        let handle = app.buttons["reader.loupe.resize"]
+        let size = lens.frame.width
+        handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            .press(forDuration: 0.1, thenDragTo: handle.coordinate(withNormalizedOffset: CGVector(dx: 2.5, dy: 2.5)))
+        XCTAssertGreaterThan(lens.frame.width, size + 20)
+        let resized = lens.frame.width
+        let label = zoom.label
+        app.buttons["reader.loupe.close"].tap()
+        XCTAssertFalse(lens.waitForExistence(timeout: 1))
+
+        finger.press(forDuration: 0.8)
+        XCTAssertTrue(lens.waitForExistence(timeout: 5))
+        XCTAssertEqual(lens.frame.width, resized, accuracy: 1)
+        XCTAssertEqual(zoom.label, label)
+    }
+
+    func test12JumpToPageButton() {
+        launch(seed: true)
+        waitForBooks(["02 城市速寫"])
+        openBook("02 城市速寫")
+        showChrome()
+        app.buttons["reader.goto"].tap()
+        let field = app.alerts.textFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.typeText("7")
+        app.alerts.buttons["前往"].tap()
+        waitForPage(7)
     }
 
     func test07RepeatedOpenClose() {

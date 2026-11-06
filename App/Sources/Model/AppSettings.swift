@@ -66,10 +66,13 @@ final class AppSettings: ObservableObject {
     @Published var shiftSpreads: Bool { didSet { d.set(shiftSpreads, forKey: "shiftSpreads") } }
     @Published var sort: LibrarySort { didSet { d.set(sort.rawValue, forKey: "librarySort") } }
     @Published var filter: LibraryFilter { didSet { d.set(filter.rawValue, forKey: "libraryFilter") } }
+    @Published var loupeDiameter: Double { didSet { d.set(loupeDiameter, forKey: "loupeDiameter") } }
+    @Published var loupeMagnification: Double { didSet { d.set(loupeMagnification, forKey: "loupeMagnification") } }
 
     private init() {
         let d = UserDefaults.standard
-        d.register(defaults: ["tapToTurn": true, "animatePageTurns": true, "coverAlone": true])
+        d.register(defaults: ["tapToTurn": true, "animatePageTurns": true, "coverAlone": true,
+                              "loupeDiameter": 260.0, "loupeMagnification": 2.5])
         defaultDirection = ReadingDirection(rawValue: d.string(forKey: "defaultDirection") ?? "") ?? .leftToRight
         defaultFitMode = PageFitMode(rawValue: d.string(forKey: "defaultFitMode") ?? "") ?? .fitPage
         defaultLayout = PageLayout(rawValue: d.string(forKey: "defaultLayout") ?? "") ?? .single
@@ -80,12 +83,15 @@ final class AppSettings: ObservableObject {
         shiftSpreads = d.bool(forKey: "shiftSpreads")
         sort = LibrarySort(rawValue: d.string(forKey: "librarySort") ?? "") ?? .recentlyRead
         filter = LibraryFilter(rawValue: d.string(forKey: "libraryFilter") ?? "") ?? .all
+        loupeDiameter = d.double(forKey: "loupeDiameter")
+        loupeMagnification = d.double(forKey: "loupeMagnification")
     }
 
     /// Restores defaults (UI tests start from a known state).
     func resetForTesting() {
         for k in ["defaultDirection", "defaultFitMode", "defaultLayout", "readerBackground", "tapToTurn",
-                  "animatePageTurns", "coverAlone", "shiftSpreads", "librarySort", "libraryFilter"] {
+                  "animatePageTurns", "coverAlone", "shiftSpreads", "librarySort", "libraryFilter",
+                  "loupeDiameter", "loupeMagnification"] {
             d.removeObject(forKey: k)
         }
         defaultDirection = .leftToRight
@@ -98,5 +104,7 @@ final class AppSettings: ObservableObject {
         shiftSpreads = false
         sort = .recentlyRead
         filter = .all
+        loupeDiameter = 260
+        loupeMagnification = 2.5
     }
 }

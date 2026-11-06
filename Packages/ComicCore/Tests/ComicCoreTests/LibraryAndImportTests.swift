@@ -114,6 +114,7 @@ final class LibraryAndImportTests: XCTestCase {
 
     func testInsufficientDiskSpace() throws {
         let i = importer()
+        i.allowsCloning = false // a clone takes no space, so only a real copy is checked
         i.diskSpace = FixedDiskSpace(bytes: 50 * 1024 * 1024)
         do {
             _ = try i.importBook(from: userCopy("cbz_basic.cbz"), existing: [])

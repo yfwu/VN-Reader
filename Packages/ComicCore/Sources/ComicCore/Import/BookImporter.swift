@@ -25,7 +25,7 @@ public protocol CoverRendering: Sendable {
     func coverJPEG(from imageData: Data) -> Data?
 }
 
-/// Copies an archive into app storage, validates it and creates a book record.
+/// Brings an archive into app storage, validates it and creates a book record.
 ///
 /// Guarantees:
 /// - Nothing appears in the library until every step succeeded.
@@ -39,6 +39,8 @@ public final class BookImporter: @unchecked Sendable {
     public var limits = ImportLimits()
     public var diskSpace: DiskSpaceProviding = SystemDiskSpace()
     public var coverRenderer: CoverRendering?
+    /// Off forces a real copy (tests of the copy path).
+    var allowsCloning = true
     private let fm = FileManager.default
 
     public init(paths: LibraryPaths, coverRenderer: CoverRendering? = nil) {
@@ -57,10 +59,10 @@ public final class BookImporter: @unchecked Sendable {
         try fm.createDirectory(at: job, withIntermediateDirectories: true)
         defer { try? fm.removeItem(at: job) }
 
-        // 1. Copy into the staging area (progress, cancellation, CRC on the fly).
+        // 1. Clone or copy into the staging area (progress, cancellation, CRC on the fly).
         progress(ImportProgress(phase: .copying, fraction: 0))
         let staged = job.appendingPathComponent("archive.bin")
-        let (size, crc) = try copyFile(from: source, to: staged, progress: progress, isCancelled: isCancelled)
+        let (size, crc) = try stageFile(from: source, to: staged, progress: progress, isCancelled: isCancelled)
         let fingerprint = String(format: "%08x-%llu", crc, size)
         if let dup = existing.first(where: { $0.fingerprint == fingerprint }) {
             return .duplicate(existing: dup.id)
@@ -126,54 +128,82 @@ public final class BookImporter: @unchecked Sendable {
         return "\(base) (\(n))"
     }
 
-    private func copyFile(from source: URL, to dest: URL, progress: (ImportProgress) -> Void,
-                          isCancelled: () -> Bool) throws -> (UInt64, UInt32) {
-        let input: FileHandle
-        do { input = try FileHandle(forReadingFrom: source) }
-        catch { throw ComicError.sourceUnreadable(detail: error.localizedDescription) }
-        defer { try? input.close() }
-
-        let total: UInt64
-        do {
-            let attrs = try fm.attributesOfItem(atPath: source.path)
-            total = (attrs[.size] as? NSNumber)?.uint64Value ?? 0
-        } catch { throw ComicError.sourceUnreadable(detail: error.localizedDescription) }
+    /// Brings the file into the staging area and fingerprints it in constant memory:
+    /// one buffer is reused for the whole file, so a 3 GB book needs no more RAM than a
+    /// 30 MB one. On the same volume the "copy" is an APFS clone, which is instant and
+    /// takes no extra space until one of the two files changes.
+    private func stageFile(from source: URL, to dest: URL, progress: (ImportProgress) -> Void,
+                           isCancelled: () -> Bool) throws -> (UInt64, UInt32) {
+        let input = try RandomAccessFile(url: source)
+        let total = input.size
         guard total <= limits.maxFileSize else { throw ComicError.archiveTooLarge(size: total, limit: limits.maxFileSize) }
-        // The copy plus room for solid-RAR extraction later is checked separately.
-        try DiskSpacePolicy.check(required: Int64(total), at: paths.root, provider: diskSpace)
 
-        guard fm.createFile(atPath: dest.path, contents: nil) else {
-            throw ComicError.ioError(detail: "cannot create staging file")
+        let reader: RandomAccessFile
+        var output: Int32 = -1
+        defer { if output >= 0 { close(output) } }
+        if BookImporter.clone(source, to: dest, allowed: allowsCloning) {
+            reader = try RandomAccessFile(url: dest)
+        } else {
+            // The copy plus room for solid-RAR extraction later is checked separately.
+            try DiskSpacePolicy.check(required: Int64(total), at: paths.root, provider: diskSpace)
+            reader = input
+            output = dest.withUnsafeFileSystemRepresentation { path in
+                path.map { open($0, O_WRONLY | O_CREAT | O_TRUNC, 0o644) } ?? -1
+            }
+            guard output >= 0 else { throw ComicError.ioError(detail: "cannot create staging file") }
         }
-        let output = try FileHandle(forWritingTo: dest)
-        defer { try? output.close() }
 
+        let buffer = UnsafeMutableRawBufferPointer.allocate(byteCount: 1 << 20, alignment: 16)
+        defer { buffer.deallocate() }
         var crc = CRC32()
-        var copied: UInt64 = 0
-        let chunk = 1 << 20
+        var done: UInt64 = 0
         var lastReport = Date.distantPast
         while true {
             if isCancelled() { throw ComicError.cancelled }
-            let data: Data
-            do { data = try input.read(upToCount: chunk) ?? Data() }
-            catch { throw ComicError.sourceUnreadable(detail: error.localizedDescription) }
-            if data.isEmpty { break }
-            crc.update(data)
-            do { try output.write(contentsOf: data) }
-            catch {
-                if let avail = diskSpace.availableCapacity(for: paths.root), avail < Int64(chunk) * 2 {
-                    throw ComicError.insufficientDiskSpace(required: Int64(total), available: avail)
-                }
-                throw ComicError.ioError(detail: error.localizedDescription)
-            }
-            copied += UInt64(data.count)
+            let count: Int
+            do { count = try reader.read(at: done, into: buffer) }
+            catch { throw ComicError.sourceUnreadable(detail: "\(error)") }
+            if count == 0 { break }
+            let chunk = UnsafeRawBufferPointer(rebasing: buffer[..<count])
+            crc.update(chunk)
+            if output >= 0 { try writeAll(chunk, to: output, total: total) }
+            done += UInt64(count)
             if Date().timeIntervalSince(lastReport) > 0.1 {
                 lastReport = Date()
-                progress(ImportProgress(phase: .copying, fraction: total > 0 ? Double(copied) / Double(total) : nil))
+                progress(ImportProgress(phase: .copying, fraction: total > 0 ? Double(done) / Double(total) : nil))
             }
         }
         progress(ImportProgress(phase: .copying, fraction: 1))
-        return (copied, crc.value)
+        return (done, crc.value)
+    }
+
+    private func writeAll(_ bytes: UnsafeRawBufferPointer, to fd: Int32, total: UInt64) throws {
+        var written = 0
+        while written < bytes.count {
+            let n = write(fd, bytes.baseAddress! + written, bytes.count - written)
+            if n >= 0 { written += n; continue }
+            if errno == EINTR { continue }
+            if errno == ENOSPC {
+                throw ComicError.insufficientDiskSpace(required: Int64(total), available: diskSpace.availableCapacity(for: paths.root) ?? 0)
+            }
+            throw ComicError.ioError(detail: String(cString: strerror(errno)))
+        }
+    }
+
+    /// False when the file cannot be cloned (another volume, a file that is not local yet…),
+    /// which is normal: the caller then copies it.
+    private static func clone(_ source: URL, to dest: URL, allowed: Bool) -> Bool {
+        #if canImport(Darwin)
+        guard allowed else { return false }
+        return source.withUnsafeFileSystemRepresentation { from in
+            dest.withUnsafeFileSystemRepresentation { to in
+                guard let from, let to else { return false }
+                return clonefile(from, to, UInt32(CLONE_NOOWNERCOPY)) == 0
+            }
+        }
+        #else
+        return false
+        #endif
     }
 }
 

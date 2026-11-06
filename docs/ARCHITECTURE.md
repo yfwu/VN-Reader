@@ -45,7 +45,8 @@ VN-Reader/
 ## Threading
 
 * Main thread: UI, `LibraryStore` mutations (records are small; writes are atomic and coalesced 0.4 s, flushed immediately on background/close).
-* Import queue (serial): one import at a time; copying is chunked (1 MB) with CRC-32 and cancellation checks.
+* Import queue (serial): one import at a time. The staging step tries an APFS clone first (instant, no extra disk use) and otherwise copies through one reused 1 MB buffer with POSIX reads. Either way the CRC-32 fingerprint is computed with that buffer, with cancellation checks. Memory use does not depend on the file's size. `FileHandle.read` must not be used here: each chunk is an autoreleased `NSData`, and a loop that never drains keeps the whole file in memory (this ended the app on 3 GB books). A background task keeps a running import alive for the ~30 s iPadOS allows after leaving the app.
+* Reader overlays: `ReaderPaging.pagesOnScreen()` reports the images on screen and their window frames, for either reading mode. The magnifier redraws those on a display link, so it follows page turns and scrolling without any cooperation from the pager. A long press on either pager opens it and, while held, moves it through `ReaderViewModel.loupeHold`; pages are never turned by that press, since a long-press recognizer excludes the pans and taps. Full-resolution bitmaps come from `PageImageLoader.requestDetail` (at most 2 kept, ≤24 MP each, dropped on memory warnings and when the lens closes).
 * Page reads: concurrent queue; unrar calls are serialised by a global lock (unrar has process-wide state).
 * Solid RAR extraction: one background thread per book, shared by re-opens, cancellable, writes atomically.
 * Decoding: detached tasks per page, cancelled when they leave the prefetch window.

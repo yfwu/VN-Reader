@@ -176,6 +176,13 @@ enum L10n {
     static let removeBookmark = String(localized: "reader.bookmark.remove", defaultValue: "移除書籤")
     static let noBookmarks = String(localized: "reader.bookmarks.empty", defaultValue: "尚無書籤。閱讀時點工具列的書籤按鈕即可加入。")
     static let allPages = String(localized: "reader.allpages", defaultValue: "所有頁面")
+    static let loupe = String(localized: "reader.loupe", defaultValue: "放大鏡")
+    static let loupeShow = String(localized: "reader.loupe.show", defaultValue: "顯示放大鏡")
+    static let loupeHide = String(localized: "reader.loupe.hide", defaultValue: "關閉放大鏡")
+    static let loupeResize = String(localized: "reader.loupe.resize", defaultValue: "調整放大鏡大小")
+    static func loupeMagnification(_ value: String) -> String {
+        String(localized: "reader.loupe.zoom", defaultValue: "放大 \(value) 倍")
+    }
 
     // MARK: Settings
     static let settingsDefaults = String(localized: "settings.defaults", defaultValue: "新書預設值")

@@ -84,7 +84,7 @@ enum ErrorMessages {
                          message: String(localized: "error.io.message", defaultValue: "存取檔案時發生錯誤（\(d)）。請確認儲存空間足夠後再試。"))
         case .dictionaryTooLarge:
             return .init(title: String(localized: "error.dict.title", defaultValue: "RAR 字典過大"),
-                         message: String(localized: "error.dict.message", defaultValue: "這個 RAR 使用超過 4 GB 的壓縮字典，在 iPad 上解壓可能耗盡記憶體，因此不支援。"))
+                         message: String(localized: "error.dict.message", defaultValue: "這個 RAR 的壓縮字典太大，在這台 iPad 上解壓可能耗盡記憶體，因此不支援。請在電腦上用較小的字典或「儲存」方式重新壓縮後再匯入。"))
         }
     }
 

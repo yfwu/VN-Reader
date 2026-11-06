@@ -190,21 +190,25 @@ final class SolidPageCache: @unchecked Sendable {
                 try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
                 let wanted = Set(missing.map { manifest.pages[$0].archiveIndex })
                 try archive.extractSequentially(indices: wanted) { archiveIndex, data in
-                    guard let page = pageForArchiveIndex[archiveIndex] else { return true }
-                    let target = SolidPageCache.file(dir, page)
-                    let tmp = dir.appendingPathComponent("\(page).partial")
-                    try data.write(to: tmp)
-                    _ = try? FileManager.default.removeItem(at: target)
-                    try FileManager.default.moveItem(at: tmp, to: target)
-                    lock.lock()
-                    ready.insert(page)
-                    let w = waiters.removeValue(forKey: page) ?? [:]
-                    let done = ready.count
-                    let stop = cancelled
-                    lock.unlock()
-                    for c in w.values { c.resume(returning: data) }
-                    setState(.running(done: done, total: manifest.pageCount))
-                    return !stop
+                    // This thread has no pool of its own: without one, a long extraction
+                    // would keep every temporary until the whole book is done.
+                    try withAutoreleasePool {
+                        guard let page = pageForArchiveIndex[archiveIndex] else { return true }
+                        let target = SolidPageCache.file(dir, page)
+                        let tmp = dir.appendingPathComponent("\(page).partial")
+                        try data.write(to: tmp)
+                        _ = try? FileManager.default.removeItem(at: target)
+                        try FileManager.default.moveItem(at: tmp, to: target)
+                        lock.lock()
+                        ready.insert(page)
+                        let w = waiters.removeValue(forKey: page) ?? [:]
+                        let done = ready.count
+                        let stop = cancelled
+                        lock.unlock()
+                        for c in w.values { c.resume(returning: data) }
+                        setState(.running(done: done, total: manifest.pageCount))
+                        return !stop
+                    }
                 }
                 lock.lock()
                 running = false

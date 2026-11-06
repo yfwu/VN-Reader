@@ -54,6 +54,7 @@ final class ImportCoordinator: ObservableObject {
     private let library: LibraryStore
     private let importer: BookImporter
     private let queue = DispatchQueue(label: "vnreader.import", qos: .userInitiated)
+    private var backgroundTask = UIBackgroundTaskIdentifier.invalid
 
     init(library: LibraryStore) {
         self.library = library
@@ -69,6 +70,7 @@ final class ImportCoordinator: ObservableObject {
             jobs.append(job)
             enqueue(job, url: url, securityScoped: securityScoped, deleteAfterImport: deleteAfterImport)
         }
+        updateBackgroundTask()
     }
 
     func cancel(_ job: ImportJob) { job.cancelFlag.cancel() }
@@ -76,6 +78,24 @@ final class ImportCoordinator: ObservableObject {
     func dismiss(_ job: ImportJob) { jobs.removeAll { $0.id == job.id } }
 
     func dismissFinished() { jobs.removeAll { !$0.isActive } }
+
+    /// Asks iPadOS for time to finish a big import when the user switches away. If the
+    /// time runs out the app is suspended and the import continues when it comes back.
+    private func updateBackgroundTask() {
+        if activeCount == 0 {
+            endBackgroundTask()
+        } else if backgroundTask == .invalid {
+            backgroundTask = UIApplication.shared.beginBackgroundTask(withName: "vnreader.import") { [weak self] in
+                MainActor.assumeIsolated { self?.endBackgroundTask() }
+            }
+        }
+    }
+
+    private func endBackgroundTask() {
+        guard backgroundTask != .invalid else { return }
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        backgroundTask = .invalid
+    }
 
     private func enqueue(_ job: ImportJob, url: URL, securityScoped: Bool, deleteAfterImport: Bool) {
         let importer = self.importer
@@ -93,6 +113,7 @@ final class ImportCoordinator: ObservableObject {
             onMain {
                 guard let self else { return }
                 self.finish(job, outcome: outcome)
+                self.updateBackgroundTask()
             }
         }
     }

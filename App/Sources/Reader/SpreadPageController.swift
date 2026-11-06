@@ -14,6 +14,8 @@ final class SpreadPageController: UIViewController, UIGestureRecognizerDelegate 
     private var loadTask: Task<Void, Never>?
     private let doubleTap = UITapGestureRecognizer()
     private let singleTap = UITapGestureRecognizer()
+    /// The pages actually handed to `zoomView`, in screen order.
+    private var shownPages: [Int] = []
 
     init(unit: Int, pages: [Int], reader: ReaderViewController) {
         self.unit = unit
@@ -46,6 +48,7 @@ final class SpreadPageController: UIViewController, UIGestureRecognizerDelegate 
         zoomView.accessibilityTraits = [.image]
         zoomView.accessibilityLabel = pages.map { L10n.pageNumber($0 + 1) }.joined(separator: "、")
         zoomView.accessibilityIdentifier = "reader.page.\(pages.first ?? 0)"
+        zoomView.accessibilityCustomActions = reader.map { [$0.model.loupeAccessibilityAction] }
 
         spinner.translatesAutoresizingMaskIntoConstraints = false
         spinner.color = .gray
@@ -110,6 +113,10 @@ final class SpreadPageController: UIViewController, UIGestureRecognizerDelegate 
 
     var isZoomedIn: Bool { zoomView.isZoomedIn }
 
+    var pagesOnScreen: [PageOnScreen] {
+        zip(shownPages, zoomView.drawnImages).map { PageOnScreen(page: $0, image: $1.image, frame: $1.frame) }
+    }
+
     func load() {
         guard let reader, let loader = reader.loader else { return }
         loadTask?.cancel()
@@ -118,6 +125,7 @@ final class SpreadPageController: UIViewController, UIGestureRecognizerDelegate 
         // Show cached pages immediately (no flash when paging back and forth).
         let cached = order.map { loader.cachedImage($0) }
         if cached.allSatisfy({ $0 != nil }) {
+            shownPages = order
             zoomView.configure(images: cached, fitMode: reader.fitMode)
             spinner.stopAnimating()
             return
@@ -143,6 +151,7 @@ final class SpreadPageController: UIViewController, UIGestureRecognizerDelegate 
             guard let self, !Task.isCancelled else { return }
             self.spinner.stopAnimating()
             let shown = images.compactMap { $0 }
+            self.shownPages = zip(order, images).filter { $1 != nil }.map(\.0)
             if shown.isEmpty, let f = failure {
                 self.zoomView.configure(images: [], fitMode: self.reader?.fitMode ?? .fitPage)
                 self.errorTitle.text = f.title

@@ -1,3 +1,4 @@
+import AVFoundation
 import UIKit
 import ComicCore
 
@@ -34,8 +35,11 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
         view.addSubview(table)
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
         table.addGestureRecognizer(tap)
+        table.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:))))
         model.pager = self
     }
+
+    @objc private func longPressed(_ press: UILongPressGestureRecognizer) { model.holdLoupe(press) }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -74,6 +78,10 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
 
     func widePagesChanged() {}
 
+    func pagesOnScreen() -> [PageOnScreen] {
+        table.visibleCells.compactMap { ($0 as? VerticalPageCell)?.pageOnScreen }
+    }
+
     // MARK: Table
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { model.pageCount }
@@ -84,6 +92,7 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
         let cell = tableView.dequeueReusableCell(withIdentifier: "page", for: indexPath) as! VerticalPageCell
         let page = indexPath.row
         cell.configure(page: page, dark: model.settings.background.uiColor.isDark)
+        cell.accessibilityCustomActions = [model.loupeAccessibilityAction]
         if let img = model.loader?.cachedImage(page) {
             cell.show(img)
         } else {
@@ -192,6 +201,13 @@ final class VerticalPageCell: UITableViewCell {
         spinner.startAnimating()
         accessibilityLabel = L10n.pageNumber(page + 1)
         accessibilityIdentifier = "reader.page.\(page)"
+    }
+
+    /// The cell can briefly be taller or shorter than its image, which then sits inside it.
+    var pageOnScreen: PageOnScreen? {
+        guard let image = pageView.image else { return nil }
+        let drawn = AVMakeRect(aspectRatio: image.size, insideRect: pageView.bounds)
+        return PageOnScreen(page: page, image: image, frame: pageView.convert(drawn, to: nil))
     }
 
     func show(_ image: UIImage) {

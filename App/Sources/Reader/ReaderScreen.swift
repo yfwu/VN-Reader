@@ -24,6 +24,7 @@ struct ReaderScreen: View {
     @State private var showJump = false
     @State private var jumpText = ""
     @State private var scrubPage: Double?
+    @State private var sliderFrame: CGRect = .zero
 
     init(record: BookRecord, library: LibraryStore) {
         _model = StateObject(wrappedValue: ReaderViewModel(record: record, library: library))
@@ -45,6 +46,9 @@ struct ReaderScreen: View {
             }
             if model.isReady, needsPreparationOverlay {
                 preparationOverlay
+            }
+            if model.isReady, model.loupeVisible {
+                LoupeOverlay(model: model).ignoresSafeArea().transition(.opacity)
             }
             if model.chromeVisible || model.openError != nil {
                 chrome.transition(.opacity)
@@ -142,9 +146,28 @@ struct ReaderScreen: View {
     private var chrome: some View {
         VStack(spacing: 0) {
             topBar
-            Spacer(minLength: 0)
+            // Not a Spacer: that has no width, and the preview needs the whole screen's.
+            Color.clear
+                .overlay(alignment: .bottom) {
+                    if let scrubPage {
+                        PageScrubPreview(model: model, page: Int(scrubPage), thumbX: thumbX(scrubPage))
+                            .transition(.opacity.combined(with: .scale(scale: 0.92, anchor: .bottom)))
+                    }
+                }
+                .allowsHitTesting(false)
             if model.isReady && model.openError == nil { bottomBar }
         }
+        .coordinateSpace(.named(Self.chromeSpace))
+    }
+
+    private static let chromeSpace = "reader.chrome"
+
+    /// Where the slider's thumb sits for `page`. The thumb stops short of the track's ends.
+    private func thumbX(_ page: Double) -> CGFloat {
+        let inset: CGFloat = 16
+        let fraction = page / Double(max(model.pageCount - 1, 1))
+        let along = model.record.readingDirection == .rightToLeft ? 1 - fraction : fraction
+        return sliderFrame.minX + inset + (sliderFrame.width - inset * 2) * along
     }
 
     private var topBar: some View {
@@ -164,6 +187,7 @@ struct ReaderScreen: View {
                 .accessibilityAddTraits(.isHeader)
             Spacer(minLength: 8)
             if model.isReady && model.openError == nil {
+                iconButton("number", label: L10n.jumpToPage, id: "reader.goto") { askForPage() }
                 iconButton(model.isBookmarked ? "bookmark.fill" : "bookmark",
                            label: model.isBookmarked ? L10n.removeBookmark : L10n.addBookmark, id: "reader.bookmark") {
                     model.toggleBookmark()
@@ -185,11 +209,14 @@ struct ReaderScreen: View {
                 Slider(value: Binding(get: { scrubPage ?? Double(model.currentPage) },
                                       set: { scrubPage = $0.rounded() }),
                        in: 0...Double(count - 1), step: 1, onEditingChanged: { editing in
-                    if !editing, let p = scrubPage {
+                    if editing {
+                        withAnimation(.easeOut(duration: 0.16)) { scrubPage = Double(model.currentPage) }
+                    } else if let p = scrubPage {
                         model.jump(to: Int(p))
-                        scrubPage = nil
+                        withAnimation(.easeIn(duration: 0.14)) { scrubPage = nil }
                     }
                 })
+                .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.chromeSpace)) } action: { sliderFrame = $0 }
                 // RTL books: page 1 is on the right end of the slider.
                 .environment(\.layoutDirection, model.record.readingDirection == .rightToLeft ? .rightToLeft : .leftToRight)
                 .accessibilityLabel(L10n.pageSlider)
@@ -198,7 +225,7 @@ struct ReaderScreen: View {
             } else {
                 Spacer()
             }
-            Button { jumpText = ""; showJump = true } label: {
+            Button(action: askForPage) {
                 Text(L10n.pageIndicator(displayed + 1, count))
                     .font(.subheadline.monospacedDigit())
                     .frame(minWidth: 72, minHeight: 44)
@@ -211,6 +238,11 @@ struct ReaderScreen: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 4)
         .background(.bar)
+    }
+
+    private func askForPage() {
+        jumpText = ""
+        showJump = true
     }
 
     private func iconButton(_ symbol: String, label: String, id: String, action: @escaping () -> Void) -> some View {

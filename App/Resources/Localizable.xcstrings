@@ -877,25 +877,25 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This RAR uses a compression dictionary larger than 4 GB. Extracting it on iPad could run out of memory, so it isn’t supported."
+            "value" : "This RAR’s compression dictionary is too large. Extracting it on this iPad could run out of memory, so it isn’t supported. Recompress it on a computer with a smaller dictionary or the Store method, then import it again."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この RAR は 4 GB を超える圧縮辞書を使用しています。iPad で展開するとメモリが不足するおそれがあるため、対応していません。"
+            "value" : "この RAR は圧縮辞書が大きすぎます。この iPad で展開するとメモリが不足するおそれがあるため、対応していません。コンピュータで小さい辞書または「無圧縮」で圧縮し直してから読み込んでください。"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "此 RAR 使用超过 4 GB 的压缩字典，在 iPad 上解压可能耗尽内存，因此不支持。"
+            "value" : "此 RAR 的压缩字典太大，在这台 iPad 上解压可能耗尽内存，因此不支持。请在电脑上用较小的字典或“存储”方式重新压缩后再导入。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "這個 RAR 使用超過 4 GB 的壓縮字典，在 iPad 上解壓可能耗盡記憶體，因此不支援。"
+            "value" : "這個 RAR 的壓縮字典太大，在這台 iPad 上解壓可能耗盡記憶體，因此不支援。請在電腦上用較小的字典或「儲存」方式重新壓縮後再匯入。"
           }
         }
       }
@@ -4620,6 +4620,151 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "垂直捲動"
+          }
+        }
+      }
+    },
+    "reader.loupe" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Magnifier"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拡大鏡"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放大镜"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放大鏡"
+          }
+        }
+      }
+    },
+    "reader.loupe.hide" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close Magnifier"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拡大鏡を閉じる"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭放大镜"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉放大鏡"
+          }
+        }
+      }
+    },
+    "reader.loupe.resize" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resize Magnifier"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拡大鏡のサイズを変更"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "调整放大镜大小"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "調整放大鏡大小"
+          }
+        }
+      }
+    },
+    "reader.loupe.show" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Magnifier"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拡大鏡を表示"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示放大镜"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示放大鏡"
+          }
+        }
+      }
+    },
+    "reader.loupe.zoom" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@× magnification"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 倍に拡大"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放大 %@ 倍"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放大 %@ 倍"
           }
         }
       }

@@ -17,7 +17,7 @@
 * ZIP methods other than Stored / Deflate (BZIP2, LZMA, Deflate64, Zstandard, XZ, PPMd).
 * 7z / CB7, TAR / CBT, PDF.
 * Self-extracting archives (RAR/ZIP behind an `.exe` stub).
-* RAR archives with a dictionary larger than 4 GB (RAR 7 `-md` > 4g): refused to avoid running out of memory.
+* RAR archives whose dictionary is larger than a quarter of the device's RAM: refused on import, because unrar allocates the whole dictionary up front. Stored (`-m0`) archives need no dictionary and are always accepted. Recompressing with a smaller `-md` also works.
 * GIF / animated WebP show the first frame only.
 * Extremely tall single images (webtoon strips longer than 16 384 px after scaling) are shown downscaled to that height, so they look soft at fit-width; splitting such strips into tiles is a possible improvement.
 * Truncated RAR archives: unrar stops listing at the break, so the book may import with fewer pages; the missing pages are simply not there. (Truncated ZIPs are rejected because the central directory is missing.)

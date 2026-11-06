@@ -42,10 +42,15 @@ public struct ArchiveLimits: Sendable {
     public var maxEntries: Int
     /// Largest single entry we will decompress into memory.
     public var maxEntrySize: UInt64
+    /// Largest RAR dictionary we will decompress with. unrar allocates and clears the
+    /// whole dictionary up front, so this much memory is used at once.
+    public var maxDictionarySize: UInt64
 
-    public init(maxEntries: Int = 20_000, maxEntrySize: UInt64 = 256 * 1024 * 1024) {
+    public init(maxEntries: Int = 20_000, maxEntrySize: UInt64 = 256 * 1024 * 1024,
+                maxDictionarySize: UInt64 = ProcessInfo.processInfo.physicalMemory / 4) {
         self.maxEntries = maxEntries
         self.maxEntrySize = maxEntrySize
+        self.maxDictionarySize = maxDictionarySize
     }
 
     public static let `default` = ArchiveLimits()

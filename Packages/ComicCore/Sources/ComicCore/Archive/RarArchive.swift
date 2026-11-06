@@ -50,6 +50,11 @@ public final class RarArchive: ComicArchive, @unchecked Sendable {
             if f & UInt32(VNRAR_ENTRY_SPLITBEFORE | VNRAR_ENTRY_SPLITAFTER) != 0 {
                 throw ComicError.multiVolumeArchive
             }
+            // Refuse now with an explanation, instead of running out of memory while
+            // decompressing. Stored entries (0x30) never allocate a dictionary.
+            if raw.method != 0x30, UInt64(raw.dictSizeKB) * 1024 > limits.maxDictionarySize {
+                throw ComicError.dictionaryTooLarge
+            }
             list.append(ArchiveEntry(
                 index: list.count, path: name,
                 uncompressedSize: raw.unpackedSize, compressedSize: raw.packedSize,
