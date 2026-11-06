@@ -103,6 +103,27 @@ certificate/profile automatically. Set `BUILD_NUMBER=<n>` to bump the build numb
 * **app-store-connect**: upload with Xcode Organizer (Distribute App) or
   `xcrun altool`/Transporter, then install through **TestFlight** (no UDID needed).
 
+### TestFlight
+
+1. App Store Connect ▸ Apps ▸ **+**: create the app with the bundle ID from
+   `Config/Signing.xcconfig`. The record must exist before the first upload.
+2. Raise `CURRENT_PROJECT_VERSION` for every upload (or set `BUILD_NUMBER=<n>`); a build
+   number can be used only once per version.
+3. Archive and upload in one step:
+
+```bash
+scripts/archive-and-export.sh testflight
+```
+
+4. When processing finishes, add the build to a tester group in the app's TestFlight tab.
+   External groups need Test Information and TestFlight App Review for the first build of
+   a version, and can then be shared by email invitation or public link.
+
+The app is iPad only, so testers need an iPad on iPadOS 18 or later. Export compliance is
+answered by `ITSAppUsesNonExemptEncryption` in `Config/App.xcconfig`, required-reason APIs
+are declared in `App/Resources/PrivacyInfo.xcprivacy`, and the privacy policy is
+`docs/PRIVACY.md`. Update the manifest when code starts using another covered API.
+
 ## 5. Unsigned device build (no account at all)
 
 ```bash

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Archives a signed Release build and exports an IPA.
 #
-#   DEVELOPMENT_TEAM=ABCDE12345 scripts/archive-and-export.sh [development|ad-hoc|app-store-connect] [output-dir]
+#   DEVELOPMENT_TEAM=ABCDE12345 scripts/archive-and-export.sh [development|ad-hoc|app-store-connect|testflight] [output-dir]
 #
+# testflight uploads straight to App Store Connect instead of writing an IPA.
 # Or put DEVELOPMENT_TEAM (and optionally VN_BUNDLE_ID) in Config/Signing.xcconfig.
 # Uses automatic signing; Xcode must be signed in to an account of that team
 # (Xcode ▸ Settings ▸ Accounts). -allowProvisioningUpdates lets xcodebuild create
@@ -30,19 +31,20 @@ EXTRA=()
 
 xcodebuild archive -project VNReader.xcodeproj -scheme VNReader -configuration Release \
   -destination 'generic/platform=iOS' -archivePath "$ARCHIVE" \
-  -allowProvisioningUpdates DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic "${EXTRA[@]}" | tee "$OUT/archive.log" | grep -E '(error:|\*\* ARCHIVE)'
+  -allowProvisioningUpdates DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic ${EXTRA[@]+"${EXTRA[@]}"} | tee "$OUT/archive.log" | grep -E '(error:|\*\* ARCHIVE)'
 test "${PIPESTATUS[0]}" -eq 0
 
 PLIST="$OUT/ExportOptions.plist"
 sed "s/TEAM_ID_PLACEHOLDER/$TEAM/" "Config/ExportOptions-$METHOD.plist" > "$PLIST"
-xcodebuild -exportArchive -archivePath "$ARCHIVE" -exportPath "$OUT" -exportOptionsPlist "$PLIST" \
+# Xcode's /usr/bin/rsync starts whichever rsync is first on PATH; Homebrew's rejects its options.
+PATH=/usr/bin:/bin:/usr/sbin:/sbin xcodebuild -exportArchive -archivePath "$ARCHIVE" -exportPath "$OUT" -exportOptionsPlist "$PLIST" \
   -allowProvisioningUpdates | tee "$OUT/export.log" | grep -E '(error:|\*\* EXPORT)'
 test "${PIPESTATUS[0]}" -eq 0
 
 APP="$ARCHIVE/Products/Applications/VNReader.app"
-IPA=$(ls "$OUT"/*.ipa | head -1)
+IPA=$(find "$OUT" -maxdepth 1 -name '*.ipa' | head -1)
 {
-  echo "File: $(basename "$IPA")"
+  echo "File: ${IPA:+$(basename "$IPA")}"
   echo "Signing: $METHOD, team $TEAM"
   echo "Bundle ID: $(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$APP/Info.plist")"
   echo "Version: $(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$APP/Info.plist") ($(/usr/libexec/PlistBuddy -c 'Print CFBundleVersion' "$APP/Info.plist"))"
@@ -51,4 +53,8 @@ IPA=$(ls "$OUT"/*.ipa | head -1)
   echo "Built with: $(xcodebuild -version | tr '\n' ' ')"
   echo "Install status: NOT YET VERIFIED ON A DEVICE"
 } | tee "$OUT/IPA-INFO.txt"
-echo "IPA: $IPA"
+if [[ "$METHOD" == testflight ]]; then
+  echo "Uploaded to App Store Connect; the build appears in TestFlight after processing."
+else
+  echo "IPA: $IPA"
+fi

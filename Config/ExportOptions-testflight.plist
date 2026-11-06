@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- testflight: like app-store-connect, but uploads directly instead of writing an IPA.
+	     Uses the Xcode account of the team; the app record must already exist. -->
+	<key>method</key>
+	<string>app-store-connect</string>
+	<key>destination</key>
+	<string>upload</string>
+	<key>signingStyle</key>
+	<string>automatic</string>
+	<!-- teamID is injected by scripts/archive-and-export.sh from DEVELOPMENT_TEAM. -->
+	<key>teamID</key>
+	<string>TEAM_ID_PLACEHOLDER</string>
+	<!-- Keep the version from Config/Base.xcconfig; Xcode must not rewrite it on upload. -->
+	<key>manageAppVersionAndBuildNumber</key>
+	<false/>
+	<key>stripSwiftSymbols</key>
+	<true/>
+</dict>
+</plist>
