@@ -33,42 +33,30 @@ struct ReaderScreen: View {
     var body: some View {
         ZStack {
             Color(settings.background.uiColor).ignoresSafeArea()
-            if let err = model.openError {
-                openErrorView(err)
-            } else if model.isReady {
-                if model.record.layout == .vertical {
-                    VerticalReaderView(model: model).ignoresSafeArea()
-                } else {
-                    ReaderPagerView(model: model).ignoresSafeArea()
-                }
-            } else {
-                ProgressView().controlSize(.large)
+            #if targetEnvironment(macCatalyst)
+            NavigationStack {
+                macReaderLayout
+                    .background(Color(settings.background.uiColor))
+                    .navigationTitle(model.record.displayName)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar { macToolbar }
+                    .toolbarBackground(.bar, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .toolbar(showsChrome ? .visible : .hidden, for: .navigationBar)
             }
-            if model.isReady, needsPreparationOverlay {
-                preparationOverlay
-            }
-            if model.isReady, model.loupeVisible {
-                LoupeOverlay(model: model).ignoresSafeArea().transition(.opacity)
-            }
-            if model.chromeVisible || model.openError != nil {
+            #else
+            readingSurface
+            if showsChrome {
                 chrome.transition(.opacity)
             }
-            if let t = model.toast {
-                Text(t)
-                    .font(.subheadline.weight(.medium))
-                    .padding(.horizontal, 16).padding(.vertical, 10)
-                    .background(.regularMaterial, in: Capsule())
-                    .transition(.opacity)
-                    .allowsHitTesting(false)
-                    .accessibilityIdentifier("reader.toast")
-            }
+            #endif
         }
         .statusBarHidden(!model.chromeVisible)
         .persistentSystemOverlays(model.chromeVisible ? .automatic : .hidden)
         .onAppear { model.open() }
         .onDisappear { model.close() }
         .onChange(of: scenePhase) { _, phase in
-            if phase != .active { model.flush() }
+            model.scenePhaseChanged(phase)
         }
         .sheet(isPresented: $showThumbnails) {
             ThumbnailSheet(model: model) { page in
@@ -88,8 +76,90 @@ struct ReaderScreen: View {
             }
             Button(L10n.cancel, role: .cancel) {}
         } message: {
-            Text(L10n.jumpPrompt + "（" + L10n.jumpRange(model.pageCount) + "）")
+            Text(L10n.jumpMessage(model.pageCount))
         }
+    }
+
+    private var showsChrome: Bool { model.chromeVisible || model.openError != nil }
+
+    #if targetEnvironment(macCatalyst)
+    /// The native navigation bar reserves the top safe area, while the bottom
+    /// controls reserve their own row. Neither covers UIKit's reading viewport.
+    private var macReaderLayout: some View {
+        VStack(spacing: 0) {
+            readingSurface
+                .clipped()
+                .overlay(alignment: .bottom) {
+                    if showsChrome, let scrubPage {
+                        PageScrubPreview(model: model, page: Int(scrubPage), thumbX: thumbX(scrubPage))
+                            .transition(.opacity.combined(with: .scale(scale: 0.92, anchor: .bottom)))
+                    }
+                }
+            if showsChrome, model.isReady, model.openError == nil {
+                bottomBar.fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .coordinateSpace(.named(Self.chromeSpace))
+        .background(alignment: .topTrailing) {
+            // Native toolbar items may not retain the UIKit responder chain of
+            // a SwiftUI background. Anchor sharing to the attached content host.
+            ShareSheetPresenter(files: model.sharedFiles) { model.shareDidEnd() }
+                .frame(width: 1, height: 1)
+                .padding(.top, 8)
+                .padding(.trailing, 60)
+        }
+    }
+    #endif
+
+    private var readingSurface: some View {
+        ZStack {
+            if let err = model.openError {
+                openErrorView(err)
+            } else if model.isReady {
+                #if targetEnvironment(macCatalyst)
+                // Respect the window safe area as well as the dedicated control rows.
+                if model.layout == .vertical {
+                    VerticalReaderView(model: model)
+                } else {
+                    ReaderPagerView(model: model)
+                }
+                #else
+                if model.layout == .vertical {
+                    VerticalReaderView(model: model).ignoresSafeArea()
+                } else {
+                    ReaderPagerView(model: model).ignoresSafeArea()
+                }
+                #endif
+            } else {
+                VStack(spacing: 16) {
+                    if let progress = model.downloadProgress {
+                        ProgressView(value: progress).frame(width: 220)
+                        Text(L10n.syncDownloading)
+                    } else { ProgressView().controlSize(.large) }
+                    Button(L10n.backToLibrary) { dismiss() }
+                }
+            }
+            if model.isReady, needsPreparationOverlay {
+                preparationOverlay
+            }
+            if model.isReady, model.loupeVisible {
+                #if targetEnvironment(macCatalyst)
+                LoupeOverlay(model: model).transition(.opacity)
+                #else
+                LoupeOverlay(model: model).ignoresSafeArea().transition(.opacity)
+                #endif
+            }
+            if let t = model.toast {
+                Text(t)
+                    .font(.subheadline.weight(.medium))
+                    .padding(.horizontal, 16).padding(.vertical, 10)
+                    .background(.regularMaterial, in: Capsule())
+                    .transition(.opacity)
+                    .allowsHitTesting(false)
+                    .accessibilityIdentifier("reader.toast")
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var needsPreparationOverlay: Bool {
@@ -143,6 +213,7 @@ struct ReaderScreen: View {
 
     // MARK: Toolbars
 
+    #if !targetEnvironment(macCatalyst)
     private var chrome: some View {
         VStack(spacing: 0) {
             topBar
@@ -159,6 +230,7 @@ struct ReaderScreen: View {
         }
         .coordinateSpace(.named(Self.chromeSpace))
     }
+    #endif
 
     private static let chromeSpace = "reader.chrome"
 
@@ -170,6 +242,7 @@ struct ReaderScreen: View {
         return sliderFrame.minX + inset + (sliderFrame.width - inset * 2) * along
     }
 
+    #if !targetEnvironment(macCatalyst)
     private var topBar: some View {
         HStack(spacing: 4) {
             Button { dismiss() } label: {
@@ -179,6 +252,7 @@ struct ReaderScreen: View {
                     .contentShape(Rectangle())
             }
             .accessibilityIdentifier("reader.back")
+            .keyboardShortcut(.escape, modifiers: [])
             Spacer(minLength: 8)
             Text(model.record.displayName)
                 .font(.headline)
@@ -192,6 +266,7 @@ struct ReaderScreen: View {
                            label: model.isBookmarked ? L10n.removeBookmark : L10n.addBookmark, id: "reader.bookmark") {
                     model.toggleBookmark()
                 }
+                shareButton
                 iconButton("slider.horizontal.3", label: L10n.readerSettings, id: "reader.settings") { showSettings = true }
             }
         }
@@ -199,29 +274,100 @@ struct ReaderScreen: View {
         .padding(.vertical, 4)
         .background(.bar)
     }
+    #endif
 
+    #if targetEnvironment(macCatalyst)
+    /// Native toolbar buttons inherit the same appearance and Liquid Glass as
+    /// the library. Applying another glass style here would nest the effects.
+    @ToolbarContentBuilder
+    private var macToolbar: some ToolbarContent {
+        ToolbarItem(placement: .navigation) {
+            iconButton("chevron.backward", label: L10n.backToLibrary, id: "reader.back") { dismiss() }
+                .keyboardShortcut(.escape, modifiers: [])
+        }
+        ToolbarItemGroup(placement: .primaryAction) {
+            if model.isReady && model.openError == nil {
+                iconButton("number", label: L10n.jumpToPage, id: "reader.goto") { askForPage() }
+                iconButton(model.isBookmarked ? "bookmark.fill" : "bookmark",
+                           label: model.isBookmarked ? L10n.removeBookmark : L10n.addBookmark,
+                           id: "reader.bookmark") { model.toggleBookmark() }
+                shareButton
+                iconButton("slider.horizontal.3", label: L10n.readerSettings,
+                           id: "reader.settings") { showSettings = true }
+            }
+        }
+    }
+
+    /// Bottom controls inherit the system appearance, matching the native bar.
+    @ViewBuilder
+    private func macChromeButton<Label: View>(circle: Bool, action: @escaping () -> Void,
+                                              @ViewBuilder label: () -> Label) -> some View {
+        if #available(macCatalyst 26.0, *) {
+            Button(action: action) {
+                label().frame(minHeight: 20)
+            }
+            .font(.system(size: 13, weight: .medium))
+            .buttonStyle(.glass)
+            .buttonBorderShape(circle ? .circle : .capsule)
+            .buttonSizing(.fitted)
+            .controlSize(.small)
+        } else {
+            Button(action: action) {
+                label().frame(minHeight: 20)
+            }
+            .font(.system(size: 13, weight: .medium))
+            .buttonStyle(.bordered)
+            .buttonBorderShape(circle ? .circle : .capsule)
+            .controlSize(.small)
+        }
+    }
+    #endif
+
+    private var shareButton: some View {
+        iconButton("square.and.arrow.up", label: L10n.sharePage, id: "reader.share") { model.shareVisiblePages() }
+            .disabled(model.isPreparingShare)
+            .opacity(model.isPreparingShare ? 0 : 1)
+            .overlay { if model.isPreparingShare { ProgressView() } }
+            #if !targetEnvironment(macCatalyst)
+            .background(ShareSheetPresenter(files: model.sharedFiles) { model.shareDidEnd() })
+            #endif
+    }
+
+    @ViewBuilder
     private var bottomBar: some View {
         let count = model.pageCount
         let displayed = Int(scrubPage ?? Double(model.currentPage))
-        return HStack(spacing: 12) {
+        #if targetEnvironment(macCatalyst)
+        HStack(spacing: 12) {
+            macChromeButton(circle: true, action: { showThumbnails = true }) {
+                Image(systemName: "square.grid.3x3").frame(width: 20, height: 20)
+            }
+            .accessibilityLabel(L10n.thumbnails)
+            .help(L10n.thumbnails)
+            .accessibilityIdentifier("reader.thumbnails")
+            if count > 1 {
+                pageSlider
+                    .controlSize(.small)
+            } else {
+                Spacer()
+            }
+            macChromeButton(circle: false, action: askForPage) {
+                Text(L10n.pageIndicator(displayed + 1, count))
+                    .monospacedDigit()
+                    .lineLimit(1)
+            }
+            .accessibilityLabel(L10n.jumpToPage)
+            .accessibilityValue(L10n.pageA11y(displayed + 1, count))
+            .accessibilityIdentifier("reader.jump")
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(.bar)
+        #else
+        HStack(spacing: 12) {
             iconButton("square.grid.3x3", label: L10n.thumbnails, id: "reader.thumbnails") { showThumbnails = true }
             if count > 1 {
-                Slider(value: Binding(get: { scrubPage ?? Double(model.currentPage) },
-                                      set: { scrubPage = $0.rounded() }),
-                       in: 0...Double(count - 1), step: 1, onEditingChanged: { editing in
-                    if editing {
-                        withAnimation(.easeOut(duration: 0.16)) { scrubPage = Double(model.currentPage) }
-                    } else if let p = scrubPage {
-                        model.jump(to: Int(p))
-                        withAnimation(.easeIn(duration: 0.14)) { scrubPage = nil }
-                    }
-                })
-                .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.chromeSpace)) } action: { sliderFrame = $0 }
-                // RTL books: page 1 is on the right end of the slider.
-                .environment(\.layoutDirection, model.record.readingDirection == .rightToLeft ? .rightToLeft : .leftToRight)
-                .accessibilityLabel(L10n.pageSlider)
-                .accessibilityValue(L10n.pageA11y(displayed + 1, count))
-                .accessibilityIdentifier("reader.slider")
+                pageSlider
             } else {
                 Spacer()
             }
@@ -238,6 +384,25 @@ struct ReaderScreen: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 4)
         .background(.bar)
+        #endif
+    }
+
+    private var pageSlider: some View {
+        Slider(value: Binding(get: { scrubPage ?? Double(model.currentPage) },
+                              set: { scrubPage = $0.rounded() }),
+               in: 0...Double(model.pageCount - 1), step: 1, onEditingChanged: { editing in
+            if editing {
+                withAnimation(.easeOut(duration: 0.16)) { scrubPage = Double(model.currentPage) }
+            } else if let p = scrubPage {
+                model.jump(to: Int(p))
+                withAnimation(.easeIn(duration: 0.14)) { scrubPage = nil }
+            }
+        })
+        .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.chromeSpace)) } action: { sliderFrame = $0 }
+        .environment(\.layoutDirection, model.record.readingDirection == .rightToLeft ? .rightToLeft : .leftToRight)
+        .accessibilityLabel(L10n.pageSlider)
+        .accessibilityValue(L10n.pageA11y(Int(scrubPage ?? Double(model.currentPage)) + 1, model.pageCount))
+        .accessibilityIdentifier("reader.slider")
     }
 
     private func askForPage() {
@@ -245,7 +410,17 @@ struct ReaderScreen: View {
         showJump = true
     }
 
+    @ViewBuilder
     private func iconButton(_ symbol: String, label: String, id: String, action: @escaping () -> Void) -> some View {
+        #if targetEnvironment(macCatalyst)
+        Button(action: action) {
+            Label(label, systemImage: symbol)
+        }
+        .labelStyle(.iconOnly)
+        .accessibilityLabel(label)
+        .help(label)
+        .accessibilityIdentifier(id)
+        #else
         Button(action: action) {
             Image(systemName: symbol)
                 .font(.title3)
@@ -254,6 +429,7 @@ struct ReaderScreen: View {
         }
         .accessibilityLabel(label)
         .accessibilityIdentifier(id)
+        #endif
     }
 }
 
@@ -381,14 +557,14 @@ struct ReaderSettingsSheet: View {
                     .accessibilityIdentifier("settings.fit")
                 }
                 Section(L10n.layout) {
-                    Picker(L10n.layout, selection: Binding(get: { model.record.layout }, set: { model.setLayout($0) })) {
+                    Picker(L10n.layout, selection: Binding(get: { model.layout }, set: { model.setLayout($0) })) {
                         Text(L10n.layoutSingle).tag(PageLayout.single)
                         Text(L10n.layoutDouble).tag(PageLayout.double)
                         Text(L10n.layoutVertical).tag(PageLayout.vertical)
                     }
                     .pickerStyle(.segmented)
                     .accessibilityIdentifier("settings.layout")
-                    if model.record.layout == .double {
+                    if model.layout == .double {
                         Toggle(L10n.coverAlone, isOn: Binding(get: { settings.coverAlone },
                                                               set: { settings.coverAlone = $0; model.appSettingsChanged() }))
                         Toggle(L10n.shiftSpread, isOn: Binding(get: { settings.shiftSpreads },

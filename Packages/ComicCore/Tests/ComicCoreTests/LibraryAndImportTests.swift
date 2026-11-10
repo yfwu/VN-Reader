@@ -147,7 +147,7 @@ final class LibraryAndImportTests: XCTestCase {
         XCTAssertEqual(try Data(contentsOf: src), try Data(contentsOf: Fixtures.url("rar5_solid.cbr")))
     }
 
-    func testLaunchCleanupRemovesIncompleteData() throws {
+    func testLaunchCleanupPreservesUncataloguedBooks() throws {
         try paths.createDirectories()
         let fm = FileManager.default
         try fm.createDirectory(at: paths.importStagingDir.appendingPathComponent("job1"), withIntermediateDirectories: true)
@@ -157,7 +157,8 @@ final class LibraryAndImportTests: XCTestCase {
         let kept = imported(try importer().importBook(from: userCopy("cbz_basic.cbz"), existing: []))!
         let report = StorageMaintenance.cleanUp(paths: paths, knownBooks: [kept.id])
         XCTAssertEqual(report.removedStagingJobs, 1)
-        XCTAssertEqual(report.removedOrphanBooks, 1)
+        XCTAssertEqual(report.preservedOrphanBooks, 1)
+        XCTAssertTrue(fm.fileExists(atPath: paths.bookDir(orphan).path))
         XCTAssertEqual(report.removedOrphanCaches, 1)
         XCTAssertTrue(fm.fileExists(atPath: paths.bookDir(kept.id).path))
     }
@@ -172,10 +173,122 @@ final class LibraryAndImportTests: XCTestCase {
         r.fitMode = .fitWidth
         try db.save([r])
         XCTAssertEqual(LibraryDatabase(paths: paths).load(), .loaded([r]))
-        // Corrupt the main file: the backup made at the last successful load is used.
+        // Corrupt the main file: the backup of the latest successful save is used.
         try Data("{ not json".utf8).write(to: paths.libraryFile)
         XCTAssertEqual(LibraryDatabase(paths: paths).load(), .recoveredFromBackup([r]))
         XCTAssertEqual(LibraryDatabase(paths: paths).load(), .loaded([r]))
+    }
+
+    func testBackupRefreshesAfterEverySuccessfulSaveWithoutRelaunch() throws {
+        let db = LibraryDatabase(paths: paths)
+        var book = imported(try importer().importBook(from: userCopy("cbz_basic.cbz"), existing: []))!
+        book.importedAt = Date(timeIntervalSince1970: 1_600_000_000)
+        try db.save([book])
+        book.displayName = "Changed after initial import"
+        book.recordPosition(2, at: Date(timeIntervalSince1970: 1_700_000_000))
+        try db.save([book])
+        try Data("{ broken".utf8).write(to: paths.libraryFile)
+        XCTAssertEqual(db.load(), .recoveredFromBackup([book]))
+    }
+
+    func testStaleBackupRecoveryNeverDeletesNewerBookFiles() throws {
+        let db = LibraryDatabase(paths: paths)
+        var first = imported(try importer().importBook(from: userCopy("cbz_basic.cbz"), existing: []))!
+        first.importedAt = Date(timeIntervalSince1970: 1_600_000_000)
+        try db.save([first])
+        let oldBackup = try Data(contentsOf: paths.libraryBackupFile)
+        let second = imported(try importer().importBook(from: userCopy("cbz_webp.cbz"), existing: [first]))!
+        try db.save([first, second])
+        // Represents an older build's backup, or a failed best-effort backup refresh.
+        try oldBackup.write(to: paths.libraryBackupFile)
+        try Data("{ broken".utf8).write(to: paths.libraryFile)
+        XCTAssertEqual(db.load(), .recoveredFromBackup([first]))
+        let original = try Data(contentsOf: paths.archiveFile(second.id, format: second.format))
+        for _ in 0..<2 {
+            let report = StorageMaintenance.cleanUp(paths: paths, knownBooks: [first.id])
+            XCTAssertEqual(report.preservedOrphanBooks, 1)
+            XCTAssertEqual(try Data(contentsOf: paths.archiveFile(second.id, format: second.format)), original)
+            XCTAssertEqual(LibraryDatabase(paths: paths).load(), .loaded([first]))
+        }
+        let preserved = try FileManager.default.contentsOfDirectory(atPath: paths.root.path)
+            .filter { $0.hasPrefix("library.corrupt-") }
+        XCTAssertEqual(preserved.count, 1)
+    }
+
+    func testUnrecoverableLibraryStaysProtectedAcrossLaunches() throws {
+        let book = imported(try importer().importBook(from: userCopy("cbz_basic.cbz"), existing: []))!
+        let badMain = Data("broken main".utf8), badBackup = Data("broken backup".utf8)
+        try badMain.write(to: paths.libraryFile)
+        try badBackup.write(to: paths.libraryBackupFile)
+        for _ in 0..<2 {
+            let db = LibraryDatabase(paths: paths)
+            XCTAssertEqual(db.load(), .unavailable)
+            XCTAssertThrowsError(try db.save([])) { error in
+                XCTAssertEqual(error as? LibraryDatabase.PersistenceError, .unavailable)
+            }
+            StorageMaintenance.cleanUp(paths: paths, knownBooks: [])
+            XCTAssertEqual(try Data(contentsOf: paths.libraryFile), badMain)
+            XCTAssertEqual(try Data(contentsOf: paths.libraryBackupFile), badBackup)
+            XCTAssertTrue(FileManager.default.fileExists(atPath: paths.archiveFile(book.id, format: book.format).path))
+        }
+    }
+
+    func testCorruptMainWithoutBackupIsNeverTreatedAsEmpty() throws {
+        let book = imported(try importer().importBook(from: userCopy("cbz_basic.cbz"), existing: []))!
+        let badMain = Data("{ interrupted".utf8)
+        try badMain.write(to: paths.libraryFile)
+        for _ in 0..<2 {
+            let db = LibraryDatabase(paths: paths)
+            XCTAssertEqual(db.load(), .unavailable)
+            XCTAssertThrowsError(try db.save([]))
+            StorageMaintenance.cleanUp(paths: paths, knownBooks: [])
+            XCTAssertEqual(try Data(contentsOf: paths.libraryFile), badMain)
+            XCTAssertTrue(FileManager.default.fileExists(atPath: paths.bookDir(book.id).path))
+        }
+    }
+
+    func testMissingDatabaseWithManagedBooksIsNotNewLibrary() throws {
+        let book = imported(try importer().importBook(from: userCopy("cbz_basic.cbz"), existing: []))!
+        let db = LibraryDatabase(paths: paths)
+        XCTAssertEqual(db.load(), .unavailable)
+        XCTAssertThrowsError(try db.save([]))
+        StorageMaintenance.cleanUp(paths: paths, knownBooks: [])
+        XCTAssertTrue(FileManager.default.fileExists(atPath: paths.bookDir(book.id).path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: paths.libraryFile.path))
+    }
+
+    func testFutureSchemaIsProtectedEvenIfRecordsCannotDecode() throws {
+        let db = LibraryDatabase(paths: paths)
+        try db.save([]) // An older, otherwise valid backup must not win over the future main file.
+        let future = Data("{\"version\":999,\"books\":{\"futureType\":true},\"newField\":42}".utf8)
+        try future.write(to: paths.libraryFile)
+        XCTAssertEqual(db.load(), .unsupportedVersion(999))
+        XCTAssertThrowsError(try db.save([])) { error in
+            XCTAssertEqual(error as? LibraryDatabase.PersistenceError, .unsupportedVersion(999))
+        }
+        XCTAssertThrowsError(try LibraryDatabase(paths: paths).save([]))
+        XCTAssertEqual(try Data(contentsOf: paths.libraryFile), future)
+    }
+
+    func testFutureBackupDoesNotBecomeEmptyLibrary() throws {
+        try paths.createDirectories()
+        let future = Data("{\"version\":999,\"books\":[]}".utf8)
+        try future.write(to: paths.libraryBackupFile)
+        let db = LibraryDatabase(paths: paths)
+        XCTAssertEqual(db.load(), .unsupportedVersion(999))
+        XCTAssertThrowsError(try db.save([]))
+        XCTAssertEqual(try Data(contentsOf: paths.libraryBackupFile), future)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: paths.libraryFile.path))
+    }
+
+    func testFailedMainSaveDoesNotRefreshBackup() throws {
+        let db = LibraryDatabase(paths: paths)
+        try db.save([])
+        let originalBackup = try Data(contentsOf: paths.libraryBackupFile)
+        try FileManager.default.removeItem(at: paths.libraryFile)
+        try FileManager.default.createDirectory(at: paths.libraryFile, withIntermediateDirectories: true)
+        XCTAssertThrowsError(try db.save([]))
+        XCTAssertEqual(try Data(contentsOf: paths.libraryBackupFile), originalBackup)
     }
 
     func testOlderRecordsDecodeWithDefaults() throws {

@@ -1,0 +1,86 @@
+Running actual app models offline; CKContainer access is a fatal test failure.
+Building for debugging...
+[Planning deferred tasks]
+[27 / 92]
+[30 / 93] ComicCore
+[31 / 93] ComicCore
+[34 / 146]
+[37 / 146]
+[40 / 146]
+[44 / 146]
+[47 / 146]
+[51 / 146]
+[56 / 146]
+[60 / 146] CUnrar
+[65 / 146]
+[68 / 146]
+[72 / 146]
+[75 / 146]
+[78 / 146]
+[81 / 146]
+[83 / 146]
+[86 / 146]
+[87 / 146]
+[90 / 146]
+[92 / 146] CUnrar
+[93 / 146]
+[94 / 146]
+[96 / 146] ComicCore
+[97 / 146] CUnrar
+[97 / 146] ComicCore
+[98 / 146] CUnrar
+[100 / 146] CUnrar
+[107 / 146] CUnrar
+[108 / 146] CUnrar
+[109 / 146] CUnrar
+[110 / 146] CUnrar
+[111 / 146] CUnrar
+[112 / 146] CUnrar
+[113 / 146] CUnrar
+[114 / 146] CUnrar
+[115 / 146] CUnrar
+[116 / 146] CUnrar
+[117 / 146] CUnrar
+[118 / 146] CUnrar
+[119 / 146] CUnrar
+[120 / 146] CUnrar
+[122 / 146] ComicCore
+[123 / 146] ComicCore
+[127 / 146] ComicCore
+[128 / 146] ComicCore-product
+[129 / 146] ComicCore-product
+[132 / 146] ComicCore
+[133 / 146] ComicCore
+[136 / 146] ComicCore
+[137 / 146] CUnrar
+[142 / 147] Audit-product
+[147 / 192]
+[153 / 192]
+[159 / 192]
+[163 / 192]
+[165 / 192]
+[168 / 192]
+[172 / 192]
+[173 / 192]
+[175 / 192]
+[177 / 192]
+[181 / 192] Audit-product
+[184 / 192] Audit-product
+[186 / 192] Audit-product
+[187 / 192] Audit-product
+[188 / 192] Audit-product
+[190 / 192] Audit-product
+Build complete! (16.92 sec)
+PASS: successful import publishes exactly one book
+PASS: successful durable import removes Inbox copy
+PASS: successful import is actually saved
+PASS: failed archive validation retains Inbox copy
+PASS: cancelled import retains Inbox copy
+PASS: failed persistence never publishes imported record
+PASS: failed persistence retains Inbox copy
+PASS: failed persistence reports failed import
+PASS: failed rename does not publish unsaved metadata
+PASS: failed batch edit preserves published metadata
+PASS: failed delete keeps library record
+PASS: failed delete keeps archive
+All app persistence checks passed. Synthetic data: /var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-hez1mylq/data

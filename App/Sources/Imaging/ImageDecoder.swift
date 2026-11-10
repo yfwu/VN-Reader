@@ -80,10 +80,18 @@ enum ImageDecoder {
     }
 
     static func jpegData(_ image: UIImage, quality: CGFloat = 0.8) -> Data? {
+        encoded(image, as: .jpeg, options: [kCGImageDestinationLossyCompressionQuality: quality] as CFDictionary)
+    }
+
+    static func pngData(_ image: UIImage) -> Data? {
+        encoded(image, as: .png, options: nil)
+    }
+
+    private static func encoded(_ image: UIImage, as type: UTType, options: CFDictionary?) -> Data? {
         guard let cg = image.cgImage else { return nil }
         let out = NSMutableData()
-        guard let dest = CGImageDestinationCreateWithData(out, UTType.jpeg.identifier as CFString, 1, nil) else { return nil }
-        CGImageDestinationAddImage(dest, cg, [kCGImageDestinationLossyCompressionQuality: quality] as CFDictionary)
+        guard let dest = CGImageDestinationCreateWithData(out, type.identifier as CFString, 1, nil) else { return nil }
+        CGImageDestinationAddImage(dest, cg, options)
         return CGImageDestinationFinalize(dest) ? out as Data : nil
     }
 }

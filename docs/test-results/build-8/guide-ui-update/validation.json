@@ -1,0 +1,26 @@
+{
+  "beforeSHA256": "1fc298b80ba488fa16abf2bf12ebb8550858db31471abc80def90f55bbc3f935",
+  "afterSHA256": "9267179470f3c5c0b381cf22335535e1cfb534fdb0eec57839c3c39930461f12",
+  "bytes": 1013740,
+  "pageCount": 12,
+  "changedPages": [
+    "04.png",
+    "12.png"
+  ],
+  "byteIdenticalPages": [
+    "01.png",
+    "02.png",
+    "03.png",
+    "05.png",
+    "06.png",
+    "07.png",
+    "08.png",
+    "09.png",
+    "10.png",
+    "11.png"
+  ],
+  "generatorSHA256": "64c037a841218873b7e3e8ca02fa7d10ca56bcb6e44b0d80548d2c32a4cd01c9",
+  "overflowGuardPassed": true,
+  "visualReview": "Pages 4 and 12 checked: select diagram matches circled checkmark; bilingual auto-sync/retry copy is readable without clipping or overlapping the footer.",
+  "scope": "Bundled source asset only. Existing imported guides and A/B smoke libraries were not modified."
+}

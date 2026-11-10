@@ -11,6 +11,10 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
     private var lastWidth: CGFloat = 0
     private var reportedPage = -1
     private var didInitialScroll = false
+    private var passiveScrollDepth = 0
+    private var isLayingOut = false
+    private var userScrollActive = false
+    private var userScrollReported = false
 
     init(model: ReaderViewModel) {
         self.model = model
@@ -24,6 +28,9 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
         view.backgroundColor = model.settings.background.uiColor
         table.backgroundColor = .clear
         table.separatorStyle = .none
+        // Heights are explicit. Estimated offscreen rows make rect/offset
+        // compensation unreliable when a delayed image changes an earlier row.
+        table.estimatedRowHeight = 0
         table.dataSource = self
         table.delegate = self
         table.contentInsetAdjustmentBehavior = .never
@@ -32,6 +39,9 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
         table.frame = view.bounds
         table.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         table.accessibilityIdentifier = "reader.vertical"
+        // Observe the existing recognizer without changing its delegate or input
+        // behavior. UIScrollView's pan also receives trackpad and wheel events.
+        table.panGestureRecognizer.addTarget(self, action: #selector(userPanChanged(_:)))
         view.addSubview(table)
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
         table.addGestureRecognizer(tap)
@@ -41,15 +51,23 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
 
     @objc private func longPressed(_ press: UILongPressGestureRecognizer) { model.holdLoupe(press) }
 
+    override func viewWillLayoutSubviews() {
+        isLayingOut = true
+        super.viewWillLayoutSubviews()
+    }
+
     override func viewDidLayoutSubviews() {
+        defer { isLayingOut = false }
         super.viewDidLayoutSubviews()
         if view.bounds.width != lastWidth, view.bounds.width > 0 {
             let page = model.currentPage
             lastWidth = view.bounds.width
             model.containerSizeChanged(view.bounds.size, scale: view.window?.screen.scale ?? traitCollection.displayScale)
-            table.reloadData()
-            table.layoutIfNeeded()
-            scroll(to: page)
+            withPassiveScrolling {
+                table.reloadData()
+                table.layoutIfNeeded()
+                scroll(to: page, userInitiated: false)
+            }
             didInitialScroll = true
         }
     }
@@ -58,22 +76,34 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
         (aspect[page] ?? 1.45) * max(view.bounds.width, 1)
     }
 
-    private func scroll(to page: Int) {
+    private func withPassiveScrolling(_ operation: () -> Void) {
+        passiveScrollDepth += 1
+        defer { passiveScrollDepth -= 1 }
+        operation()
+    }
+
+    private func scroll(to page: Int, userInitiated: Bool) {
         guard page >= 0, page < model.pageCount else { return }
-        table.scrollToRow(at: IndexPath(row: page, section: 0), at: .top, animated: false)
-        reportCurrentPage()
+        withPassiveScrolling {
+            userScrollActive = false
+            table.stopScrollingAndZooming()
+            table.scrollToRow(at: IndexPath(row: page, section: 0), at: .top, animated: false)
+        }
+        reportCurrentPage(userInitiated: userInitiated, force: true)
     }
 
     // MARK: ReaderPaging
 
-    func go(toPage page: Int, animated: Bool) { scroll(to: page) }
+    func go(toPage page: Int, animated: Bool, userInitiated: Bool) { scroll(to: page, userInitiated: userInitiated) }
 
     func reloadForSettings() {
         let page = model.currentPage
         view.backgroundColor = model.settings.background.uiColor
-        table.reloadData()
-        table.layoutIfNeeded()
-        scroll(to: page)
+        withPassiveScrolling {
+            table.reloadData()
+            table.layoutIfNeeded()
+            scroll(to: page, userInitiated: false)
+        }
     }
 
     func widePagesChanged() {}
@@ -86,7 +116,16 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { model.pageCount }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { height(for: indexPath.row) }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let page = indexPath.row
+        // Resolve cached dimensions before UIKit lays out the row, without
+        // starting a table update from inside cellForRowAt. Keep height(for:)
+        // cache-free so a later decode can calculate its old-height correction.
+        if aspect[page] == nil, let size = model.loader?.cachedImage(page)?.size, size.width > 0 {
+            aspect[page] = size.height / size.width
+        }
+        return height(for: page)
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "page", for: indexPath) as! VerticalPageCell
@@ -127,25 +166,71 @@ final class VerticalReaderController: UIViewController, UITableViewDataSource, U
         let delta = height(for: page) - oldHeight
         // Keep the visible content still when a page above the viewport changes height.
         let rowTop = table.rectForRow(at: IndexPath(row: page, section: 0)).minY
-        UIView.performWithoutAnimation {
-            table.beginUpdates()
-            table.endUpdates()
-            if rowTop < table.contentOffset.y {
-                table.contentOffset.y += delta
+        withPassiveScrolling {
+            UIView.performWithoutAnimation {
+                table.beginUpdates()
+                table.endUpdates()
+                if rowTop < table.contentOffset.y {
+                    table.contentOffset.y += delta
+                }
             }
         }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if didInitialScroll { reportCurrentPage() }
+        guard didInitialScroll else { return }
+        let pan = scrollView.panGestureRecognizer.state
+        let userInitiated = userScrollActive && (scrollView.isDragging || scrollView.isDecelerating || pan == .began || pan == .changed)
+        reportCurrentPage(userInitiated: userInitiated)
     }
 
-    private func reportCurrentPage() {
+    private func beginUserScroll() {
+        guard !userScrollActive, passiveScrollDepth == 0, !isLayingOut, model.pager === self else { return }
+        userScrollActive = true
+        userScrollReported = false
+    }
+
+    @objc private func userPanChanged(_ gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .began, .changed:
+            beginUserScroll()
+            if didInitialScroll { reportCurrentPage(userInitiated: userScrollActive) }
+        case .ended:
+            if didInitialScroll { reportCurrentPage(userInitiated: userScrollActive) }
+            if !table.isDecelerating { userScrollActive = false }
+        case .cancelled, .failed: userScrollActive = false
+        default: break
+        }
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) { beginUserScroll() }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        reportCurrentPage(userInitiated: userScrollActive)
+        if !decelerate { userScrollActive = false }
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        reportCurrentPage(userInitiated: userScrollActive)
+        userScrollActive = false
+    }
+
+    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        reportCurrentPage(userInitiated: true, force: true)
+    }
+
+    private func reportCurrentPage(userInitiated: Bool, force: Bool = false) {
+        guard model.pager === self else { return }
+        let userInitiated = userInitiated && passiveScrollDepth == 0 && !isLayingOut
         let probe = CGPoint(x: table.bounds.midX, y: table.contentOffset.y + table.bounds.height / 3)
         guard let ip = table.indexPathForRow(at: probe) else { return }
-        if ip.row != reportedPage {
+        // A passive correction may reveal a new row during an ongoing drag.
+        // Its first subsequent user event must still persist that row.
+        if ip.row != reportedPage { userScrollReported = false }
+        if force || ip.row != reportedPage || (userInitiated && !userScrollReported) {
             reportedPage = ip.row
-            model.pageDidChange(ip.row, visiblePages: [ip.row])
+            if userInitiated { userScrollReported = true }
+            model.pageDidChange(ip.row, visiblePages: [ip.row], userInitiated: userInitiated)
             model.loader?.prefetch(ReaderNavigation.prefetchOrder(around: ip.row, pageCount: model.pageCount))
         }
     }

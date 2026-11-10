@@ -1,0 +1,40 @@
+Original log: /private/tmp/vn-reader-build8-auto-ui.log
+Original SHA256: b4e1aa9893252246d18bc93723149fdad0bcb9f5879a09ecd720990b5b1fcd0b
+Scope: synthetic iPad simulator UI tests; no CloudKit transport assertion.
+
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -project VNReader.xcodeproj -scheme VNReader -configuration Debug -destination "platform=iOS Simulator,id=4CE28906-A98C-4FCA-833F-80C6A213A4E9" -derivedDataPath /private/tmp/vn-reader-build8-ipad-ui -resultBundlePath /private/tmp/vn-reader-build8-auto-ui.xcresult "-only-testing:VNReaderUITests/ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress" "-only-testing:VNReaderUITests/ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch" "-only-testing:VNReaderUITests/ReaderUITests/test08VerticalScrollMode" "-only-testing:VNReaderUITests/ReaderUITests/test14WideSpreadSurvivesJumpAndTurns" CODE_SIGNING_ALLOWED=NO
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+
+Selected result/warning/failure lines:
+	/private/tmp/vn-reader-build8-auto-ui.xcresult
+2026-11-10 22:58:23.123 appintentsmetadataprocessor[86335:18178032] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+Test Suite 'Selected tests' started at 2026-11-10 22:58:28.801.
+Test Suite 'VNReaderUITests.xctest' started at 2026-11-10 22:58:28.804.
+Test Suite 'ReaderUITests' started at 2026-11-10 22:58:28.804.
+Test Case '-[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress]' passed (108.499 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test05ProgressSurvivesBackgroundAndRelaunch]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test05ProgressSurvivesBackgroundAndRelaunch] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test05ProgressSurvivesBackgroundAndRelaunch]' passed (948.963 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test08VerticalScrollMode]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test08VerticalScrollMode] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+    t =    88.33s         Failed: Timed out while synthesizing event.
+/Users/yfwu/Developer/VN-Reader/.worktrees/build-8/UITests/ReaderUITests.swift:359: error: -[VNReaderUITests.ReaderUITests test08VerticalScrollMode] : Failed to swipe up Target Application 'org.yfwu.VNReader': Timed out while synthesizing event.
+Test Case '-[VNReaderUITests.ReaderUITests test08VerticalScrollMode]' failed (128.740 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test14WideSpreadSurvivesJumpAndTurns]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test14WideSpreadSurvivesJumpAndTurns] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test14WideSpreadSurvivesJumpAndTurns]' passed (43.347 seconds).
+Test Suite 'ReaderUITests' failed at 2026-11-10 23:18:58.359.
+	 Executed 4 tests, with 1 failure (0 unexpected) in 1229.549 (1229.555) seconds
+Test Suite 'VNReaderUITests.xctest' failed at 2026-11-10 23:18:58.360.
+	 Executed 4 tests, with 1 failure (0 unexpected) in 1229.549 (1229.556) seconds
+Test Suite 'Selected tests' failed at 2026-11-10 23:18:58.361.
+	 Executed 4 tests, with 1 failure (0 unexpected) in 1229.549 (1229.560) seconds
+Test session results, code coverage, and logs:
+	/tmp/vn-reader-build8-auto-ui.xcresult
+** TEST FAILED **

@@ -1,0 +1,5 @@
+2026-11-10T09:56:42Z SyncSmoke[macA] Syncing the library… books=0
+2026-11-10T09:56:45Z SyncSmoke[macA] Preparing book identities… books=1
+2026-11-10T09:56:45Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T09:56:48Z SyncSmoke[macA] Uploading comics. Keep Wi-Fi connected… books=1
+2026-11-10T09:56:50Z SyncSmoke[macA] This sync has completed books=1

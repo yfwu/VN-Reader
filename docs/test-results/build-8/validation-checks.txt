@@ -1,0 +1,2 @@
+Localization OK: 233 keys translated into en, zh-Hans, ja.
+git diff --check: passed (no output).

@@ -1,0 +1,164 @@
+Running actual app models offline; CKContainer access is a fatal test failure.
+Building for debugging...
+[Planning deferred tasks]
+[27 / 92]
+[30 / 93] ComicCore
+[32 / 93] CUnrar
+[34 / 146]
+[36 / 146]
+[41 / 146]
+[45 / 146]
+[48 / 146] CUnrar
+[53 / 146]
+[55 / 146]
+[57 / 146]
+[60 / 146]
+[61 / 146]
+[62 / 146] CUnrar
+[64 / 146]
+[68 / 146]
+[69 / 146] CUnrar
+[73 / 146]
+[76 / 146]
+[80 / 146]
+[82 / 146]
+[83 / 146]
+[85 / 146]
+[87 / 146]
+[89 / 146]
+[90 / 146] CUnrar
+[91 / 146] ComicCore
+[95 / 146] ComicCore
+[102 / 146] CUnrar
+[104 / 146] CUnrar
+[106 / 146] CUnrar
+[108 / 146] CUnrar
+[110 / 146] CUnrar
+[112 / 146] CUnrar
+[114 / 146] CUnrar
+[116 / 146] CUnrar
+[118 / 146] CUnrar
+[119 / 146] CUnrar
+[122 / 146] ComicCore
+[123 / 146] ComicCore
+[127 / 146] ComicCore
+[129 / 146] ComicCore-product
+[130 / 146] ComicCore-product
+[133 / 146] ComicCore
+[134 / 146] ComicCore
+[136 / 146] ComicCore
+[137 / 146] ComicCore
+[140 / 147] CUnrar
+[142 / 147] Audit-product
+[148 / 193]
+[152 / 193]
+[154 / 193]
+[158 / 193]
+[161 / 193]
+[165 / 193]
+[167 / 193]
+[171 / 193]
+[175 / 193]
+[177 / 193]
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-1m3womv9/Sources/Audit/ReaderViewModel.swift:44:78: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 42 |     var layout: PageLayout { settings.readerLayout(for: record) }
+ 43 |
+ 44 |     init(record: BookRecord, library: LibraryStore, settings: AppSettings = .shared) {
+    |                                                                              `- warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 45 |         self.record = record
+ 46 |         self.library = library
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-1m3womv9/Sources/Audit/UIStubs.swift:8:16: note: static property declared here
+ 6 | enum LibraryFilter { case all, unread, reading, finished, favorites }
+ 7 | @MainActor final class AppSettings {
+ 8 |     static let shared = AppSettings()
+   |                `- note: static property declared here
+ 9 |     let defaultDirection = ReadingDirection.leftToRight
+10 |     let defaultFitMode = PageFitMode.fitPage
+[181 / 193] Audit-product
+[182 / 193] Audit-product
+[184 / 193] Audit-product
+[185 / 193] Audit-product
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-1m3womv9/Sources/Audit/ReaderViewModel.swift:44:78: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 42 |     var layout: PageLayout { settings.readerLayout(for: record) }
+ 43 |
+ 44 |     init(record: BookRecord, library: LibraryStore, settings: AppSettings = .shared) {
+    |                                                                              `- warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 45 |         self.record = record
+ 46 |         self.library = library
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-1m3womv9/Sources/Audit/UIStubs.swift:8:16: note: static property declared here
+ 6 | enum LibraryFilter { case all, unread, reading, finished, favorites }
+ 7 | @MainActor final class AppSettings {
+ 8 |     static let shared = AppSettings()
+   |                `- note: static property declared here
+ 9 |     let defaultDirection = ReadingDirection.leftToRight
+10 |     let defaultFitMode = PageFitMode.fitPage
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-1m3womv9/Sources/Audit/ReaderViewModel.swift:260:17: warning: no 'async' operations occur within 'await' expression [#UnnecessaryEffectMarker]
+258 |         isPreparingShare = true
+259 |         let work = Task.detached(priority: .userInitiated) {
+260 |             try await SharedPageFiles.write(pages: pages, source: source, bookName: bookName)
+    |                 `- warning: no 'async' operations occur within 'await' expression [#UnnecessaryEffectMarker]
+261 |         }
+262 |         shareWork = work
+
+[#UnnecessaryEffectMarker]: <https://docs.swift.org/compiler/documentation/diagnostics/unnecessary-effect-marker>
+[187 / 193] Audit-product
+[188 / 193] Audit-product
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-1m3womv9/Sources/Audit/ReaderViewModel.swift:44:78: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 42 |     var layout: PageLayout { settings.readerLayout(for: record) }
+ 43 |
+ 44 |     init(record: BookRecord, library: LibraryStore, settings: AppSettings = .shared) {
+    |                                                                              `- warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 45 |         self.record = record
+ 46 |         self.library = library
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-1m3womv9/Sources/Audit/UIStubs.swift:8:16: note: static property declared here
+ 6 | enum LibraryFilter { case all, unread, reading, finished, favorites }
+ 7 | @MainActor final class AppSettings {
+ 8 |     static let shared = AppSettings()
+   |                `- note: static property declared here
+ 9 |     let defaultDirection = ReadingDirection.leftToRight
+10 |     let defaultFitMode = PageFitMode.fitPage
+[189 / 193] Audit-product
+[191 / 193] Audit-product
+Build complete! (18.59 sec)
+PASS: remote progress reaches a reader waiting for archive attachment
+PASS: stale attachment and initial callback cannot restore an older page
+PASS: passive attachment creates no new sync stamp
+PASS: passive opening leaves canonical progress unchanged before first fetch
+PASS: initial fetch wins over passive opening in the opposite event order
+PASS: fetched progress requests passive pager restoration
+PASS: same-page and stale reflow callbacks do not change logical focus or sync stamps
+PASS: explicit model jump carries user intent to the pager
+PASS: real navigation after a remote update produces a newer explicit position
+PASS: explicit navigation survives a real database save and reload
+PASS: remote update does not unexpectedly jump an actively navigating reader
+PASS: transient inactive/active requests fresh metadata without jumping to received remote progress
+PASS: passive reflow then close preserves the remote position and stamp
+PASS: background fetch does not move the inactive reader
+PASS: foreground restores latest merged progress without user intent
+PASS: foreground requests a nonblocking metadata synchronization
+PASS: late foreground fetch is adopted before the next deliberate navigation
+PASS: deliberate navigation after foreground fetch wins even after a future remote clock
+PASS: book open requests automatic synchronization without awaiting it
+PASS: duplicate open while loading does not request another checkpoint
+PASS: local archive opens while automatic network request is deferred
+PASS: book close requests one shared automatic checkpoint after local flush
+PASS: passive opening does not mutate canonical unread status or sync state
+PASS: local opening still appears as reading in filters and Continue
+PASS: local reading projection consistently leaves the unread filter
+PASS: local opening recency survives restart separately from canonical progress
+PASS: metadata editing and CloudKit record provider never leak local reading projection
+PASS: full metadata save from a projected UI record does not copy its opening timestamp
+PASS: local opening drives recent-reading sort without changing other books
+PASS: explicit local reset clears local opening activity
+PASS: newer remote reset is not hidden by older device-local opening activity
+PASS: corrupt optional reading activity does not block or alter the canonical catalogue
+PASS: failed optional activity write leaves canonical catalogue bytes and sync state unchanged
+PASS: offline-only opening still appears in Continue without cloud state
+PASS: offline reading navigation and persistence retain existing behavior
+PASS: final spread preserves exact focused page and marks completion separately
+PASS: remote single-page copy resumes at the focused logical page and retains completion
+All actual reader/library/progress merge checks passed; network and real preferences were forbidden.

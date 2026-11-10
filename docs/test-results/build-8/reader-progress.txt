@@ -1,0 +1,69 @@
+Building for debugging...
+[2 / 6] Audit-product
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-oyqnak3t/Sources/Audit/ReaderViewModel.swift:42:78: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 40 |     var layout: PageLayout { settings.readerLayout(for: record) }
+ 41 |
+ 42 |     init(record: BookRecord, library: LibraryStore, settings: AppSettings = .shared) {
+    |                                                                              `- warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 43 |         self.record = record
+ 44 |         self.library = library
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-oyqnak3t/Sources/Audit/UIStubs.swift:8:16: note: static property declared here
+ 6 | enum LibraryFilter { case all, unread, reading, finished, favorites }
+ 7 | @MainActor final class AppSettings {
+ 8 |     static let shared = AppSettings()
+   |                `- note: static property declared here
+ 9 |     let defaultDirection = ReadingDirection.leftToRight
+10 |     let defaultFitMode = PageFitMode.fitPage
+[4 / 8] Audit-product
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-oyqnak3t/Sources/Audit/ReaderViewModel.swift:42:78: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 40 |     var layout: PageLayout { settings.readerLayout(for: record) }
+ 41 |
+ 42 |     init(record: BookRecord, library: LibraryStore, settings: AppSettings = .shared) {
+    |                                                                              `- warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 43 |         self.record = record
+ 44 |         self.library = library
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-reader-progress-oyqnak3t/Sources/Audit/UIStubs.swift:8:16: note: static property declared here
+ 6 | enum LibraryFilter { case all, unread, reading, finished, favorites }
+ 7 | @MainActor final class AppSettings {
+ 8 |     static let shared = AppSettings()
+   |                `- note: static property declared here
+ 9 |     let defaultDirection = ReadingDirection.leftToRight
+10 |     let defaultFitMode = PageFitMode.fitPage
+[5 / 8] Audit-product
+[7 / 8] Audit-product
+Build complete! (1.26 sec)
+PASS: remote progress reaches a reader waiting for archive attachment
+PASS: stale attachment and initial callback cannot restore an older page
+PASS: passive attachment creates no new sync stamp
+PASS: passive opening leaves canonical progress unchanged before first fetch
+PASS: initial fetch wins over passive opening in the opposite event order
+PASS: fetched progress requests passive pager restoration
+PASS: same-page and stale reflow callbacks do not change logical focus or sync stamps
+PASS: explicit model jump carries user intent to the pager
+PASS: real navigation after a remote update produces a newer explicit position
+PASS: explicit navigation survives a real database save and reload
+PASS: remote update does not unexpectedly jump an actively navigating reader
+PASS: passive reflow then close preserves the remote position and stamp
+PASS: background fetch does not move the inactive reader
+PASS: foreground restores latest merged progress without user intent
+PASS: foreground requests a nonblocking metadata synchronization
+PASS: late foreground fetch is adopted before the next deliberate navigation
+PASS: deliberate navigation after foreground fetch wins even after a future remote clock
+PASS: passive opening does not mutate canonical unread status or sync state
+PASS: local opening still appears as reading in filters and Continue
+PASS: local reading projection consistently leaves the unread filter
+PASS: local opening recency survives restart separately from canonical progress
+PASS: metadata editing and CloudKit record provider never leak local reading projection
+PASS: full metadata save from a projected UI record does not copy its opening timestamp
+PASS: local opening drives recent-reading sort without changing other books
+PASS: explicit local reset clears local opening activity
+PASS: newer remote reset is not hidden by older device-local opening activity
+PASS: corrupt optional reading activity does not block or alter the canonical catalogue
+PASS: failed optional activity write leaves canonical catalogue bytes and sync state unchanged
+PASS: offline-only opening still appears in Continue without cloud state
+PASS: offline reading navigation and persistence retain existing behavior
+PASS: final spread preserves exact focused page and marks completion separately
+PASS: remote single-page copy resumes at the focused logical page and retains completion
+All actual reader/library/progress merge checks passed; network and real preferences were forbidden.

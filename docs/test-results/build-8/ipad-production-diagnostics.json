@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Redacted read-only evidence for the physical iPad to Mac TestFlight 7 Production sync scenario on 2026-11-10.",
+  "collection": {
+    "method": "Official devicectl exact-bundle version query and appDataContainer read-only copies; no app launch, installation, reset, or cloud write.",
+    "scope": "VN Reader only; no account identifiers, device identifiers, tokens, raw engine data, or private-container paths are included.",
+    "limitation": "The installed iPad CloudKit entitlement was not directly inspected. TestFlight update was confirmed by the user; the Production environment on Mac was verified separately."
+  },
+  "app": {
+    "version": "0.1.0",
+    "build": "7"
+  },
+  "library": {
+    "schemaVersion": 2,
+    "bookCount": 1,
+    "pageCount": 12,
+    "contentID": "0909c3e7bf66b9618a94525406cddf6599a7dd75d768534421380d7bd60bc466",
+    "persistedProgress": {
+      "zeroBasedPage": 7,
+      "humanPage": 8,
+      "lastReadAtUTC": "2026-11-10T14:31:21Z"
+    },
+    "syncProgressRegister": {
+      "zeroBasedPage": 7,
+      "humanPage": 8,
+      "stampUTC": "2026-11-10T14:31:21.583Z",
+      "stampCounter": 0
+    }
+  },
+  "savedSyncState": {
+    "schemaVersion": 1,
+    "cachedSystemFieldsCount": 1,
+    "uploadIDsCount": 0
+  },
+  "privateEngineFormatInference": {
+    "limitation": "These counts and timestamps were inferred from Apple's opaque persisted keyed-archive format. They are diagnostic observations, not public API guarantees or proof that a remote device applied the progress.",
+    "pendingRecordModificationsCount": 0,
+    "inFlightRecordModificationsCount": 0,
+    "pendingZoneChangesCount": 0,
+    "inFlightZoneChangesCount": 0,
+    "pendingAssetSyncsCount": 0,
+    "inFlightAssetSyncsCount": 0,
+    "zoneIDsNeedingToFetchChangesCount": 1,
+    "lastFetchDatabaseChangesUTC": "2026-11-10T14:35:17.122025Z",
+    "lastPushReceivedUTC": "2026-11-10T14:35:16.224824Z",
+    "cachedServerRecordCreatedUTC": "2026-11-10T14:24:58.167Z",
+    "cachedServerRecordModifiedUTC": "2026-11-10T14:35:15.527Z"
+  },
+  "subsequentMacObservation": {
+    "source": "Root agent's native UI verification after a fresh sync; not inferred from iPad engine state.",
+    "syncUTC": "2026-11-10T14:38:13Z",
+    "visibleHumanPage": 8,
+    "pageCount": 12
+  },
+  "conclusion": "The iPad had persisted and captured page 8 before the Mac visibly received it. This round demonstrates eventual reverse progress delivery; it does not establish an immediate-sync latency guarantee."
+}

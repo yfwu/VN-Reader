@@ -1,0 +1,28 @@
+vn-reader-build5-ios-tests.log
+Test Case '-[VNReaderUITests.ReaderUITests test01bEnglishLocalization]' passed (7.371 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test01cAddUserGuide]' passed (8.028 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test01EmptyLibrary]' passed (308.939 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test02ImportAndLibrary]' passed (13.909 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress]' passed (107.911 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test04RTLAndDirectionSwitchKeepsPage]' passed (36.427 seconds).
+/Users/yfwu/Developer/VN-Reader/UITests/ReaderUITests.swift:307: error: -[VNReaderUITests.ReaderUITests test05ProgressSurvivesBackgroundAndRelaunch] : XCTAssertTrue failed - 繼續閱讀：03 長條漫畫，第 3 頁，共 6 頁
+Test Case '-[VNReaderUITests.ReaderUITests test05ProgressSurvivesBackgroundAndRelaunch]' failed (24.181 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test06RenameDeleteAndMenu]' passed (26.340 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test07RepeatedOpenClose]' passed (56.295 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test08VerticalScrollMode]' passed (47.520 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test09EditInfoAndBatchEdit]' passed (3342.679 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test10SliderPreview]' passed (108.073 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test11Magnifier]' passed (40.375 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test12JumpToPageButton]' passed (15.372 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test13SharePage]' passed (18.874 seconds).
+	 Executed 15 tests, with 1 failure (0 unexpected) in 4162.295 (4162.307) seconds
+	 Executed 15 tests, with 1 failure (0 unexpected) in 4162.295 (4162.308) seconds
+	 Executed 15 tests, with 1 failure (0 unexpected) in 4162.295 (4162.310) seconds
+** TEST FAILED **
+vn-reader-release6-ios-targeted.log
+Test Case '-[VNReaderUITests.ReaderUITests test05ProgressSurvivesBackgroundAndRelaunch]' passed (36.371 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test06RenameDeleteAndMenu]' passed (982.311 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 1018.682 (1018.685) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 1018.682 (1018.693) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 1018.682 (1018.696) seconds
+** TEST SUCCEEDED **

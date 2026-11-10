@@ -1,0 +1,101 @@
+Running actual app models offline; CKContainer access is a fatal test failure.
+Building for debugging...
+[Planning deferred tasks]
+[27 / 92]
+[29 / 93] ComicCore
+[31 / 146]
+[33 / 146]
+[36 / 146]
+[40 / 146]
+[45 / 146]
+[48 / 146]
+[50 / 146]
+[54 / 146]
+[57 / 146]
+[58 / 146]
+[61 / 146]
+[64 / 146] CUnrar
+[68 / 146]
+[71 / 146] CUnrar
+[74 / 146]
+[78 / 146]
+[80 / 146] CUnrar
+[81 / 146]
+[82 / 146]
+[84 / 146] ComicCore
+[85 / 146] CUnrar
+[85 / 146] ComicCore
+[86 / 146] CUnrar
+[88 / 146] CUnrar
+[95 / 146] CUnrar
+[96 / 146] CUnrar
+[98 / 146] CUnrar
+[100 / 146] CUnrar
+[101 / 146] CUnrar
+[102 / 146] CUnrar
+[103 / 146] CUnrar
+[104 / 146] CUnrar
+[106 / 146] CUnrar
+[107 / 146] CUnrar
+[108 / 146] CUnrar
+[109 / 146] CUnrar
+[110 / 146] CUnrar
+[111 / 146] CUnrar
+[113 / 146] CUnrar
+[114 / 146] CUnrar
+[115 / 146] CUnrar
+[116 / 146] CUnrar
+[117 / 146] CUnrar
+[119 / 146] CUnrar
+[121 / 146] CUnrar
+[123 / 146] ComicCore
+[126 / 146] ComicCore
+[128 / 146] ComicCore-product
+[131 / 146] ComicCore
+[132 / 146] ComicCore
+[133 / 146] ComicCore
+[135 / 146] ComicCore
+[137 / 146] ComicCore
+[139 / 146] CUnrar
+[140 / 147]
+[142 / 147] Audit-product
+[148 / 192]
+[151 / 192]
+[156 / 192]
+[160 / 192]
+[164 / 192]
+[166 / 192]
+[170 / 192]
+[173 / 192]
+[174 / 192]
+[176 / 192]
+[178 / 192]
+[181 / 192] Audit-product
+[184 / 192] Audit-product
+[185 / 192] Audit-product
+[187 / 192] Audit-product
+[188 / 192] Audit-product
+[190 / 192] Audit-product
+Build complete! (20.49 sec)
+PASS: record provider excludes unsaved coalesced progress
+PASS: remote merge preserves newer coalesced progress
+PASS: remote merge still accepts unrelated remote author edit
+PASS: merged progress reaches durable snapshot
+PASS: incoming commit flushes pending edits on other books
+PASS: other book's pending progress also receives a sync stamp
+PASS: editing only title preserves remote author
+PASS: touched title is applied
+PASS: one closing reader cannot release another reader's protection
+PASS: last reader releases download protection
+PASS: save and reload does not invent a fresh progress edit from Date rounding
+PASS: resolved record conflict awaits a successful replacement send
+PASS: unhandled record conflict is never retried as if merged
+PASS: mixed conflict and network partial failure is not swallowed
+PASS: persistent conflicts stop after three total send attempts
+PASS: quota failure on replacement send remains a failure
+PASS: empty partial error cannot be mistaken for a resolved conflict
+PASS: nested conflict-only partial failures are safely retried
+PASS: incoming sync fails when library cannot be persisted
+PASS: failed incoming commit leaves published library intact
+PASS: failed incoming commit does not advance persisted sync system fields
+All offline coordinator checks passed. No CloudKit backend was allowed. Synthetic data: /var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-db7b47ma/data

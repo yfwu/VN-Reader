@@ -4,7 +4,7 @@
 
 | Item | Status | What is missing |
 |---|---|---|
-| Real-device verification (install, launch, import, read on iPad mini 6) | **Owner reported "works well" on their iPad (2026-11-05)** | Record model / iPadOS version; walk through the acceptance list on the device; signed IPA export still needs a paid Team. |
+| Real-device verification (install, launch, import, read on iPad mini 6) | **Owner reported "works well" on their iPad (2026-11-05)** | Record model / iPadOS version; walk through the acceptance list on the device; historical evidence predates current TestFlight distribution; see the current release verification record. |
 | Performance on iPad mini hardware | **Not measured** | Only Linux-container and simulator numbers exist; they are not iPad numbers. Measure with Instruments (Allocations, Time Profiler) on the device. |
 | Low-disk behaviour on a device | Unit-tested with an injected disk-space provider | Not exercised with a truly full device. |
 | Cloud (iCloud Drive / third-party File Provider) not-yet-downloaded files | Implemented (`NSFileCoordinator` + "正在從雲端下載…" state, cancellable) | Not exercised in CI (simulator has no signed-in iCloud). |
@@ -36,14 +36,18 @@
 
 ## Other known issues / ideas
 
+* Planned: a share button on the "書籤" tab that shares every bookmarked page at once. `SharedPageFiles.write` already takes a list of pages, but this needs a preparation progress and cancel step before the share sheet opens, and solid RAR books wait for extraction to reach each page. It should stay inside the reader: a second `BookPageSource` for an open book would take over the extraction's progress callback, and closing it would cancel the extraction.
+* The Photos permission prompt was checked on the simulator in English only. The other languages are compiled into `InfoPlist.strings` but have not been seen in the prompt, because `-AppleLanguages` does not reach the system process that shows it.
 * Sample books (≈1.6 MB, `UITests/Samples`) are test data for UI tests and screenshots. They are not part of the app; the `-seed-samples <folder>` launch argument imports them on the simulator.
 * iOS 27: the library search drawer with `displayMode: .automatic` never appeared, so it is now `.always`.
 * iOS 27.2 simulator (Xcode 27.2): in `test06RenameDeleteAndMenu` the tap on 儲存 in the rename alert does not land while the keyboard shows its suggestion bar; the same failure happens on the commit before metadata editing. It passes on the CI simulators (iOS 26.2). A simulator whose language is zh-Hant also gets the Zhuyin keyboard, which holds typed Latin text in composition; set its keyboard to US QWERTY before running UI tests locally.
 * Page turn animation can be disabled in Settings; rapid taps during an animation jump without animation (to avoid UIPageViewController glitches).
+* Mac Catalyst currently supports a single library/reader window. Multiple independent reader windows remain future work.
+* Library recovery preserves uncatalogued book folders and reports them, but an in-app recovery/import tool for those preserved folders is not implemented yet.
 * The library JSON is rewritten as a whole (fine for thousands of books; consider SQLite if libraries grow far beyond that).
-* The English, Simplified Chinese and Japanese translations in `App/Resources/Localizable.xcstrings` have not been reviewed by native speakers yet. Licence texts in Settings stay in English on purpose.
+* The English, Simplified Chinese and Japanese translations in `App/Resources/Localizable.xcstrings` and `InfoPlist.xcstrings` have not been reviewed by native speakers yet. Licence texts in Settings stay in English on purpose.
 
-## What you need to provide for real-device delivery
+## Historical setup instructions for another developer
 
 1. Apple Developer Program membership → your **Team ID**.
 2. On a Mac with Xcode 16+: sign in to that account in Xcode ▸ Settings ▸ Accounts.

@@ -37,12 +37,12 @@ TEXT = {
         "formats": "格式",
         "pages": [
             ("開始之前", None, "welcome", [
-                "VN Reader 是 iPad 的離線漫畫閱讀器，不需要帳號，也不會連網。",
+                "VN Reader 支援 iPad 與 Mac。本機漫畫可離線閱讀，不需 VN Reader 帳號；iCloud 同步由你選擇開啟。",
                 "支援 CBZ 與 CBR（RAR4、RAR5），頁面可以是 JPEG、PNG、WebP、GIF、HEIC 或 AVIF。",
                 "App 不附帶漫畫，請匯入你自己的檔案。這本說明也是書庫裡的一本書，可以直接用它練習接下來介紹的操作。",
                 "加密、分卷、7z 或 PDF 檔案無法匯入，App 會說明原因。"]),
             ("匯入漫畫", None, "import", [
-                "1:點書庫右上角的「+」，從「檔案」App 選擇一本或多本。iCloud 雲碟的檔案會先下載。",
+                "1:點書庫右上角的「+」，在檔案選擇器選擇一本或多本。iCloud 雲碟的檔案會先下載。",
                 "2:也可以把檔案拖進書庫，或從其他 App 用「打開方式」、AirDrop 傳給 VN Reader。",
                 "3:檔案會複製到 App 內，之後可離線閱讀，原始檔不受影響。內容相同的檔案不會重複匯入。",
                 "數 GB 的檔案也能匯入。檔案很大時可能需要一點時間，建議留在 VN Reader 直到完成。"]),
@@ -50,8 +50,8 @@ TEXT = {
                 "1:「{library.continue}」帶你回到上次讀到的地方。",
                 "2:用搜尋列找書名、系列、作者或出版社。",
                 "3:「{library.sort}」可以排序，也能只看{status.unread}、{status.reading}、{status.finished}或{library.filter.favorites}的書。",
-                "4:點書上的「⋯」或長按封面，可以{book.rename}、{book.info.edit}、{book.favorite}或{book.delete}。刪除只影響 App 內的副本。",
-                "5:點「{library.select}」可以一次編輯多本書的資訊。"]),
+                "4:點「⋯」管理書籍。未同步書籍可刪除本機副本；同步書籍可「{sync.removedownload}」，雲端原檔保留。",
+                "5:點圓圈勾選圖示（{library.select}）可批次編輯書籍資訊。"]),
             ("翻頁", None, "zones", [
                 "向左滑動或點畫面右側，到下一頁；向右滑動或點左側，回上一頁。",
                 "點畫面中央，顯示或隱藏工具列。",
@@ -59,10 +59,11 @@ TEXT = {
                 "接上實體鍵盤時，可以用方向鍵和空白鍵翻頁。",
                 "不想點按翻頁的話，可以在「{settings.title}」關閉「{settings.tap}」。"]),
             ("工具列", "點畫面中央叫出工具列。", "toolbar", [
-                "1:{reader.back}", "2:{reader.jump}：輸入頁碼，直接跳到那一頁。", "3:{reader.bookmark.add}", "4:{reader.settings}",
-                "5:{reader.thumbnails}：瀏覽所有頁面，點一下就跳過去。",
-                "6:拖動滑桿，快速移到任何一頁。",
-                "7:目前頁碼。點一下也可以跳頁。"]),
+                "1:{reader.back}", "2:{reader.jump}：輸入頁碼，直接跳到那一頁。", "3:{reader.bookmark.add}",
+                "4:{reader.share}：傳給其他 App，或存到照片。", "5:{reader.settings}",
+                "6:{reader.thumbnails}：瀏覽所有頁面，點一下就跳過去。",
+                "7:拖動滑桿，快速移到任何一頁。",
+                "8:目前頁碼。點一下也可以跳頁。"]),
             ("滑桿預覽", "拖動滑桿時，不必放開手指就能看到要去的頁面。", "fan", [
                 "1:按住滑桿左右拖動，上方會展開目標頁和前後的頁面。",
                 "2:最前面那張是目標頁，下方會顯示頁碼。放開手指就跳到這一頁。",
@@ -87,9 +88,11 @@ TEXT = {
                 "在「{reader.thumbnails}」切換到「{reader.bookmarks}」，可以看到所有標記過的頁面。",
                 "閱讀進度會自動儲存。下次打開同一本書，會回到離開時的那一頁。"]),
             ("隱私與這本說明", None, "shield", [
-                "App 不使用網路、不蒐集資料，也沒有廣告或追蹤。",
-                "書籍、進度和書籤都只存在 App 自己的儲存空間。刪除 App 時會一併刪除。",
-                "讀完可以刪除這本說明。想再看的話，到「{settings.title}」的「{settings.about}」點「{guide.add}」。"]),
+                "沒有廣告、分析或追蹤。iCloud 同步預設關閉；目前不支援 WebDAV。",
+                "在「{settings.title}」啟用「{sync.title}」時需登入 Apple iCloud 帳號。書籍、封面、資訊、進度與書籤會上傳並佔用 iCloud 空間。",
+                "啟用後，開啟或回到 App、切換書籍時會自動同步；需要重試時可按「{sync.now}」。",
+                "其他裝置先取得封面與資訊，開書時才下載。關閉同步保留資料；移除下載或刪除 App 只清除本機副本，雲端原檔保留。",
+                "需要這本說明時，到「{settings.title}」的「{settings.about}」點「{guide.add}」。"]),
         ],
     },
     "en": {
@@ -99,12 +102,12 @@ TEXT = {
         "formats": "Formats",
         "pages": [
             ("Before You Start", None, "welcome", [
-                "VN Reader is an offline comic reader for iPad. It needs no account and never goes online.",
+                "VN Reader works on iPad and Mac. Read local comics offline without a VN Reader account. iCloud sync is optional.",
                 "It opens CBZ and CBR (RAR4, RAR5) files, with pages in JPEG, PNG, WebP, GIF, HEIC or AVIF.",
                 "The app comes without comics, so import your own files. This guide is a book in your library too: use it to try everything described on the next pages.",
                 "Encrypted, multi-volume, 7z and PDF files can't be imported. The app explains why."]),
             ("Import Comics", None, "import", [
-                "1:Tap + at the top right of the library and pick one or more books in the Files app. Files in iCloud Drive are downloaded first.",
+                "1:Use + at the top right of the library to choose one or more books in the file picker. Files in iCloud Drive are downloaded first.",
                 "2:You can also drag files into the library, or send them to VN Reader with Open in or AirDrop from another app.",
                 "3:Books are copied into the app so they read offline, and your original files stay as they are. A file with identical content isn't imported twice.",
                 "Files of several GB can be imported too. Very large files can take a while, so stay in VN Reader until it finishes."]),
@@ -112,8 +115,8 @@ TEXT = {
                 "1:{library.continue} takes you back to where you stopped.",
                 "2:Search by title, series, writer or publisher.",
                 "3:{library.sort} changes the order, or shows only books that are {status.unread}, {status.reading}, {status.finished} or in {library.filter.favorites}.",
-                "4:Tap … on a book or touch and hold its cover for Rename, Edit Info, Add to Favorites and Delete. Deleting only removes the app's copy.",
-                "5:Tap {library.select} to edit the info of several books at once."]),
+                "4:Use … to manage a book. Delete removes an unsynced local copy. For synced books, {sync.removedownload} keeps the cloud original.",
+                "5:Tap the circled checkmark ({library.select}) to edit several books."]),
             ("Turning Pages", None, "zones", [
                 "Swipe left or tap the right side for the next page. Swipe right or tap the left side to go back.",
                 "Tap the center to show or hide the toolbar.",
@@ -121,10 +124,11 @@ TEXT = {
                 "With a hardware keyboard, use the arrow keys and the space bar.",
                 "Prefer swiping only? Turn off “{settings.tap}” in {settings.title}."]),
             ("Toolbar", "Tap the center of the page to bring up the toolbar.", "toolbar", [
-                "1:{reader.back}", "2:{reader.jump}: type a page number to go straight there.", "3:{reader.bookmark.add}", "4:{reader.settings}",
-                "5:{reader.thumbnails}: browse all pages and tap one to jump to it.",
-                "6:Drag the slider to move quickly to any page.",
-                "7:The current page. Tap it to jump to a page, too."]),
+                "1:{reader.back}", "2:{reader.jump}: type a page number to go straight there.", "3:{reader.bookmark.add}",
+                "4:{reader.share}: send it to an app or save it to Photos.", "5:{reader.settings}",
+                "6:{reader.thumbnails}: browse all pages and tap one to jump to it.",
+                "7:Drag the slider to move quickly to any page.",
+                "8:The current page. Tap it to jump to a page, too."]),
             ("Slider Preview", "See the page you're heading for while your finger is still on the slider.", "fan", [
                 "1:Hold the slider and drag. The target page and its neighbors fan out above it.",
                 "2:The card in front is the target, with its page number below. Lift your finger to go there.",
@@ -149,9 +153,11 @@ TEXT = {
                 "In {reader.thumbnails}, switch to {reader.bookmarks} to see every marked page.",
                 "Your progress is saved automatically. Open the book again and you're back on the same page."]),
             ("Privacy and This Guide", None, "shield", [
-                "The app uses no network and collects no data. There are no ads and no tracking.",
-                "Books, progress and bookmarks stay in the app's own storage. Deleting the app deletes them.",
-                "You can delete this guide when you're done. To read it again, go to {settings.title}, {settings.about}, and tap {guide.add}."]),
+                "No ads, analytics or tracking. iCloud sync is off by default; WebDAV is not supported.",
+                "Enable {sync.title} in {settings.title} with your Apple iCloud account. Books, covers, details, progress and bookmarks upload to your iCloud storage.",
+                "Once enabled, sync runs when you open or return to the app and when you switch books. Use {sync.now} to retry.",
+                "Other devices receive covers and details first, then download books when opened. Turning sync off preserves data. Removing downloads or deleting the app removes local copies; cloud originals remain.",
+                "To add this guide, go to {settings.title}, {settings.about}, and choose {guide.add}."]),
         ],
     },
 }
@@ -311,9 +317,11 @@ def diagram_library(d, y, lang):
     badge(d, x1 - 110, y0 + 134, 2, lang)
     badge(d, sort_x - 96, y0 + 42, 3, lang)
     badge(d, x0 + 44 + 232 + 95, y0 + 410, 4, lang)
-    w = load_font(lang, 34).getlength(both("library.select"))
-    d.text((sort_x - 150 - w, y0 + 42), both("library.select"), fill=ACCENT, font=load_font(lang, 34), anchor="lm")
-    badge(d, sort_x - 200 - w, y0 + 42, 5, lang)
+    select_x, select_y = sort_x - 240, y0 + 42
+    d.ellipse([select_x - 22, select_y - 22, select_x + 22, select_y + 22], outline=ACCENT, width=5)
+    d.line([(select_x - 12, select_y), (select_x - 3, select_y + 9),
+            (select_x + 13, select_y - 10)], fill=ACCENT, width=5, joint="curve")
+    badge(d, select_x - 88, select_y, 5, lang)
     return 590
 
 
@@ -340,37 +348,43 @@ def diagram_zones(d, y, lang):
 
 
 def diagram_toolbar(d, y, lang):
-    box = (MARGIN + 22, y + 22, W - MARGIN - 22, y + 450)
+    box = (MARGIN + 22, y + 22, W - MARGIN - 22, y + 364)
     tablet(d, box)
     x0, y0, x1, y1 = box
     mid = (x0 + x1) // 2
-    mini_page(d, (mid - 130, y0 + 120, mid + 130, y1 - 120), 3)
+    mini_page(d, (mid - 90, y0 + 112, mid + 90, y1 - 112), 3)
     d.rectangle([x0, y0, x1, y0 + 100], fill=BAR)
     d.rectangle([x0, y1 - 100, x1, y1], fill=BAR)
     d.line([(x0 + 54, y0 + 28), (x0 + 30, y0 + 50), (x0 + 54, y0 + 72)], fill=ACCENT, width=7, joint="curve")
     badge(d, x0 + 116, y0 + 50, 1, lang)
-    d.text((x1 - 380, y0 + 50), "#", fill=ACCENT, font=load_font("en", 56, True), anchor="mm")
-    badge(d, x1 - 310, y0 + 50, 2, lang)
-    ribbon(d, x1 - 220, y0 + 26, 18, 52, ACCENT)
-    badge(d, x1 - 150, y0 + 50, 3, lang)
+    d.text((x1 - 500, y0 + 50), "#", fill=ACCENT, font=load_font("en", 56, True), anchor="mm")
+    badge(d, x1 - 430, y0 + 50, 2, lang)
+    ribbon(d, x1 - 340, y0 + 26, 18, 52, ACCENT)
+    badge(d, x1 - 270, y0 + 50, 3, lang)
+    sx, sy = x1 - 170, y0 + 52
+    d.line([(sx - 12, sy - 8), (sx - 24, sy - 8), (sx - 24, sy + 30), (sx + 24, sy + 30), (sx + 24, sy - 8), (sx + 12, sy - 8)],
+           fill=ACCENT, width=5, joint="curve")
+    d.line([(sx, sy + 12), (sx, sy - 32)], fill=ACCENT, width=5)
+    d.line([(sx - 13, sy - 19), (sx, sy - 32), (sx + 13, sy - 19)], fill=ACCENT, width=5, joint="curve")
+    badge(d, sx, y0 + 142, 4, lang)
     for i, knob in enumerate((30, -14, 18)):
         ly = y0 + 34 + i * 16
         d.line([x1 - 96, ly, x1 - 36, ly], fill=ACCENT, width=4)
         d.ellipse([x1 - 66 + knob - 6, ly - 6, x1 - 66 + knob + 6, ly + 6], fill=ACCENT)
-    badge(d, x1 - 66, y0 + 142, 4, lang)
+    badge(d, x1 - 66, y0 + 142, 5, lang)
     by = y1 - 50
     for i in range(3):
         for j in range(3):
             gx, gy = x0 + 28 + i * 18, by - 24 + j * 18
             d.rectangle([gx, gy, gx + 12, gy + 12], fill=ACCENT)
-    badge(d, x0 + 130, by, 5, lang)
+    badge(d, x0 + 130, by, 6, lang)
     d.line([x0 + 210, by, x1 - 280, by], fill=LINE, width=8)
     d.line([x0 + 210, by, mid + 40, by], fill=ACCENT, width=8)
     d.ellipse([mid + 16, by - 24, mid + 64, by + 24], fill=SCREEN, outline=LINE, width=3)
-    badge(d, mid + 40, by - 76, 6, lang)
+    badge(d, mid + 40, by - 76, 7, lang)
     d.text((x1 - 180, by), "12 / 30", fill=INK, font=load_font("en", 36), anchor="mm")
-    badge(d, x1 - 58, by, 7, lang)
-    return 480
+    badge(d, x1 - 58, by, 8, lang)
+    return 394
 
 
 def diagram_fan(d, y, lang):

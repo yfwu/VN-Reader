@@ -28,7 +28,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: apt-get update -qq && apt-get install -y -qq zlib1g-dev
-      - run: cd Packages/ComicCore && swift test 2>&1 | tee ../../core-linux.log
+      - name: ComicCore tests (Linux)
+        shell: bash
+        run: |
+          set -o pipefail
+          cd Packages/ComicCore
+          swift test 2>&1 | tee ../../core-linux.log
 
   apple:
     name: Xcode build, tests, device build
@@ -60,6 +65,13 @@ jobs:
           xcodebuild build-for-testing -project VNReader.xcodeproj -scheme VNReader -configuration Debug \
             -destination 'generic/platform=iOS Simulator' -derivedDataPath build/dd CODE_SIGNING_ALLOWED=NO \
             2>&1 | tee artifacts/build-for-testing.log | grep -E '(error:|warning: .*(deprecated|never|unused)|\*\* )'
+          test "${PIPESTATUS[0]}" -eq 0
+      - name: Build Mac Catalyst (unsigned)
+        timeout-minutes: 15
+        run: |
+          xcodebuild build -project VNReader.xcodeproj -scheme VNReader -configuration Release \
+            -destination 'generic/platform=macOS,variant=Mac Catalyst' -derivedDataPath build/mac-ci CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee artifacts/build-catalyst.log | grep -E '(error:|warning:.*deprecated|\*\* )'
           test "${PIPESTATUS[0]}" -eq 0
       - name: UI tests (iPad mini 6 simulator)
         id: ui_mini

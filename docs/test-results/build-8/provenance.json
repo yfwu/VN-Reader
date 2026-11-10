@@ -1,0 +1,107 @@
+{
+  "release": "0.1.0 (8)",
+  "capturedAt": "2026-11-10T10:52:12.003976+00:00",
+  "sourceRoot": "/Users/yfwu/Developer/VN-Reader/.worktrees/build-8",
+  "branch": "codex/mac-reader-layout",
+  "gitBaseCommit": "8af02b690cafb117b5e840d0a10a874e3b170fc3",
+  "sourceState": "Uncommitted isolated working tree. The retained historical v1 source snapshot and v1/v2 Release archives predate the current compact-glass and progress corrections. Current validation is indexed separately; no current Release archive is attested.",
+  "sourceFileCount": 330,
+  "sourceManifest": "docs/test-results/build-8/source-inputs.sha256",
+  "localSourceSnapshot": "build/release-8-provenance/source-inputs.zip",
+  "sourceSnapshotSHA256": "3026c22a90614e441c1863a123f87961d9389f725cd47c5cb8f0956ef018b851",
+  "artifactManifest": "docs/test-results/build-8/artifact-files.sha256",
+  "artifactFileCount": 46,
+  "archives": {
+    "ios": "build/release-8-ios/VNReader.xcarchive",
+    "mac": "build/release-8-mac/VNReader.xcarchive"
+  },
+  "uploadSucceeded": false,
+  "nativeMacVisualVerification": "Compact glass, dedicated viewport, default double pages, hidden library controls, settings/thumbnails, full screen and complete wide image observed before the progress correction; see MAC_UI_SMOKE.md. Current signed Mac Debug compile passed, but remaining native interaction cases are not inferred passed.",
+  "distributionExport": "Xcode account became available again; both v2 local Production exports succeeded. Build 8 upload has never been attempted and is on hold at user request.",
+  "checks": {
+    "readerLayoutModel": 20,
+    "readerControllerAndGeometry": 50,
+    "corePassed": 91,
+    "coreStressSkipped": 2,
+    "spreadInvariantCombinations": 8188,
+    "iPadUIScenariosPassed": 4,
+    "localizationKeys": 233,
+    "readerProgressModel": 32,
+    "coordinatorRegression": 21,
+    "persistenceRegression": 12,
+    "scope": "32-model/50-controller tests, prior 4/4 selected full-app run plus final affected vertical 1/1 rerun, and earlier unchanged-Core suite. Physical Production evidence is maintained separately and remains excluded while ongoing.",
+    "iPadUIFinalVerticalRerunPassed": 1
+  },
+  "archiveVerification": "docs/test-results/build-8/archive-verification.json",
+  "releaseNotesDraft": "docs/test-results/build-8/testflight-notes.json",
+  "releaseHold": {
+    "requestedBy": "user",
+    "instruction": "Do not deliver or upload build 8 until iCloud reading-progress sync testing is complete. Continue local UI and sync work.",
+    "recordedAt": "2026-11-10T13:53:10.315860+00:00",
+    "status": "active",
+    "requiredEvidence": "Physical Mac+iPad Production reading-progress synchronization, with explicit distinction between Build 7 transport and Build 8 correction tests; followed by final source freeze/rearchive/export verification."
+  },
+  "currentWork": [
+    "Both physical clients confirmed TestFlight 7; root-coordinated Production progress round-trip validation ongoing in PHYSICAL_PRODUCTION_SYNC.md",
+    "Remaining native Mac interaction checks",
+    "Rebuild final corrected release artifacts only after release gates; no Build 8 upload attempted"
+  ],
+  "retainedReleaseCandidates": {
+    "status": "STALE — do not upload as corrected Build 8",
+    "reason": "Predate latest compact-glass and reading-progress corrections",
+    "iosV2": "build/release-8-ios-v2/VNReader.xcarchive",
+    "macV2": "build/release-8-mac-v2/VNReader.xcarchive",
+    "localProductionExport": "Both v2 exports succeeded historically; no current corrected release export is claimed"
+  },
+  "currentValidation": {
+    "capturedAt": "2026-11-10T14:34:13.334499+00:00",
+    "captureScope": "Post-test source and durable evidence snapshot; not build-time attestation and not a Release archive",
+    "sourceManifest": "docs/test-results/build-8/validation-source-inputs.sha256",
+    "sourceFileCount": 338,
+    "artifactManifest": "docs/test-results/build-8/validation-artifacts.sha256",
+    "readerProgressChecks": 32,
+    "UIKitChecks": 50,
+    "fullAppUI": {
+      "passed": 4,
+      "failed": 0,
+      "selectedTests": [
+        "03",
+        "05",
+        "08",
+        "14"
+      ],
+      "elapsedTestSeconds": 231.132,
+      "device": "iPad mini (A20 Pro)",
+      "os": "iOS 27.2 Simulator",
+      "runtimeWarnings": 4,
+      "summary": "docs/test-results/build-8/ipad-progress-ui-summary.json",
+      "resultBundle": "/private/tmp/vn-reader-build8-progress-ui.xcresult",
+      "sourceStage": "Before final one-line vertical intent adjustment; followed by affected test08 rerun"
+    },
+    "macDebugBuild": {
+      "result": "BUILD SUCCEEDED",
+      "signed": true,
+      "scope": "Compilation/signing only; no current runtime transport assertion",
+      "log": "docs/test-results/build-8/mac-vertical-final-build.txt",
+      "sourceStage": "After final vertical intent adjustment"
+    },
+    "physicalProductionSync": "Ongoing, root-owned PHYSICAL_PRODUCTION_SYNC.md; deliberately excluded from evidence hashes until finalized. No completed round-trip pass inferred here.",
+    "finalVerticalUI": {
+      "passed": 1,
+      "failed": 0,
+      "selectedTests": [
+        "08"
+      ],
+      "elapsedTestSeconds": 44.913,
+      "device": "iPad mini (A20 Pro)",
+      "os": "iOS 27.2 Simulator",
+      "runtimeWarnings": 1,
+      "sourceStage": "After final vertical intent adjustment",
+      "summary": "docs/test-results/build-8/ipad-vertical-final-summary.json",
+      "resultBundle": "/private/tmp/vn-reader-build8-vertical-final.xcresult"
+    },
+    "excludedOngoingEvidence": [
+      "docs/test-results/build-8/PHYSICAL_PRODUCTION_SYNC.md"
+    ]
+  }
+}

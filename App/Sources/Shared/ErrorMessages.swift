@@ -13,6 +13,14 @@ enum ErrorMessages {
     }
 
     static func explain(_ error: Error) -> ErrorExplanation {
+        if let e = error as? LibraryDatabase.PersistenceError {
+            let message: String
+            switch e {
+            case .unavailable: message = L10n.libraryUnavailable
+            case .unsupportedVersion: message = L10n.libraryUnsupportedVersion
+            }
+            return ErrorExplanation(title: L10n.libraryTitle, message: message)
+        }
         if let e = error as? ComicError { return explain(e) }
         if error is CancellationError { return explain(ComicError.cancelled) }
         let ns = error as NSError

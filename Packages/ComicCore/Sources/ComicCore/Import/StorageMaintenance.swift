@@ -4,12 +4,13 @@ import Foundation
 public enum StorageMaintenance {
     public struct Report: Equatable {
         public var removedStagingJobs = 0
-        public var removedOrphanBooks = 0
+        public var preservedOrphanBooks = 0
         public var removedOrphanCaches = 0
     }
 
-    /// Removes interrupted imports, book folders without a library record, and
-    /// caches of books that no longer exist.
+    /// Removes interrupted staging jobs and orphaned caches. Managed book folders
+    /// without records are preserved: a recovered or interrupted database may not
+    /// mention a complete import. They must survive every subsequent launch too.
     @discardableResult
     public static func cleanUp(paths: LibraryPaths, knownBooks: Set<UUID>) -> Report {
         let fm = FileManager.default
@@ -26,7 +27,12 @@ public enum StorageMaintenance {
                 }
             }
         }
-        sweep(paths.booksDir, counter: &report.removedOrphanBooks)
+        if let items = try? fm.contentsOfDirectory(at: paths.booksDir, includingPropertiesForKeys: nil) {
+            report.preservedOrphanBooks = items.filter {
+                guard let id = UUID(uuidString: $0.lastPathComponent) else { return true }
+                return !knownBooks.contains(id)
+            }.count
+        }
         sweep(paths.extractedCacheDir, counter: &report.removedOrphanCaches)
         sweep(paths.thumbnailCacheDir, counter: &report.removedOrphanCaches)
         return report

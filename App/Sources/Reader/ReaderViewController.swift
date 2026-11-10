@@ -8,7 +8,7 @@ import ComicCore
 /// Commands the view model sends to whichever reading view is active.
 @MainActor
 protocol ReaderPaging: AnyObject {
-    func go(toPage page: Int, animated: Bool)
+    func go(toPage page: Int, animated: Bool, userInitiated: Bool)
     func reloadForSettings()
     func widePagesChanged()
     func pagesOnScreen() -> [PageOnScreen]
@@ -21,6 +21,9 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
     private(set) var units: [[Int]] = []
     private var currentUnit = 0
     private var isTransitioning = false
+    private var transitionID: UUID?
+    private var interactiveTransitionID: UUID?
+    private var pendingPage: (page: Int, userInitiated: Bool)?
     private var lastLayoutSize: CGSize = .zero
 
     var loader: PageImageLoader? { model.loader }
@@ -54,7 +57,7 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
         pagerScrollView?.semanticContentAttribute = .forceLeftToRight
         view.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:))))
         rebuildUnits(size: view.bounds.size)
-        showUnit(unitIndex(containing: model.currentPage), animated: false)
+        showUnit(unitIndex(containing: model.currentPage), animated: false, focusedPage: model.currentPage, userInitiated: false)
         model.pager = self
     }
 
@@ -64,25 +67,30 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
         super.viewDidLayoutSubviews()
         let size = view.bounds.size
         guard size != lastLayoutSize, size.width > 0 else { return }
-        let changedOrientation = (size.width > size.height) != (lastLayoutSize.width > lastLayoutSize.height)
+        let changedSpreadMode = prefersSpreads(size: size) != prefersSpreads(size: lastLayoutSize)
         lastLayoutSize = size
         model.containerSizeChanged(size, scale: view.window?.screen.scale ?? traitCollection.displayScale)
-        if changedOrientation && model.record.layout == .double {
-            let page = model.currentPage
-            rebuildUnits(size: size)
-            showUnit(unitIndex(containing: page), animated: false)
-        }
+        if changedSpreadMode { rebuildPreservingPage() }
     }
 
     // MARK: Units (single pages or spreads)
 
     var usesSpreads: Bool {
-        model.record.layout == .double && view.bounds.width > view.bounds.height
+        prefersSpreads(size: view.bounds.size)
+    }
+
+    private func prefersSpreads(size: CGSize) -> Bool {
+        guard model.layout == .double else { return false }
+#if targetEnvironment(macCatalyst)
+        return true
+#else
+        return size.width > size.height
+#endif
     }
 
     private func rebuildUnits(size: CGSize) {
         let count = model.pageCount
-        if model.record.layout == .double && size.width > size.height {
+        if prefersSpreads(size: size) {
             let layout = SpreadLayout(pageCount: count, coverAlone: model.settings.coverAlone,
                                       shift: model.settings.shiftSpreads, widePages: model.widePages)
             units = layout.spreads.map(\.pages)
@@ -105,14 +113,23 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
         return SpreadPageController(unit: unit, pages: units[unit], reader: self)
     }
 
+    /// An image can finish decoding after its original pairing became obsolete.
+    /// Neighbour controllers are valid too, but known wide pages must stand alone.
+    func canDisplay(_ controller: SpreadPageController) -> Bool {
+        units.indices.contains(controller.unit) && units[controller.unit] == controller.pages &&
+        (controller.pages.count == 1 || Set(controller.pages).isDisjoint(with: model.widePages))
+    }
+
     private var pagerScrollView: UIScrollView? {
         pageVC?.view.subviews.compactMap { $0 as? UIScrollView }.first
     }
 
     // MARK: Navigation
 
-    private func showUnit(_ unit: Int, animated: Bool) {
+    private func showUnit(_ unit: Int, animated: Bool, focusedPage: Int? = nil, userInitiated: Bool) {
         guard let vc = makeController(unit) else { return }
+        let page = focusedPage.flatMap { vc.pages.contains($0) ? $0 : nil } ?? vc.pages.first ?? 0
+        guard !isTransitioning else { queuePage(page, userInitiated: userInitiated); return }
         let forward = unit >= currentUnit
         // LTR: the next screen enters from the right (.forward). RTL: from the left.
         let nav: UIPageViewController.NavigationDirection = (forward == (direction == .leftToRight)) ? .forward : .reverse
@@ -120,23 +137,42 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
         currentUnit = unit
         if animate {
             isTransitioning = true
+            let id = UUID()
+            transitionID = id
             pageVC.setViewControllers([vc], direction: nav, animated: true) { [weak self] _ in
-                guard let self else { return }
-                self.isTransitioning = false
-                // Work around UIPageViewController keeping stale neighbours after
-                // programmatic animated transitions.
-                DispatchQueue.main.async { self.pageVC.setViewControllers([vc], direction: nav, animated: false) }
+                self?.finishTransition(id, focusedPage: page, userInitiated: false)
             }
         } else {
             pageVC.setViewControllers([vc], direction: nav, animated: false)
         }
-        pagerScrollView?.isScrollEnabled = true
-        unitDidChange()
+        pagerScrollView?.isScrollEnabled = !animate
+        unitDidChange(focusedPage: page, userInitiated: userInitiated)
     }
 
-    private func unitDidChange() {
+    /// Keep the old unit map stable until UIKit finishes the transition. Rebuild
+    /// from the latest sizes/settings, never reinstall a captured old controller.
+    private func finishTransition(_ id: UUID, focusedPage: Int, userInitiated: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.transitionID == id, self.model.pager === self else { return }
+            self.transitionID = nil
+            self.isTransitioning = false
+            // A completed user swipe takes priority over a remote restore queued
+            // while it was in flight. An explicit queued user jump still wins.
+            let pending = self.pendingPage
+            let navigation = userInitiated && pending?.userInitiated != true
+                ? (page: focusedPage, userInitiated: true)
+                : pending ?? (page: focusedPage, userInitiated: userInitiated)
+            self.pendingPage = nil
+            self.rebuildUnits(size: self.view.bounds.size)
+            self.showUnit(self.unitIndex(containing: navigation.page), animated: false, focusedPage: navigation.page, userInitiated: navigation.userInitiated)
+        }
+    }
+
+    private func unitDidChange(focusedPage: Int? = nil, userInitiated: Bool) {
         guard units.indices.contains(currentUnit) else { return }
-        model.pageDidChange(units[currentUnit].first ?? 0, visiblePages: units[currentUnit])
+        let pages = units[currentUnit]
+        let page = focusedPage.flatMap { pages.contains($0) ? $0 : nil } ?? pages.first ?? 0
+        model.pageDidChange(page, visiblePages: pages, userInitiated: userInitiated)
         prefetch()
     }
 
@@ -150,10 +186,18 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
         loader.prefetch(pages)
     }
 
-    func go(toPage page: Int, animated: Bool) {
-        let u = unitIndex(containing: max(0, min(page, model.pageCount - 1)))
-        guard u != currentUnit else { return }
-        showUnit(u, animated: animated && abs(u - currentUnit) == 1)
+    func go(toPage page: Int, animated: Bool, userInitiated: Bool) {
+        let page = max(0, min(page, model.pageCount - 1))
+        guard !isTransitioning else { queuePage(page, userInitiated: userInitiated); return }
+        let u = unitIndex(containing: page)
+        if u == currentUnit { unitDidChange(focusedPage: page, userInitiated: userInitiated); return }
+        showUnit(u, animated: animated && abs(u - currentUnit) == 1, focusedPage: page, userInitiated: userInitiated)
+    }
+
+    private func queuePage(_ page: Int, userInitiated: Bool) {
+        // A remote update cannot displace an explicit jump awaiting animation.
+        guard userInitiated || pendingPage?.userInitiated != true else { return }
+        pendingPage = (page, userInitiated)
     }
 
     func perform(_ action: ReaderNavigation.Action) {
@@ -161,9 +205,11 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
         case .toggleChrome:
             model.toggleChrome()
         case .next:
-            if currentUnit + 1 < units.count { showUnit(currentUnit + 1, animated: true) } else { model.flash(L10n.lastPage) }
+            guard !isTransitioning else { return }
+            if currentUnit + 1 < units.count { showUnit(currentUnit + 1, animated: true, userInitiated: true) } else { model.flash(L10n.lastPage) }
         case .previous:
-            if currentUnit > 0 { showUnit(currentUnit - 1, animated: true) } else { model.flash(L10n.firstPage) }
+            guard !isTransitioning else { return }
+            if currentUnit > 0 { showUnit(currentUnit - 1, animated: true, userInitiated: true) } else { model.flash(L10n.firstPage) }
         }
     }
 
@@ -180,36 +226,30 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
 
     /// Wide (already two-page) images were discovered: re-pair spreads in place.
     func widePagesChanged() {
-        guard model.record.layout == .double, view.bounds.width > view.bounds.height else { return }
+        guard usesSpreads else { return }
+        rebuildPreservingPage()
+    }
+
+    private func rebuildPreservingPage(force: Bool = false) {
+        // finishTransition always uses the newest layout, wide pages and viewport.
+        guard !isTransitioning else { return }
+        let page = model.currentPage
         let before = units
         rebuildUnits(size: view.bounds.size)
-        guard units != before else { return }
-        let page = model.currentPage
-        currentUnit = unitIndex(containing: page)
-        if let vc = makeController(currentUnit) {
-            pageVC.setViewControllers([vc], direction: .forward, animated: false)
-        }
-        unitDidChange()
+        guard force || units != before else { return }
+        showUnit(unitIndex(containing: page), animated: false, focusedPage: page, userInitiated: false)
     }
 
     /// Re-applies direction / fit / layout / background without leaving the current page.
     func reloadForSettings() {
-        let page = model.currentPage
         view.backgroundColor = backgroundColor
-        rebuildUnits(size: view.bounds.size)
-        let u = unitIndex(containing: page)
-        currentUnit = u
-        if let vc = makeController(u) {
-            pageVC.setViewControllers([vc], direction: .forward, animated: false)
-        }
-        pagerScrollView?.isScrollEnabled = true
-        unitDidChange()
+        rebuildPreservingPage(force: true)
     }
 
     func pageZoomStateChanged(_ page: SpreadPageController, zoomed: Bool) {
         guard pageVC.viewControllers?.first === page else { return }
         // While zoomed in, drags pan the image instead of turning pages.
-        pagerScrollView?.isScrollEnabled = !zoomed
+        pagerScrollView?.isScrollEnabled = !isTransitioning && !zoomed
     }
 
     func showToast(_ text: String) { model.flash(text) }
@@ -235,16 +275,19 @@ final class ReaderViewController: UIViewController, UIPageViewControllerDataSour
     // MARK: UIPageViewControllerDelegate
 
     func pageViewController(_ pvc: UIPageViewController, willTransitionTo pending: [UIViewController]) {
+        let id = UUID()
+        transitionID = id
+        interactiveTransitionID = id
         isTransitioning = true
     }
 
     func pageViewController(_ pvc: UIPageViewController, didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        isTransitioning = false
-        guard completed, let c = pvc.viewControllers?.first as? SpreadPageController else { return }
-        currentUnit = c.unit
-        pagerScrollView?.isScrollEnabled = !c.isZoomedIn
-        unitDidChange()
+        guard let id = interactiveTransitionID else { return }
+        interactiveTransitionID = nil
+        let visible = pvc.viewControllers?.first as? SpreadPageController
+        let page = completed ? (visible?.pages.first ?? model.currentPage) : model.currentPage
+        finishTransition(id, focusedPage: page, userInitiated: completed)
     }
 
     // MARK: Hardware keyboard

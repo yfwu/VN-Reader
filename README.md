@@ -1,12 +1,14 @@
-# VN Reader — offline CBZ / CBR reader for iPad
+# VN Reader — offline CBZ / CBR reader for iPad and Mac
 
-A native iPadOS comic reader focused on three things: **import your own comics, start
-reading fast, continue where you left off.** No account, no network, no ads, no tracking.
+A native iPad and Mac comic reader focused on three things: **import your own
+comics, start reading fast, continue where you left off.** Local reading works
+offline without a VN Reader account. Build 7 adds optional iCloud synchronization;
+there are no ads, analytics or tracking.
 UI languages: Traditional Chinese (source), English, Simplified Chinese and Japanese, from `App/Resources/Localizable.xcstrings`; other system languages fall back to English.
 
 | | |
 |---|---|
-| Platforms | iPadOS 18+ (iPad mini 6 is the primary design target; all iPads, portrait/landscape, Split View / Stage Manager) |
+| Platforms | iPadOS 18+ and macOS 15+ through Mac Catalyst; iPad mini is the primary tablet design target |
 | Language / UI | Swift 5 mode, SwiftUI (library, settings) + UIKit (reader paging & zoom) |
 | Formats | **CBZ** (ZIP: Stored / Deflate, ZIP64, legacy CJK names) and **CBR** (real **RAR4 and RAR5**, solid and non-solid); JPEG, PNG, **WebP**, GIF, HEIC, AVIF |
 | Dependencies | RARLAB unRAR 7.23 source (vendored, unRAR license) + system zlib. Nothing else. |
@@ -19,15 +21,41 @@ UI languages: Traditional Chinese (source), English, Simplified Chinese and Japa
 * **Duplicates**: identical content (size + CRC-32) is not imported twice ("已在書庫中"); different files with the same name become separate books ("名稱 (2)"). Nothing is ever overwritten.
 * **Library**: cover grid that adapts to width, title, page count, progress bar, status badges (未讀 / 閱讀中 / 已讀), big **繼續閱讀** card, search (name, series, title, writer, artist, publisher), sort (recently read / imported / title / series & number), filter (status, favourites), rename, reset progress, mark finished, favourite, delete (only the app's copy and caches). Clear empty state with an import button. Import jobs/failures are shown as separate status rows, never as openable books.
 * **Book info**: per-book editor (⋯ → 編輯資訊) for display name, series, number, volume, title, writer, artist, publisher, year and summary, pre-filled from ComicInfo.xml. The display name can be generated as US comics "Series (start year) #issue" (Batman (2016) #45), manga "Series 第 N 卷", or the title. **Batch editing**: 選取 → select books → 編輯資訊 sets shared fields, numbers the books in file-name order and regenerates their names; only fields you change are applied. Edits live in the library only; archives are never modified.
-* **Reader**: swipe or tap left/right zones to turn pages, centre tap toggles the toolbar; toolbar has back, title, jump to page, bookmark, reading settings, thumbnails, page slider and page number (which also opens the jump). Dragging the slider fans out the pages around the target above your finger. Pinch zoom, double-tap zoom/reset, panning while zoomed (page turning is disabled until you zoom back out). **Fit page** / **fit width** (tall strips scroll vertically). Hardware keyboard arrows/space.
+* **Reader**: swipe or tap left/right zones to turn pages, centre tap toggles the toolbar; toolbar has back, title, jump to page, bookmark, share, reading settings, thumbnails, page slider and page number (which also opens the jump). **Share** sends the page on screen (both pages of a spread) to the system share sheet as a file named after the book, with Save Image for Photos. Dragging the slider fans out the pages around the target above your finger. Pinch zoom, double-tap zoom/reset, panning while zoomed (page turning is disabled until you zoom back out). **Fit page** / **fit width** (tall strips scroll vertically). Hardware keyboard arrows/space.
 * **LTR / RTL per book** (saved). The page list is never reversed: RTL changes which side is "next" for taps, swipes, slider and thumbnail order. Changing direction keeps the same page.
 * **Progress** (page, direction, fit mode, layout, last read time) is saved on every page change (coalesced ~0.4 s) and flushed immediately when the app goes to background or the reader closes.
 * **Magnifier**: long-press a page for a floating lens, drawn from the page at the file's full resolution, not an enlarged screen. Keep holding or drag it to move it, pinch or tap its label for 1.5–6×, drag the rim handle to resize. It only takes touches on itself, so pages still turn and scroll underneath, and it can look across both sides of a spread.
 * **Large files**: importing uses constant memory. A book on the same volume is cloned instantly (APFS); otherwise it is streamed through one 1 MB buffer. Pages are then read one at a time from disk, so a book's size does not affect memory.
 * **Performance**: pages are decoded on demand with ImageIO straight to display size; bounded memory cache (purged on memory warnings), prefetch of 2 pages ahead / 1 behind, stale work cancelled. Solid RAR is decompressed once, sequentially, into a purgeable disk cache, with a progress card ("正在準備頁面") and a way back.
-* **Robustness**: disk-space checks before copying and before solid extraction; limits on archive size, entry count, entry size and image pixels; archive entry names are never used as file paths; interrupted imports and orphaned folders are cleaned at launch; a corrupt library file is preserved and the last good backup is restored.
+* **Robustness**: disk-space checks before copying and before solid extraction; limits on archive size, entry count, entry size and image pixels; archive entry names are never used as file paths; interrupted staging and orphaned caches are cleaned at launch; uncatalogued book folders are preserved. Unreadable or newer-format libraries are protected from writes, and a valid backup can be restored without deleting later book files.
 
 P1 already included: landscape **two-page spreads** (cover alone, pair shift, RTL order, wide pages alone), **vertical continuous scrolling**, **bookmarks**, **favourites**, **ComicInfo.xml** (title/series/RTL hint), **Open in… / AirDrop** and **drag-and-drop** import. iPhone layout is not done (the app targets iPad only).
+
+The Mac version currently uses one library/reader window. File → Import opens the
+file picker; Cmd-A selects books and Escape leaves the reader. Cmd-O is wired in
+the native menu but its shortcut did not trigger during the automation smoke
+check, so keyboard import remains unverified. Build 6 is the separate
+offline repair/Catalyst release; this build 7 source adds the iCloud prototype.
+
+## Build 7 optional iCloud prototype
+
+Sync is off by default. Enabling it confirms upload of the library to the current
+Apple ID's CloudKit private database and uses that account's iCloud storage.
+Enabling sync, importing while enabled, or choosing Sync Now queues local archive
+uploads; metadata, covers, reading progress and bookmarks also synchronize.
+Archive transfers disallow cellular access. Other clients initially receive
+metadata, covers and manifests only. Opening a cover-only book downloads and
+verifies its archive before reading. Layout and fit remain local to each device.
+
+Remove Download keeps the cloud original and checks that it exists before
+removing the local copy. Turning sync off preserves both local and cloud data.
+This prototype has no permanent cloud deletion, automatic eviction or WebDAV.
+It is a CloudKit library, separate from importing files from iCloud Drive.
+
+Build 7 migrates the local catalogue to schema 2 and preserves a pre-migration
+snapshot; build 6 refuses schema 2 to protect synchronization state on downgrade.
+See [validation and release gates](docs/ICLOUD_BUILD7_TEST_PLAN.md) for the exact
+implemented scope, rollback limits and tests still required before wider use.
 
 A new library starts with a Chinese-English user guide (`App/Resources/Guide`), imported like any other book. It can be deleted and added back from Settings.
 

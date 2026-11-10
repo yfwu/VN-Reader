@@ -1,0 +1,10 @@
+2026-11-10T10:13:34Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T10:13:35Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T10:13:35Z SyncSmoke[macA] diagnostic send pending=1
+2026-11-10T10:13:36Z SyncSmoke[macA] diagnostic sent saved=0 failed=1
+2026-11-10T10:13:36Z SyncSmoke[macA] diagnostic record-save error=CKErrorDomain:14
+2026-11-10T10:13:36Z SyncSmoke[macA] diagnostic record-save.underlying error=CKInternalErrorDomain:2004
+2026-11-10T10:13:36Z SyncSmoke[macA] diagnostic retry resolved-conflict attempt=2
+2026-11-10T10:13:37Z SyncSmoke[macA] diagnostic sent saved=1 failed=0
+2026-11-10T10:13:37Z SyncSmoke[macA] This sync has completed books=1
+2026-11-10T10:13:37Z SyncSmoke[macA] diagnostic fetched modified=1 deleted=0

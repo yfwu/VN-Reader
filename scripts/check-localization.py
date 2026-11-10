@@ -5,6 +5,7 @@ Fails when a String(localized:) key is missing from the catalog, a key lacks an 
 translation (or it is not marked translated), a translation's format specifiers differ from the
 zh-Hant source, or a Chinese/Japanese string literal bypasses L10n. Unused catalog keys and
 full-width punctuation joined into UI text (which every language then shows) are only warnings.
+Permission prompts set in Config/App.xcconfig must likewise be translated in InfoPlist.xcstrings.
 
   scripts/check-localization.py          exit 1 on failure (CI, by hand)
   scripts/check-localization.py --hook   Claude Code Stop hook: reads the hook JSON on stdin and
@@ -15,6 +16,8 @@ import json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SOURCES = os.path.join(ROOT, "App", "Sources")
 CATALOG = os.path.join(ROOT, "App", "Resources", "Localizable.xcstrings")
+INFOPLIST_CATALOG = os.path.join(ROOT, "App", "Resources", "InfoPlist.xcstrings")
+APP_XCCONFIG = os.path.join(ROOT, "Config", "App.xcconfig")
 LANGUAGES = ["en", "zh-Hans", "ja"]
 
 KEY = re.compile(r'String\(localized:\s*"((?:[^"\\]|\\.)*)"')
@@ -22,6 +25,7 @@ LITERAL = re.compile(r'"((?:[^"\\\n]|\\.)*)"')
 CJK = re.compile("[\u3040-\u30ff\u3400-\u9fff]")  # kana and Han
 FULLWIDTH = re.compile("[\u3000-\u303f\uff01-\uff60]")
 SPEC = re.compile(r"%(?:\d+\$)?[-+ #0]*\d*(?:\.\d+)?(?:hh|h|ll|l|q|z|t|j)?([@dDuUxXoOfFeEgGcCsSpaA%])")
+USAGE_KEY = re.compile(r"^INFOPLIST_KEY_(NS\w+UsageDescription)\s*=", re.M)
 
 
 def specifiers(value):
@@ -62,8 +66,26 @@ def scan_sources():
     return keys, stray, punct
 
 
+def check_permission_prompts():
+    keys = USAGE_KEY.findall(open(APP_XCCONFIG, encoding="utf-8").read())
+    if not keys:
+        return []
+    try:
+        catalog = json.load(open(INFOPLIST_CATALOG, encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        return [f"cannot read {os.path.relpath(INFOPLIST_CATALOG, ROOT)}: {e}"]
+    errors = []
+    for key in keys:
+        locs = catalog.get("strings", {}).get(key, {}).get("localizations", {})
+        for lang in [catalog.get("sourceLanguage", "zh-Hant")] + LANGUAGES:
+            found = list(units(locs.get(lang, {})))
+            if not found or not all(u.get("value", "").strip() and u.get("state") == "translated" for _, u in found):
+                errors.append(f"{key}: no translated {lang} value in InfoPlist.xcstrings")
+    return errors
+
+
 def check():
-    errors, warnings = [], []
+    errors, warnings = check_permission_prompts(), []
     keys, stray, punct = scan_sources()
     try:
         catalog = json.load(open(CATALOG, encoding="utf-8"))

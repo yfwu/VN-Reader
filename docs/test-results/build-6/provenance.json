@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "release": "0.1.0 (6)",
+  "capturedAt": "2026-11-10T10:09:17.979508+00:00",
+  "gitBaseCommit": "8af02b690cafb117b5e840d0a10a874e3b170fc3",
+  "sourceState": "Uncommitted working tree; source inputs frozen for both final v2 archives. Snapshot captured after upload, not a build-time attestation.",
+  "sourceManifest": "docs/test-results/build-6/source-inputs.sha256",
+  "sourceFileCount": 305,
+  "localSourceSnapshot": "build/release-6-provenance/source-inputs.tar.gz",
+  "localSourceSnapshotSHA256": "21d6ee7a64c406cfba9fe8aa857b3ab40395d990330719addd77336053205a14",
+  "excludedFromSnapshot": [
+    "Config/Signing.xcconfig",
+    "certificates and profiles",
+    "Xcode user state",
+    "build output",
+    "unrelated untracked files"
+  ],
+  "artifactManifest": "docs/test-results/build-6/artifact-files.sha256",
+  "buildEnvironment": {
+    "xcode": "Xcode 27.2\nBuild version 27B52",
+    "macOS": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2\nBuildVersion:\t\t26B123"
+  },
+  "appStoreConnect": {
+    "appID": "6831459455",
+    "observedBy": "Root release agent in authenticated App Store Connect browser",
+    "observedDate": "2026-11-10",
+    "internalGroup": "Internal",
+    "internalTesterCount": 2,
+    "status": "Ready to Submit",
+    "physicalTestFlightInstallationVerified": false
+  },
+  "platforms": {
+    "ios": {
+      "appStoreBuildID": "c766b5d3-08b0-4dff-b31f-d986517726eb",
+      "archive": "build/release-6-ios-v2/VNReader.xcarchive",
+      "archiveLog": "build/release-6-ios-v2/archive.log",
+      "exportLog": "build/release-6-ios-v2/export.log",
+      "exportOptions": "build/release-6-ios-v2/ExportOptions.plist",
+      "uploadSucceeded": true,
+      "bundleIdentifier": "org.yfwu.VNReader",
+      "version": "0.1.0",
+      "build": "6",
+      "architectures": [
+        "arm64"
+      ],
+      "minimumOS": "18.0",
+      "sdk": "iphoneos27.2",
+      "xcodeBuild": "27B52"
+    },
+    "mac": {
+      "appStoreBuildID": "499d8b96-f6fa-4aca-9f0d-521505253a22",
+      "archive": "build/release-6-mac-v2/VNReader.xcarchive",
+      "archiveLog": "build/release-6-mac-v2/archive.log",
+      "exportLog": "build/release-6-mac-v2/export.log",
+      "exportOptions": "build/release-6-mac-v2/ExportOptions.plist",
+      "uploadSucceeded": true,
+      "bundleIdentifier": "org.yfwu.VNReader",
+      "version": "0.1.0",
+      "build": "6",
+      "architectures": [
+        "x86_64",
+        "arm64"
+      ],
+      "minimumOS": "15.0",
+      "sdk": "macosx27.2",
+      "xcodeBuild": "27B52"
+    }
+  }
+}

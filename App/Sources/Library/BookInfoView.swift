@@ -136,7 +136,11 @@ struct BookInfoView: View {
                 ToolbarItem(placement: .cancellationAction) { Button(L10n.cancel) { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(L10n.save) {
-                        library.saveInfo(book.id, displayName: name, metadata: edited)
+                        let changes = Dictionary(uniqueKeysWithValues: MetadataField.allCases.compactMap { field -> (MetadataField, String)? in
+                            let value = texts[field] ?? ""
+                            return value == (book.metadata?[field] ?? "") ? nil : (field, value)
+                        })
+                        library.saveInfoChanges(book.id, displayName: name == book.displayName ? nil : name, changes: changes)
                         dismiss()
                     }
                     .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)

@@ -59,8 +59,20 @@ struct LibraryView: View {
             .navigationTitle(selection.map { L10n.selectedCount($0.count) } ?? L10n.libraryTitle)
             .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: L10n.searchPrompt)
             .toolbar { toolbar }
+            #if targetEnvironment(macCatalyst)
+            // A Catalyst fullScreenCover can leave its presenting window's native
+            // navigation toolbar visible. Hide the library bar until reading ends.
+            .toolbar(openBook == nil ? .automatic : .hidden, for: .navigationBar)
+            #endif
             .fileImporter(isPresented: $showPicker, allowedContentTypes: UTType.comicImportTypes, allowsMultipleSelection: true) { result in
-                if case .success(let urls) = result { importer.importFiles(urls, securityScoped: true) }
+                switch result {
+                case .success(let urls): importer.importFiles(urls, securityScoped: true)
+                case .failure(let error): library.notice = ErrorMessages.explain(error).message
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .requestComicImport)) { _ in
+                guard openBook == nil else { return }
+                showPicker = true
             }
             .onDrop(of: [.fileURL, .data], isTargeted: $dropTargeted) { providers in
                 DropImporter.handle(providers, importer: importer)
@@ -114,7 +126,12 @@ struct LibraryView: View {
                     .accessibilityIdentifier("library.select.done")
             } else {
                 if !library.books.isEmpty {
-                    Button(L10n.select) { selection = [] }
+                    Button { selection = [] } label: {
+                        Label(L10n.select, systemImage: "checkmark.circle")
+                    }
+                        .labelStyle(.iconOnly)
+                        .accessibilityLabel(L10n.select)
+                        .help(L10n.select)
                         .accessibilityIdentifier("library.select")
                 }
                 Menu {
@@ -133,6 +150,7 @@ struct LibraryView: View {
                 }
                 .accessibilityLabel(L10n.importAccessibility)
                 .accessibilityIdentifier("library.import")
+                .keyboardShortcut("o", modifiers: .command)
             }
         }
         ToolbarItem(placement: .topBarLeading) {
@@ -142,6 +160,7 @@ struct LibraryView: View {
                     self.selection = all ? [] : Set(books.map(\.id))
                 }
                 .accessibilityIdentifier("library.selectall")
+                .keyboardShortcut("a", modifiers: .command)
             } else {
                 Button { showSettings = true } label: { Label(L10n.settings, systemImage: "gearshape") }
                     .accessibilityIdentifier("library.settings")

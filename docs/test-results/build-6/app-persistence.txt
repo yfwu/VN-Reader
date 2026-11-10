@@ -1,0 +1,79 @@
+Running actual LibraryStore and ImportCoordinator with synthetic files only.
+Building for debugging...
+[Planning deferred tasks]
+[27 / 92]
+[30 / 93] ComicCore
+[31 / 93] ComicCore
+[34 / 146]
+[37 / 146]
+[42 / 146] CUnrar
+[45 / 146]
+[49 / 146]
+[54 / 146]
+[57 / 146]
+[60 / 146]
+[62 / 146] CUnrar
+[63 / 146]
+[67 / 146]
+[69 / 146]
+[72 / 146] CUnrar
+[73 / 146]
+[76 / 146]
+[80 / 146]
+[82 / 146]
+[86 / 146]
+[88 / 146] CUnrar
+[89 / 146]
+[90 / 146] CUnrar
+[92 / 146] ComicCore
+[94 / 146] CUnrar
+[97 / 146] ComicCore
+[103 / 146] CUnrar
+[104 / 146] CUnrar
+[106 / 146] CUnrar
+[107 / 146] CUnrar
+[108 / 146] CUnrar
+[109 / 146] CUnrar
+[110 / 146] CUnrar
+[112 / 146] CUnrar
+[114 / 146] CUnrar
+[116 / 146] CUnrar
+[118 / 146] CUnrar
+[120 / 146] CUnrar
+[122 / 146] ComicCore
+[124 / 146] CUnrar
+[126 / 146] ComicCore
+[127 / 146] ComicCore-product
+[128 / 146] ComicCore-product
+[131 / 146] ComicCore
+[133 / 146] ComicCore
+[134 / 146] ComicCore
+[137 / 146] ComicCore
+[137 / 146] CUnrar
+[142 / 147] Audit-product
+[148 / 184]
+[154 / 184]
+[156 / 184]
+[159 / 184]
+[164 / 184]
+[168 / 184]
+[171 / 184]
+[173 / 184]
+[177 / 184] Audit-product
+[178 / 184] Audit-product
+[180 / 184] Audit-product
+[182 / 184] Audit-product
+Build complete! (14.33 sec)
+PASS: successful import publishes exactly one book
+PASS: successful durable import removes Inbox copy
+PASS: successful import is actually saved
+PASS: failed archive validation retains Inbox copy
+PASS: cancelled import retains Inbox copy
+PASS: failed persistence never publishes imported record
+PASS: failed persistence retains Inbox copy
+PASS: failed persistence reports failed import
+PASS: failed rename does not publish unsaved metadata
+PASS: failed batch edit preserves published metadata
+PASS: failed delete keeps library record
+PASS: failed delete keeps archive
+All app persistence checks passed. Synthetic data: /var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-persistence-5xjy_wxx/data

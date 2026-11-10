@@ -1,0 +1,26 @@
+{
+  "ios": {
+    "version": "0.1.0",
+    "build": "7",
+    "bundleID": "org.yfwu.VNReader",
+    "cloudKitEnvironment": "Production",
+    "cloudKitContainer": [
+      "iCloud.org.yfwu.VNReader"
+    ],
+    "pushEnvironment": "production",
+    "debuggingEnabled": false,
+    "signatureVerified": true
+  },
+  "mac": {
+    "version": "0.1.0",
+    "build": "7",
+    "bundleID": "org.yfwu.VNReader",
+    "cloudKitEnvironment": "Production",
+    "cloudKitContainer": [
+      "iCloud.org.yfwu.VNReader"
+    ],
+    "pushEnvironment": "production",
+    "debuggingEnabled": false,
+    "signatureVerified": true
+  }
+}

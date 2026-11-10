@@ -304,7 +304,7 @@ final class ReaderUITests: XCTestCase {
         launch(seed: false, reset: false)
         XCTAssertTrue(app.buttons["library.continue"].waitForExistence(timeout: 15))
         let label = app.buttons["library.continue"].label
-        XCTAssertTrue(label.contains("3 / 6"), label)
+        XCTAssertTrue(label.contains("第 3 頁，共 6 頁"), label)
         app.buttons["library.continue"].tap()
         XCTAssertEqual(currentPage(), 3)
         // Fit width on tall strips: content scrolls vertically.
@@ -541,6 +541,61 @@ final class ReaderUITests: XCTestCase {
         waitForPage(7)
     }
 
+    /// Cold decoding must never pair an already-wide image with its neighbour.
+    func test14WideSpreadSurvivesJumpAndTurns() {
+        launch(seed: true)
+        waitForBooks(["02 城市速寫"])
+        XCUIDevice.shared.orientation = .landscapeLeft
+        openBook("02 城市速寫")
+        showChrome()
+        app.buttons["reader.settings"].tap()
+        let layout = app.segmentedControls["settings.layout"]
+        XCTAssertTrue(layout.waitForExistence(timeout: 5))
+        layout.buttons.element(boundBy: 1).tap()
+        app.buttons["readersettings.done"].tap()
+        app.buttons["reader.thumbnails"].tap()
+        let wideThumb = app.descendants(matching: .any)["thumb.7"]
+        XCTAssertTrue(wideThumb.waitForExistence(timeout: 10))
+        wideThumb.tap()
+        waitForPage(8)
+        let wide = app.descendants(matching: .any)["reader.page.7"]
+        XCTAssertTrue(wide.waitForExistence(timeout: 10))
+        XCTAssertEqual(wide.label.split(whereSeparator: { !$0.isNumber }).compactMap { Int($0) }, [8])
+        hideChrome()
+        screenshot("15-wide-spread-alone")
+        tapScreen(0.92)
+        waitForPage(9)
+        hideChrome()
+        tapScreen(0.08)
+        waitForPage(8)
+        XCTAssertEqual(wide.label.split(whereSeparator: { !$0.isNumber }).compactMap { Int($0) }, [8])
+        XCUIDevice.shared.orientation = .portrait
+        waitForPage(8)
+        closeReader()
+        openBook("02 城市速寫")
+        waitForPage(8)
+    }
+
+    func test13SharePage() {
+        launch(seed: true)
+        waitForBooks(["02 城市速寫"])
+        openBook("02 城市速寫")
+        showChrome()
+        app.buttons["reader.share"].tap()
+        let sheet = app.otherElements["ActivityListView"]
+        XCTAssertTrue(sheet.waitForExistence(timeout: 10), "the share sheet did not open")
+        screenshot("14-share-page")
+
+        // Closing the sheet leaves the reader where it was, and the button works again.
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5)).tap()
+        let gone = NSPredicate(format: "exists == false")
+        expectation(for: gone, evaluatedWith: sheet)
+        waitForExpectations(timeout: 5)
+        XCTAssertEqual(currentPage(), 1)
+        app.buttons["reader.share"].tap()
+        XCTAssertTrue(sheet.waitForExistence(timeout: 10), "the share sheet did not open a second time")
+    }
+
     func test07RepeatedOpenClose() {
         launch(seed: true)
         waitForBooks(["01 星之旅人 第1卷", "02 城市速寫"])
@@ -558,9 +613,9 @@ final class ReaderUITests: XCTestCase {
 extension XCUIElement {
     func clearAndType(_ text: String) {
         tap()
-        if let v = value as? String, !v.isEmpty {
-            typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: v.count + 2))
-        }
-        typeText(text)
+        let current = (value as? String) ?? ""
+        // Empty fields can expose their placeholder as the accessibility value.
+        let count = current == placeholderValue ? 0 : current.count
+        typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: count) + text)
     }
 }

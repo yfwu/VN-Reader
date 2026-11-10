@@ -1,0 +1,31 @@
+{
+  "ios": {
+    "version": "0.1.0",
+    "build": "8",
+    "bundle": "org.yfwu.VNReader",
+    "architectures": "arm64",
+    "signatureVerified": true,
+    "verificationContext": "codesign --verify --strict --deep passed with access to system trust services",
+    "archiveCloudKitEnvironment": "Development",
+    "cloudContainer": [
+      "iCloud.org.yfwu.VNReader"
+    ],
+    "getTaskAllow": true,
+    "binarySHA256": "7d1846a2f5a09c6b9acf271bec57fd1b11c385eaf5522a036a1a31521b31364e"
+  },
+  "mac": {
+    "version": "0.1.0",
+    "build": "8",
+    "bundle": "org.yfwu.VNReader",
+    "architectures": "x86_64 arm64",
+    "signatureVerified": true,
+    "verificationContext": "codesign --verify --strict --deep passed with access to system trust services",
+    "archiveCloudKitEnvironment": "Development",
+    "cloudContainer": [
+      "iCloud.org.yfwu.VNReader"
+    ],
+    "getTaskAllow": true,
+    "binarySHA256": "092aac39247532643d31ee0d8e6048bc39e17748acf75eb9d40fcdf2dfe0b5ec"
+  },
+  "status": "Historical v1 archive verification only; v1/v2 candidates are stale relative to current glass/progress source and must not be uploaded as final Build 8."
+}

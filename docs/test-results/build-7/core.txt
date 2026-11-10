@@ -1,0 +1,15 @@
+Test Case '-[ComicCoreTests.StressTests testSolidPreparation]' started.
+/private/tmp/vn-reader-build6/Packages/ComicCore/Tests/ComicCoreTests/StressTests.swift:11: -[ComicCoreTests.StressTests testSolidPreparation] : Test skipped - set VN_STRESS_DIR to run stress tests
+Test Case '-[ComicCoreTests.StressTests testSolidPreparation]' skipped (0.000 seconds).
+Test Suite 'StressTests' passed at 2026-11-10 15:39:35.625.
+	 Executed 2 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'ComicCoreTests.xctest' passed at 2026-11-10 15:39:35.625.
+	 Executed 92 tests, with 2 tests skipped and 0 failures (0 unexpected) in 1.027 (1.033) seconds
+Test Suite 'All tests' passed at 2026-11-10 15:39:35.625.
+	 Executed 92 tests, with 2 tests skipped and 0 failures (0 unexpected) in 1.027 (1.034) seconds
+LARGE import of 128 MB: footprint grew 0 MB
+LARGE import of 128 MB: footprint grew 0 MB
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

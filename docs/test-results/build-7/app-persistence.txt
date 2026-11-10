@@ -1,0 +1,92 @@
+Running actual app models offline; CKContainer access is a fatal test failure.
+Building for debugging...
+[Planning deferred tasks]
+[27 / 92]
+[30 / 93] CUnrar
+[31 / 146]
+[34 / 146]
+[40 / 146] CUnrar
+[42 / 146]
+[45 / 146]
+[48 / 146]
+[51 / 146]
+[57 / 146] CUnrar
+[59 / 146]
+[62 / 146]
+[65 / 146]
+[68 / 146]
+[71 / 146]
+[74 / 146] CUnrar
+[75 / 146]
+[77 / 146]
+[80 / 146] CUnrar
+[81 / 146]
+[83 / 146] CUnrar
+[84 / 146]
+[86 / 146] CUnrar
+[87 / 146] ComicCore
+[88 / 146] CUnrar
+[88 / 146] ComicCore
+[90 / 146] ComicCore
+[92 / 146] ComicCore
+[98 / 146] CUnrar
+[99 / 146] CUnrar
+[100 / 146] CUnrar
+[101 / 146] CUnrar
+[102 / 146] CUnrar
+[103 / 146] CUnrar
+[105 / 146] CUnrar
+[107 / 146] CUnrar
+[108 / 146] CUnrar
+[109 / 146] CUnrar
+[110 / 146] CUnrar
+[111 / 146] CUnrar
+[112 / 146] CUnrar
+[113 / 146] CUnrar
+[114 / 146] CUnrar
+[115 / 146] CUnrar
+[116 / 146] CUnrar
+[117 / 146] CUnrar
+[118 / 146] CUnrar
+[119 / 146] CUnrar
+[120 / 146] CUnrar
+[122 / 146] ComicCore
+[123 / 146] ComicCore
+[127 / 146] ComicCore
+[128 / 146] ComicCore
+[130 / 146] ComicCore-product
+[133 / 146] ComicCore
+[134 / 146] ComicCore
+[136 / 146] ComicCore
+[137 / 146] CUnrar
+[140 / 147] CUnrar
+[142 / 147] Audit-product
+[149 / 192]
+[154 / 192]
+[158 / 192]
+[161 / 192]
+[164 / 192]
+[168 / 192]
+[171 / 192]
+[175 / 192]
+[177 / 192]
+[181 / 192] Audit-product
+[182 / 192] Audit-product
+[186 / 192] Audit-product
+[187 / 192] Audit-product
+[188 / 192] Audit-product
+[190 / 192] Audit-product
+Build complete! (14.96 sec)
+PASS: successful import publishes exactly one book
+PASS: successful durable import removes Inbox copy
+PASS: successful import is actually saved
+PASS: failed archive validation retains Inbox copy
+PASS: cancelled import retains Inbox copy
+PASS: failed persistence never publishes imported record
+PASS: failed persistence retains Inbox copy
+PASS: failed persistence reports failed import
+PASS: failed rename does not publish unsaved metadata
+PASS: failed batch edit preserves published metadata
+PASS: failed delete keeps library record
+PASS: failed delete keeps archive
+All app persistence checks passed. Synthetic data: /var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-qx4bqlbd/data

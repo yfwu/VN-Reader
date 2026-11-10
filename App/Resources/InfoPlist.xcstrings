@@ -1,0 +1,36 @@
+{
+  "sourceLanguage" : "zh-Hant",
+  "strings" : {
+    "NSPhotoLibraryAddUsageDescription" : {
+      "comment" : "Shown when the share sheet's Save Image first asks for access to Photos.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lets you save comic pages to Photos from the share sheet."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有シートから漫画のページを写真に保存できるようにします。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "让你从共享菜单将漫画页面存储到照片。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "讓你從分享選單將漫畫頁面儲存到照片。"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

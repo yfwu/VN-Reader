@@ -5,16 +5,18 @@
 // App identity — the only values most people need to change.
 VN_BUNDLE_ID = org.yfwu.VNReader
 MARKETING_VERSION = 0.1.0
-CURRENT_PROJECT_VERSION = 3
+CURRENT_PROJECT_VERSION = 8
 
 SDKROOT = iphoneos
-SUPPORTED_PLATFORMS = iphoneos iphonesimulator
-SUPPORTS_MACCATALYST = NO
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator macosx
+SUPPORTS_MACCATALYST = YES
+DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO
 SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO
 SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO
 IPHONEOS_DEPLOYMENT_TARGET = 18.0
-// 2 = iPad. iPhone (1) is an optional later target, see docs/KNOWN_ISSUES.md.
-TARGETED_DEVICE_FAMILY = 2
+// 2 = iPad, 6 = Mac Catalyst. iPhone remains a separate future layout.
+TARGETED_DEVICE_FAMILY = 2,6
+MACOSX_DEPLOYMENT_TARGET[sdk=macosx*] = 15.0
 
 SWIFT_VERSION = 5.0
 SWIFT_EMIT_LOC_STRINGS = YES

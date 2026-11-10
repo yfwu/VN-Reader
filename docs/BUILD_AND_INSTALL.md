@@ -9,8 +9,8 @@ No package manager, no project generator: open `VNReader.xcodeproj` directly.
 |---|---|
 | Bundle ID (default) | `org.yfwu.VNReader` (change via `VN_BUNDLE_ID`) |
 | Version / build | `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION` in `Config/Base.xcconfig` |
-| Minimum OS | iPadOS 18.0 |
-| Devices | iPad (`TARGETED_DEVICE_FAMILY = 2`) |
+| Minimum OS | iPadOS 18.0; macOS 15.0 (Mac Catalyst) |
+| Devices | iPad and Mac Catalyst (`TARGETED_DEVICE_FAMILY = 2,6`) |
 | Scheme | `VNReader` (app + UI tests) ; `ComicCore` (package tests) |
 
 ## 0. Get the code
@@ -90,9 +90,10 @@ scripts/archive-and-export.sh ad-hoc
 scripts/archive-and-export.sh app-store-connect
 ```
 
-Output: `build/export-<method>/VNReader.ipa` and `IPA-INFO.txt` (version, bundle ID,
+Output: `build/export-ios-<method>/VNReader.ipa` and `BUILD-INFO.txt` (version, bundle ID,
 minimum OS, signing identity). `-allowProvisioningUpdates` lets Xcode create the
-certificate/profile automatically. Set `BUILD_NUMBER=<n>` to bump the build number.
+certificate/profile automatically. Set `BUILD_NUMBER=<n>` to set the build number.
+The script preserves existing archives; use a fresh output directory for a retry.
 
 ### Installing the IPA
 
@@ -119,10 +120,55 @@ scripts/archive-and-export.sh testflight
    External groups need Test Information and TestFlight App Review for the first build of
    a version, and can then be shared by email invitation or public link.
 
-The app is iPad only, so testers need an iPad on iPadOS 18 or later. Export compliance is
+The iOS build requires an iPad on iPadOS 18 or later. The Mac build requires macOS 15
+or later. Export compliance is
 answered by `ITSAppUsesNonExemptEncryption` in `Config/App.xcconfig`, required-reason APIs
 are declared in `App/Resources/PrivacyInfo.xcprivacy`, and the privacy policy is
 `docs/PRIVACY.md`. Update the manifest when code starts using another covered API.
+
+### Mac Catalyst
+
+Choose **My Mac (Mac Catalyst)** in Xcode. The Mac and iPad builds use the same bundle
+ID (`DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO`) and can live in one App Store
+Connect app record. Add the macOS platform to that record before the first Mac upload.
+Build numbers must be checked in App Store Connect before uploading; the script never
+lets Xcode automatically increment them.
+
+The Mac build enables App Sandbox and Hardened Runtime. Its file access is limited to
+user-selected files, which are copied into the app's private library. Catalyst's document
+picker requires the user-selected read/write entitlement: read-only access fails when
+UIKit creates its sandbox URL wrapper, before it returns the selected files. The app's
+importer itself only reads/copies these files and does not edit or delete Finder originals.
+The iPad build continues receiving Inbox copies for Open
+in/AirDrop; Mac receives original URLs and uses security-scoped access during import.
+`LSSupportsOpeningDocumentsInPlace` is therefore NO on iPad and YES on Mac.
+
+Archive and export a Mac build locally:
+
+```bash
+BUILD_NUMBER=6 scripts/archive-and-export.sh app-store-connect build/mac-build-6 catalyst
+```
+
+Archive and upload directly to TestFlight, with a build number confirmed to be unused:
+
+```bash
+BUILD_NUMBER=6 scripts/archive-and-export.sh testflight build/mac-testflight-build-6 catalyst
+```
+
+The third argument is `ios` by default; use `catalyst` for Mac. Both platforms produce
+an `.xcarchive` and `BUILD-INFO.txt`. Mac exports contain the distribution package rather
+than an IPA. Set `VN_DERIVED_DATA` to isolate build intermediates when building different
+release branches. `ad-hoc` is an iOS-only export method.
+
+Mac import: File → Import opens the native picker. Cmd-O is wired in the menu but
+did not trigger during the automation smoke check; the shortcut remains unverified.
+Cmd-A selects all visible books while in
+selection mode, left/right arrows and Space turn pages, and Escape returns from the
+reader when its toolbar is visible. The current Mac UI shares the iPad layout; a native
+library table and expanded bulk management are separate follow-up work.
+Mac supports one window for this release because extraction and page-sharing resources
+are shared. `Info.plist` is preprocessed to disable multiple scenes on Catalyst only;
+validate the built plist rather than running `plutil` on the unprocessed source.
 
 ## 5. Unsigned device build (no account at all)
 

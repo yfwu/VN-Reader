@@ -1,0 +1,20 @@
+Original log: /private/tmp/vn-reader-build8-native-final-v2.log
+Original SHA256: aa25ee68051915b85eeaf422bdacf0a7aeb9477281c92608b72918d8d2e48530
+Scope: final signed Catalyst Debug build; native observations are documented separately.
+
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild build -project VNReader.xcodeproj -scheme VNReader -configuration Debug -destination "platform=macOS,variant=Mac Catalyst" -derivedDataPath /private/tmp/vn-reader-build8-mac-auto DEVELOPMENT_TEAM=D7LVM9MC94 -allowProvisioningUpdates
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = D7LVM9MC94
+
+
+Selected signing/result/warning lines; account-specific signing identity omitted:
+2026-11-10 23:56:15.548 appintentsmetadataprocessor[94109:18275259] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+CodeSign /tmp/vn-reader-build8-mac-auto/Build/Products/Debug-maccatalyst/VNReader.app/Contents/MacOS/VNReader.debug.dylib (in target 'VNReader' from project 'VNReader')
+    Provisioning Profile: "Mac Catalyst Team Provisioning Profile: org.yfwu.VNReader"
+CodeSign /tmp/vn-reader-build8-mac-auto/Build/Products/Debug-maccatalyst/VNReader.app/Contents/MacOS/__preview.dylib (in target 'VNReader' from project 'VNReader')
+    Provisioning Profile: "Mac Catalyst Team Provisioning Profile: org.yfwu.VNReader"
+CodeSign /tmp/vn-reader-build8-mac-auto/Build/Products/Debug-maccatalyst/VNReader.app (in target 'VNReader' from project 'VNReader')
+    Provisioning Profile: "Mac Catalyst Team Provisioning Profile: org.yfwu.VNReader"
+** BUILD SUCCEEDED **

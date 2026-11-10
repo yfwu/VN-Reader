@@ -1,0 +1,14 @@
+2026-11-10 18:46:20.633 appintentsmetadataprocessor[20187:17412283] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+Test Case '-[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress]' passed (109.112 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test08VerticalScrollMode]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test08VerticalScrollMode] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test08VerticalScrollMode]' passed (45.334 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test14WideSpreadSurvivesJumpAndTurns]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test14WideSpreadSurvivesJumpAndTurns] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test14WideSpreadSurvivesJumpAndTurns]' passed (42.026 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 196.472 (196.477) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 196.472 (196.477) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 196.472 (196.478) seconds
+** TEST SUCCEEDED **

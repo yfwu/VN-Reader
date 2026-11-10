@@ -1,0 +1,29 @@
+Original log: /private/tmp/vn-reader-build8-native-final-v2-smoke.log
+Original SHA256: b9bbe06adbf144e128a2c604f20d54d901769e70e0c97f24700e9414b53bdb9d
+Scope: explicitly isolated final native UI smoke, Development. Only generic SyncSmoke status/reason/count/error-code lines retained; no payloads/account identifiers/tokens.
+
+2026-11-10T15:56:39Z SyncSmoke[macA] diagnostic auto request=appOpened disposition=debounced
+2026-11-10T15:56:40Z SyncSmoke[macA] diagnostic auto start
+2026-11-10T15:56:40Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:56:40Z SyncSmoke[macA] diagnostic cycle start
+2026-11-10T15:56:41Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:56:41Z SyncSmoke[macA] diagnostic send pending=1
+2026-11-10T15:56:42Z SyncSmoke[macA] diagnostic sent saved=1 failed=0
+2026-11-10T15:56:42Z SyncSmoke[macA] This sync has completed books=1
+2026-11-10T15:56:42Z SyncSmoke[macA] diagnostic cycle finish result=completed followUp=false
+2026-11-10T15:56:47Z SyncSmoke[macA] diagnostic auto request=bookOpened disposition=debounced
+2026-11-10T15:56:48Z SyncSmoke[macA] diagnostic auto start
+2026-11-10T15:56:48Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:56:48Z SyncSmoke[macA] diagnostic cycle start
+2026-11-10T15:56:49Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:56:49Z SyncSmoke[macA] diagnostic send pending=0
+2026-11-10T15:56:49Z SyncSmoke[macA] This sync has completed books=1
+2026-11-10T15:56:49Z SyncSmoke[macA] diagnostic cycle finish result=completed followUp=false
+2026-11-10T15:58:09Z SyncSmoke[macA] diagnostic auto request=bookClosed disposition=debounced
+2026-11-10T15:58:09Z SyncSmoke[macA] diagnostic auto start
+2026-11-10T15:58:09Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:58:09Z SyncSmoke[macA] diagnostic cycle start
+2026-11-10T15:58:11Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:58:11Z SyncSmoke[macA] diagnostic send pending=0
+2026-11-10T15:58:11Z SyncSmoke[macA] This sync has completed books=1
+2026-11-10T15:58:11Z SyncSmoke[macA] diagnostic cycle finish result=completed followUp=false

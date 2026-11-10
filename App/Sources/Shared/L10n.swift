@@ -122,6 +122,28 @@ enum L10n {
     static let importSectionTitle = String(localized: "import.section", defaultValue: "匯入狀態")
     static let libraryRecovered = String(localized: "library.recovered", defaultValue: "書庫資料檔讀取失敗，已從最近的備份還原。")
 
+    static let libraryUnavailable = String(localized: "library.unavailable", defaultValue: "無法讀取書庫或備份。漫畫與資料檔已保留，為避免覆寫，已暫停匯入和編輯。請勿刪除 App，請重新開啟或聯絡支援。")
+    static let libraryUnsupportedVersion = String(localized: "library.unsupportedVersion", defaultValue: "這份書庫使用此版本不支援的資料格式。資料已保留，請更新 VN Reader 後再開啟。")
+    static let libraryOrphansPreserved = String(localized: "library.orphansPreserved", defaultValue: "找到未列入書庫的漫畫檔案，已完整保留。請勿刪除 App；若缺少書籍，請聯絡支援協助復原。")
+    static func moreOptionsAccessibility(_ name: String) -> String {
+        String(localized: "library.more.accessibility", defaultValue: "更多選項：\(name)")
+    }
+    static func unreadAccessibility(_ name: String) -> String {
+        String(localized: "library.unread.accessibility", defaultValue: "\(name)，未讀")
+    }
+    static func readingAccessibility(_ name: String, _ page: Int, _ total: Int) -> String {
+        String(localized: "library.reading.accessibility", defaultValue: "\(name)，閱讀中，第 \(page) 頁，共 \(total) 頁")
+    }
+    static func finishedAccessibility(_ name: String) -> String {
+        String(localized: "library.finished.accessibility", defaultValue: "\(name)，已讀")
+    }
+    static func continueAccessibility(_ name: String, _ page: Int, _ total: Int) -> String {
+        String(localized: "library.continue.accessibility", defaultValue: "繼續閱讀：\(name)，第 \(page) 頁，共 \(total) 頁")
+    }
+    static func jumpMessage(_ total: Int) -> String {
+        String(localized: "reader.jump.message", defaultValue: "輸入頁碼（1 – \(total)）")
+    }
+
     // MARK: Reader
     static let backToLibrary = String(localized: "reader.back", defaultValue: "返回書庫")
     static let readerSettings = String(localized: "reader.settings", defaultValue: "閱讀設定")
@@ -154,7 +176,13 @@ enum L10n {
     static let fitWidth = String(localized: "reader.fit.width", defaultValue: "符合寬度")
     static let layout = String(localized: "reader.layout", defaultValue: "版面")
     static let layoutSingle = String(localized: "reader.layout.single", defaultValue: "單頁")
-    static let layoutDouble = String(localized: "reader.layout.double", defaultValue: "雙頁（橫向時）")
+    static var layoutDouble: String {
+#if targetEnvironment(macCatalyst)
+        String(localized: "reader.layout.doubleMac", defaultValue: "雙頁")
+#else
+        String(localized: "reader.layout.double", defaultValue: "雙頁（橫向時）")
+#endif
+    }
     static let layoutVertical = String(localized: "reader.layout.vertical", defaultValue: "垂直捲動")
     static let coverAlone = String(localized: "reader.cover.alone", defaultValue: "封面單獨顯示")
     static let shiftSpread = String(localized: "reader.shift", defaultValue: "雙頁配對位移一頁")
@@ -176,6 +204,8 @@ enum L10n {
     static let removeBookmark = String(localized: "reader.bookmark.remove", defaultValue: "移除書籤")
     static let noBookmarks = String(localized: "reader.bookmarks.empty", defaultValue: "尚無書籤。閱讀時點工具列的書籤按鈕即可加入。")
     static let allPages = String(localized: "reader.allpages", defaultValue: "所有頁面")
+    static let sharePage = String(localized: "reader.share", defaultValue: "分享目前頁面")
+    static let shareFailed = String(localized: "reader.share.failed", defaultValue: "無法分享這一頁")
     static let loupe = String(localized: "reader.loupe", defaultValue: "放大鏡")
     static let loupeShow = String(localized: "reader.loupe.show", defaultValue: "顯示放大鏡")
     static let loupeHide = String(localized: "reader.loupe.hide", defaultValue: "關閉放大鏡")
@@ -200,5 +230,5 @@ enum L10n {
     static let settingsFormats = String(localized: "settings.formats", defaultValue: "支援格式")
     static let settingsFormatsValue = String(localized: "settings.formats.value", defaultValue: "CBZ（ZIP：儲存／Deflate）、CBR（RAR4／RAR5，含 solid）；圖片：JPEG、PNG、WebP、GIF、HEIC、AVIF。不支援：加密、分卷、7z。")
     static let settingsLicenses = String(localized: "settings.licenses", defaultValue: "第三方授權")
-    static let settingsPrivacy = String(localized: "settings.privacy", defaultValue: "VN Reader 不使用網路、帳號、廣告或追蹤。所有書籍只保存在這台裝置上。")
+    static let settingsPrivacy = String(localized: "settings.privacy", defaultValue: "VN Reader 不使用廣告或追蹤。書籍保存在裝置上；你可選擇使用自己的 iCloud 同步書庫。")
 }

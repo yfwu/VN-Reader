@@ -1,0 +1,38 @@
+Original log: /private/tmp/vn-reader-build8-progress-ui.log
+SHA256: 040ca6d8299528951915a76ad09b12b756dfa5bd722fb0a9afd2eb47cca87c8b
+Evidence scope: synthetic local validation; no CloudKit transport assertion.
+
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -project VNReader.xcodeproj -scheme VNReader -configuration Debug -destination "platform=iOS Simulator,id=4CE28906-A98C-4FCA-833F-80C6A213A4E9" -derivedDataPath /private/tmp/vn-reader-build8-ipad-ui -resultBundlePath /private/tmp/vn-reader-build8-progress-ui.xcresult "-only-testing:VNReaderUITests/ReaderUITests/test03LTRPagingZoomThumbnailsAndProgress" "-only-testing:VNReaderUITests/ReaderUITests/test05ProgressSurvivesBackgroundAndRelaunch" "-only-testing:VNReaderUITests/ReaderUITests/test08VerticalScrollMode" "-only-testing:VNReaderUITests/ReaderUITests/test14WideSpreadSurvivesJumpAndTurns" CODE_SIGNING_ALLOWED=NO
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+
+Selected result/signing/warning lines (compiler command lines omitted):
+	/private/tmp/vn-reader-build8-progress-ui.xcresult
+2026-11-10 22:14:24.780 appintentsmetadataprocessor[77590:18079128] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+Test Suite 'Selected tests' started at 2026-11-10 22:14:39.506.
+Test Suite 'VNReaderUITests.xctest' started at 2026-11-10 22:14:39.506.
+Test Suite 'ReaderUITests' started at 2026-11-10 22:14:39.506.
+Test Case '-[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test03LTRPagingZoomThumbnailsAndProgress]' passed (109.300 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test05ProgressSurvivesBackgroundAndRelaunch]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test05ProgressSurvivesBackgroundAndRelaunch] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test05ProgressSurvivesBackgroundAndRelaunch]' passed (34.976 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test08VerticalScrollMode]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test08VerticalScrollMode] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test08VerticalScrollMode]' passed (45.426 seconds).
+Test Case '-[VNReaderUITests.ReaderUITests test14WideSpreadSurvivesJumpAndTurns]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test14WideSpreadSurvivesJumpAndTurns] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test14WideSpreadSurvivesJumpAndTurns]' passed (41.429 seconds).
+Test Suite 'ReaderUITests' passed at 2026-11-10 22:18:30.643.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 231.132 (231.136) seconds
+Test Suite 'VNReaderUITests.xctest' passed at 2026-11-10 22:18:30.644.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 231.132 (231.137) seconds
+Test Suite 'Selected tests' passed at 2026-11-10 22:18:30.645.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 231.132 (231.139) seconds
+Test session results, code coverage, and logs:
+	/tmp/vn-reader-build8-progress-ui.xcresult
+** TEST SUCCEEDED **

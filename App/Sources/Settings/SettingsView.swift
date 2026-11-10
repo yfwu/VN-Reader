@@ -11,6 +11,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                SyncSettingsSection(sync: library.cloudSync)
                 Section {
                     Picker(L10n.readingDirection, selection: $settings.defaultDirection) {
                         Text(L10n.directionRTL).tag(ReadingDirection.rightToLeft)

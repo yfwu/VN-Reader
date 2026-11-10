@@ -1,0 +1,173 @@
+Running actual app layout model: mac
+Building for debugging...
+[Planning deferred tasks]
+[27 / 92]
+[29 / 93] CUnrar
+[32 / 93] CUnrar
+[33 / 146]
+[36 / 146]
+[40 / 146]
+[44 / 146]
+[46 / 146] CUnrar
+[51 / 146]
+[56 / 146]
+[59 / 146]
+[62 / 146] CUnrar
+[62 / 146]
+[64 / 146]
+[67 / 146] CUnrar
+[69 / 146]
+[72 / 146]
+[74 / 146] CUnrar
+[78 / 146]
+[81 / 146]
+[83 / 146]
+[85 / 146]
+[87 / 146]
+[91 / 146]
+[93 / 146] CUnrar
+[95 / 146]
+[97 / 146] ComicCore
+[98 / 146] CUnrar
+[98 / 146] ComicCore
+[99 / 146] CUnrar
+[102 / 146] ComicCore
+[108 / 146] CUnrar
+[109 / 146] CUnrar
+[110 / 146] CUnrar
+[111 / 146] CUnrar
+[112 / 146] CUnrar
+[114 / 146] CUnrar
+[115 / 146] CUnrar
+[116 / 146] CUnrar
+[118 / 146] CUnrar
+[120 / 146] CUnrar
+[122 / 146] ComicCore
+[123 / 146] ComicCore
+[127 / 146] ComicCore
+[128 / 146] ComicCore
+[129 / 146] ComicCore
+[130 / 146] ComicCore-product
+[132 / 146] ComicCore-product
+[134 / 146] ComicCore
+[136 / 146] ComicCore
+[140 / 147]
+[145 / 187]
+[148 / 187]
+[155 / 187]
+[157 / 187]
+[161 / 187]
+[165 / 187]
+[168 / 187]
+[172 / 187]
+[173 / 187]
+[177 / 187] Audit-product
+[180 / 187] Audit-product
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-layout-audit-nyvih2ys/Sources/Audit/ReaderViewModel.swift:231:17: warning: no 'async' operations occur within 'await' expression [#UnnecessaryEffectMarker]
+229 |         isPreparingShare = true
+230 |         let work = Task.detached(priority: .userInitiated) {
+231 |             try await SharedPageFiles.write(pages: pages, source: source, bookName: bookName)
+    |                 `- warning: no 'async' operations occur within 'await' expression [#UnnecessaryEffectMarker]
+232 |         }
+233 |         shareWork = work
+
+[#UnnecessaryEffectMarker]: <https://docs.swift.org/compiler/documentation/diagnostics/unnecessary-effect-marker>
+[183 / 187] Audit-product
+[185 / 187] Audit-product
+Build complete! (14.76 sec)
+PASS: platform default layout is correct
+PASS: existing synced single book gets the correct effective layout
+PASS: opening with a default never rewrites the book or sync fields
+PASS: vertical webtoon retains its layout
+PASS: explicit Mac single overrides double and refreshes the pager
+PASS: Mac selection leaves BookRecord and cloud state byte-for-byte equivalent
+PASS: explicit single survives settings and reader reconstruction
+PASS: explicit single is persisted in device-local defaults
+PASS: per-book choice wins over later global preference
+PASS: another local book does not inherit the first book override
+PASS: existing explicit global single preference is respected
+PASS: explicit global single does not flatten a vertical book
+All actual AppSettings/ReaderViewModel layout checks passed: Mac
+Running actual app layout model: ipad
+Building for debugging...
+[Planning deferred tasks]
+[27 / 92]
+[30 / 93] ComicCore
+[31 / 93] ComicCore
+[34 / 146]
+[37 / 146]
+[40 / 146]
+[45 / 146]
+[49 / 146]
+[54 / 146]
+[57 / 146]
+[58 / 146]
+[60 / 146]
+[63 / 146]
+[66 / 146]
+[68 / 146] CUnrar
+[72 / 146]
+[75 / 146]
+[78 / 146] CUnrar
+[82 / 146] CUnrar
+[83 / 146] CUnrar
+[87 / 146]
+[89 / 146] CUnrar
+[90 / 146]
+[91 / 146]
+[93 / 146] ComicCore
+[94 / 146] CUnrar
+[95 / 146] CUnrar
+[104 / 146] CUnrar
+[106 / 146] CUnrar
+[107 / 146] CUnrar
+[108 / 146] CUnrar
+[109 / 146] CUnrar
+[112 / 146] CUnrar
+[114 / 146] CUnrar
+[116 / 146] CUnrar
+[118 / 146] CUnrar
+[120 / 146] CUnrar
+[122 / 146] ComicCore
+[123 / 146] ComicCore
+[127 / 146] ComicCore
+[129 / 146] ComicCore
+[130 / 146] ComicCore-product
+[132 / 146] ComicCore-product
+[135 / 146] ComicCore
+[136 / 146] ComicCore
+[137 / 146] CUnrar
+[140 / 147]
+[142 / 147] Audit-product
+[148 / 187]
+[153 / 187]
+[159 / 187]
+[164 / 187]
+[167 / 187]
+[170 / 187]
+[172 / 187]
+[173 / 187]
+[177 / 187] Audit-product
+[179 / 187] Audit-product
+[181 / 187] Audit-product
+[183 / 187] Audit-product
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-layout-audit-nyvih2ys/Sources/Audit/ReaderViewModel.swift:231:17: warning: no 'async' operations occur within 'await' expression [#UnnecessaryEffectMarker]
+229 |         isPreparingShare = true
+230 |         let work = Task.detached(priority: .userInitiated) {
+231 |             try await SharedPageFiles.write(pages: pages, source: source, bookName: bookName)
+    |                 `- warning: no 'async' operations occur within 'await' expression [#UnnecessaryEffectMarker]
+232 |         }
+233 |         shareWork = work
+
+[#UnnecessaryEffectMarker]: <https://docs.swift.org/compiler/documentation/diagnostics/unnecessary-effect-marker>
+[185 / 187] Audit-product
+Build complete! (14.28 sec)
+PASS: platform default layout is correct
+PASS: existing synced single book gets the correct effective layout
+PASS: opening with a default never rewrites the book or sync fields
+PASS: vertical webtoon retains its layout
+PASS: iPad global defaults do not change an existing book
+PASS: iPad setLayout retains the existing BookRecord update behavior
+PASS: iPad layout selection refreshes the pager
+PASS: iPad selection never creates a Mac local override
+All actual AppSettings/ReaderViewModel layout checks passed: iPad

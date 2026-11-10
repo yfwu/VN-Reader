@@ -1,0 +1,21 @@
+{
+  "checkedAtUTC": "2026-11-10T10:28:40.787920+00:00",
+  "version": "0.1.0",
+  "build": "7",
+  "observedVia": "Chrome App Store Connect UI",
+  "physicalTestFlightInstallationVerified": false,
+  "ios": {
+    "buildID": "6e99e540-c75b-449f-b788-8acd1358c2be",
+    "status": "Ready to Submit",
+    "group": "Internal",
+    "testers": 2,
+    "url": "https://appstoreconnect.apple.com/teams/cc353b18-d5a9-4c26-bd89-2e83ea77c7c2/apps/6831459455/testflight/ios/6e99e540-c75b-449f-b788-8acd1358c2be"
+  },
+  "macos": {
+    "buildID": "70cfd40b-daeb-43e1-9480-8a64dcd96a15",
+    "status": "Ready to Submit",
+    "group": "Internal",
+    "testers": 2,
+    "url": "https://appstoreconnect.apple.com/teams/cc353b18-d5a9-4c26-bd89-2e83ea77c7c2/apps/6831459455/testflight/macos/70cfd40b-daeb-43e1-9480-8a64dcd96a15"
+  }
+}

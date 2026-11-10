@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "release": "0.1.0 (7)",
+  "capturedAt": "2026-11-10T10:20:37.853956+00:00",
+  "sourceRoot": "/Users/yfwu/Developer/VN-Reader/.worktrees/build-7",
+  "branch": "codex/build-7-icloud",
+  "gitBaseCommit": "8af02b690cafb117b5e840d0a10a874e3b170fc3",
+  "sourceState": "Uncommitted working tree; all 300 entries in the existing source-sha256.json matched at capture. Source snapshot created after archive; not a build-time attestation.",
+  "sourceManifest": "docs/test-results/build-7/source-inputs.sha256",
+  "sourceFileCount": 319,
+  "priorManifest": "docs/test-results/build-7/source-sha256.json",
+  "priorManifestEntriesMatched": 300,
+  "localSourceSnapshot": "build/release-7-provenance/source-inputs.zip",
+  "localSourceSnapshotSHA256": "1cb213be1d2def7443dcbc034a3c2307607e8c65bca44ac0f64c3a2f71ce2050",
+  "excludedFromSourceSnapshot": [
+    "Config/Signing.xcconfig",
+    "keys/certificates/profiles",
+    "Git metadata",
+    "Xcode user state",
+    "unrelated sudo file",
+    "build products and logs",
+    "release documentation"
+  ],
+  "artifactManifest": "docs/test-results/build-7/artifact-files.sha256",
+  "buildEnvironment": {
+    "xcode": "Xcode 27.2\nBuild version 27B52",
+    "macOS": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2\nBuildVersion:\t\t26B123"
+  },
+  "appStoreConnect": {
+    "appID": "6831459455",
+    "platformBuildIDs": {
+      "ios": "6e99e540-c75b-449f-b788-8acd1358c2be",
+      "macos": "70cfd40b-daeb-43e1-9480-8a64dcd96a15"
+    },
+    "status": "Ready to Submit on both platforms; Internal group with 2 testers observed in App Store Connect UI.",
+    "physicalTestFlightInstallationVerified": false,
+    "checkedAtUTC": "2026-11-10T10:28:40.787920+00:00",
+    "group": "Internal",
+    "testers": 2
+  },
+  "platforms": {
+    "ios": {
+      "archive": "build/release-7-ios-v2/VNReader.xcarchive",
+      "archiveLog": "build/release-7-ios-v2/archive.log",
+      "uploadLog": "build/release-7-ios-v2/upload.log",
+      "uploadSucceeded": true,
+      "localExport": "build/release-7-ios-v2/local-export/VNReader.ipa",
+      "archiveVerification": {
+        "bundle": "org.yfwu.VNReader",
+        "version": "0.1.0",
+        "build": "7",
+        "architectures": "arm64",
+        "archiveCloudKitEnvironment": "Development",
+        "container": [
+          "iCloud.org.yfwu.VNReader"
+        ],
+        "binarySHA256": "ec975f5402f2404ca76555a3e299c4060eab4916b7ce4e2bcc0049a4b192b241",
+        "archive": "/Users/yfwu/Developer/VN-Reader/.worktrees/build-7/build/release-7-ios-v2/VNReader.xcarchive"
+      },
+      "productionExportVerification": {
+        "version": "0.1.0",
+        "build": "7",
+        "bundleID": "org.yfwu.VNReader",
+        "cloudKitEnvironment": "Production",
+        "cloudKitContainer": [
+          "iCloud.org.yfwu.VNReader"
+        ],
+        "pushEnvironment": "production",
+        "debuggingEnabled": false,
+        "signatureVerified": true
+      },
+      "uploadSuccessLogLine": "2026-11-10 18:20:24.312 xcodebuild[8156:17326853] Progress 100%: Upload succeeded."
+    },
+    "mac": {
+      "archive": "build/release-7-mac-v2/VNReader.xcarchive",
+      "archiveLog": "build/release-7-mac-v2/archive.log",
+      "uploadLog": "build/release-7-mac-v2/upload.log",
+      "uploadSucceeded": true,
+      "localExport": "build/release-7-mac-v2/local-export/VNReader.pkg",
+      "archiveVerification": {
+        "bundle": "org.yfwu.VNReader",
+        "version": "0.1.0",
+        "build": "7",
+        "architectures": "x86_64 arm64",
+        "archiveCloudKitEnvironment": "Development",
+        "container": [
+          "iCloud.org.yfwu.VNReader"
+        ],
+        "binarySHA256": "6e6bbb5ad9ab99630ef5b260057cbd361caa6de9b58e328bc33ff7940b6f9aaf",
+        "archive": "/Users/yfwu/Developer/VN-Reader/.worktrees/build-7/build/release-7-mac-v2/VNReader.xcarchive"
+      },
+      "productionExportVerification": {
+        "version": "0.1.0",
+        "build": "7",
+        "bundleID": "org.yfwu.VNReader",
+        "cloudKitEnvironment": "Production",
+        "cloudKitContainer": [
+          "iCloud.org.yfwu.VNReader"
+        ],
+        "pushEnvironment": "production",
+        "debuggingEnabled": false,
+        "signatureVerified": true
+      },
+      "uploadSuccessLogLine": "2026-11-10 18:19:47.511 xcodebuild[8142:17324282] Progress 100%: Upload succeeded."
+    }
+  },
+  "artifactManifestFileCount": 70,
+  "snapshotScope": "319 source/resource/configuration/project/test/build-tool files; release documentation excluded and updated after snapshot capture.",
+  "cloudKitProductionSchema": {
+    "status": "Deployed 2026-11-10, observed by root release agent",
+    "schemaSource": "Config/CloudKit.schema.ckdb",
+    "runtimeVerified": false
+  }
+}

@@ -1,0 +1,74 @@
+Building for debugging...
+[Planning deferred tasks]
+[2 / 7] Audit-product
+[5 / 17] Audit-product
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-wde1qzvl/Sources/Audit/ReaderViewModel.swift:38:78: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 36 |     var layout: PageLayout { settings.readerLayout(for: record) }
+ 37 |
+ 38 |     init(record: BookRecord, library: LibraryStore, settings: AppSettings = .shared) {
+    |                                                                              `- warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 39 |         self.record = record
+ 40 |         self.library = library
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-wde1qzvl/Sources/Audit/UIStubs.swift:8:16: note: static property declared here
+ 6 | enum LibraryFilter { case all, unread, reading, finished, favorites }
+ 7 | @MainActor final class AppSettings {
+ 8 |     static let shared = AppSettings()
+   |                `- note: static property declared here
+ 9 |     let defaultDirection = ReadingDirection.leftToRight
+10 |     let defaultFitMode = PageFitMode.fitPage
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-wde1qzvl/Sources/Audit/ReaderViewModel.swift:38:78: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 36 |     var layout: PageLayout { settings.readerLayout(for: record) }
+ 37 |
+ 38 |     init(record: BookRecord, library: LibraryStore, settings: AppSettings = .shared) {
+    |                                                                              `- warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 39 |         self.record = record
+ 40 |         self.library = library
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-wde1qzvl/Sources/Audit/UIStubs.swift:8:16: note: static property declared here
+ 6 | enum LibraryFilter { case all, unread, reading, finished, favorites }
+ 7 | @MainActor final class AppSettings {
+ 8 |     static let shared = AppSettings()
+   |                `- note: static property declared here
+ 9 |     let defaultDirection = ReadingDirection.leftToRight
+10 |     let defaultFitMode = PageFitMode.fitPage
+[7 / 17] Audit-product
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-wde1qzvl/Sources/Audit/ReaderViewModel.swift:38:78: warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 36 |     var layout: PageLayout { settings.readerLayout(for: record) }
+ 37 |
+ 38 |     init(record: BookRecord, library: LibraryStore, settings: AppSettings = .shared) {
+    |                                                                              `- warning: main actor-isolated static property 'shared' can not be referenced from a nonisolated context; this is an error in the Swift 6 language mode
+ 39 |         self.record = record
+ 40 |         self.library = library
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-wde1qzvl/Sources/Audit/UIStubs.swift:8:16: note: static property declared here
+ 6 | enum LibraryFilter { case all, unread, reading, finished, favorites }
+ 7 | @MainActor final class AppSettings {
+ 8 |     static let shared = AppSettings()
+   |                `- note: static property declared here
+ 9 |     let defaultDirection = ReadingDirection.leftToRight
+10 |     let defaultFitMode = PageFitMode.fitPage
+
+/private/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-cloud-sync-wde1qzvl/Sources/Audit/ReaderViewModel.swift:231:17: warning: no 'async' operations occur within 'await' expression [#UnnecessaryEffectMarker]
+229 |         isPreparingShare = true
+230 |         let work = Task.detached(priority: .userInitiated) {
+231 |             try await SharedPageFiles.write(pages: pages, source: source, bookName: bookName)
+    |                 `- warning: no 'async' operations occur within 'await' expression [#UnnecessaryEffectMarker]
+232 |         }
+233 |         shareWork = work
+
+[#UnnecessaryEffectMarker]: <https://docs.swift.org/compiler/documentation/diagnostics/unnecessary-effect-marker>
+[9 / 17] Audit-product
+[11 / 17] Audit-product
+[12 / 17] Audit-product
+[13 / 17] Audit-product
+[15 / 17] Audit-product
+Build complete! (3.16 sec)
+OBSERVED: control: remote page 3 accepted before archive attachment
+OBSERVED: BUG A: stale reader attachment overwrites accepted remote page 3 with page 1
+OBSERVED: BUG B: passive open stamped as pending local edit defeats newer remote page 3 at initial fetch
+OBSERVED: BUG C: active reader remains page 1 after library accepts remote page 3
+OBSERVED: safe control: close alone preserves remote page 3
+OBSERVED: BUG D: passive same-page renderer callback overwrites accepted remote page 3 with page 1
+OBSERVED: POLICY: final spread persists last visible page, not focused logical page, and marks finished
+Audit completed against actual build-8 ReaderViewModel/LibraryStore/CloudSyncCoordinator/ComicCore; CKContainer networking forbidden. No repository files changed.

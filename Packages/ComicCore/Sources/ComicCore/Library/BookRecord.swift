@@ -92,6 +92,9 @@ public struct BookRecord: Codable, Identifiable, Equatable, Sendable {
     public var bookmarks: [Int]
     public var isFavorite: Bool
     public var metadata: ComicMetadata?
+    public var syncState: BookSyncState? = nil
+    /// Local account binding. Never uploaded as part of the cloud payload.
+    public var syncAccountID: String? = nil
 
     public init(id: UUID = UUID(), displayName: String, originalFileName: String, format: ArchiveFormat,
                 isSolid: Bool, fileSize: Int64, pageCount: Int, importedAt: Date = Date(), fingerprint: String,
@@ -120,7 +123,7 @@ public struct BookRecord: Codable, Identifiable, Equatable, Sendable {
 
     enum CodingKeys: String, CodingKey {
         case id, displayName, originalFileName, format, isSolid, fileSize, pageCount, importedAt, fingerprint,
-             hasCover, progress, readingDirection, fitMode, layout, bookmarks, isFavorite, metadata
+             hasCover, progress, readingDirection, fitMode, layout, bookmarks, isFavorite, metadata, syncState, syncAccountID
     }
 
     public init(from decoder: Decoder) throws {
@@ -142,6 +145,8 @@ public struct BookRecord: Codable, Identifiable, Equatable, Sendable {
         bookmarks = try c.decodeIfPresent([Int].self, forKey: .bookmarks) ?? []
         isFavorite = try c.decodeIfPresent(Bool.self, forKey: .isFavorite) ?? false
         metadata = try c.decodeIfPresent(ComicMetadata.self, forKey: .metadata)
+        syncState = try c.decodeIfPresent(BookSyncState.self, forKey: .syncState)
+        syncAccountID = try c.decodeIfPresent(String.self, forKey: .syncAccountID)
     }
 
     public var status: ReadingStatus {

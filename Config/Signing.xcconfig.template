@@ -9,4 +9,4 @@ DEVELOPMENT_TEAM = ABCDE12345
 VN_BUNDLE_ID = org.yfwu.VNReader
 
 // Optional: bump for each build you distribute.
-// CURRENT_PROJECT_VERSION = 3
+// CURRENT_PROJECT_VERSION = 5

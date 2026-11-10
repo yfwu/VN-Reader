@@ -1,0 +1,23 @@
+Original log: /private/tmp/vn-reader-build8-mac-vertical-final.log
+SHA256: 79370eb626188df7c0e9ce79f0f61d6f20419eb7d366113da2b79a11e013394c
+Evidence scope: synthetic local validation; no CloudKit transport assertion.
+
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild build -project VNReader.xcodeproj -scheme VNReader -configuration Debug -destination "platform=macOS,variant=Mac Catalyst" -derivedDataPath /private/tmp/vn-reader-build8-mac-progress-smoke DEVELOPMENT_TEAM=D7LVM9MC94 -allowProvisioningUpdates
+
+Build settings from command line:
+    DEVELOPMENT_TEAM = D7LVM9MC94
+
+
+Selected result/signing/warning lines (compiler command lines omitted):
+2026-11-10 22:31:01.785 appintentsmetadataprocessor[80591:18117833] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+CodeSign /tmp/vn-reader-build8-mac-progress-smoke/Build/Products/Debug-maccatalyst/VNReader.app/Contents/MacOS/VNReader.debug.dylib (in target 'VNReader' from project 'VNReader')
+    Signing Identity:     "Apple Development: yfw3u@icloud.com (C88NFLA87W)"
+    Provisioning Profile: "Mac Catalyst Team Provisioning Profile: org.yfwu.VNReader"
+CodeSign /tmp/vn-reader-build8-mac-progress-smoke/Build/Products/Debug-maccatalyst/VNReader.app/Contents/MacOS/__preview.dylib (in target 'VNReader' from project 'VNReader')
+    Signing Identity:     "Apple Development: yfw3u@icloud.com (C88NFLA87W)"
+    Provisioning Profile: "Mac Catalyst Team Provisioning Profile: org.yfwu.VNReader"
+CodeSign /tmp/vn-reader-build8-mac-progress-smoke/Build/Products/Debug-maccatalyst/VNReader.app (in target 'VNReader' from project 'VNReader')
+    Signing Identity:     "Apple Development: yfw3u@icloud.com (C88NFLA87W)"
+    Provisioning Profile: "Mac Catalyst Team Provisioning Profile: org.yfwu.VNReader"
+** BUILD SUCCEEDED **

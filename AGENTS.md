@@ -10,6 +10,8 @@ The UI ships in Traditional Chinese (source), English, Simplified Chinese and Ja
 - In the same change, add the key to `App/Resources/Localizable.xcstrings` with `en`, `zh-Hans` and
   `ja` values marked `translated`. Keep the format specifiers of the zh-Hant value (`%lld`, `%@`,
   positional `%1$@` when there are several); use a `plural` variation where English needs one.
+- Permission prompts are set in `Config/App.xcconfig` (`INFOPLIST_KEY_NS…UsageDescription`, in English) and
+  translated in `App/Resources/InfoPlist.xcstrings`.
 - Text that must stay the same in every language, such as licence texts, uses `Text(verbatim:)`.
 - Do not join localized pieces with full-width punctuation (`，`, `：`, `（）`); put the whole sentence
   in one localized format instead.

@@ -1,0 +1,48 @@
+Original log: /private/tmp/vn-reader-build8-auto-macB.log
+Original SHA256: 9a7a9807755112d093515427db37fed2cc337ea44c84986724826c888598cf62
+Scope: explicit DEBUG Development smoke on one Mac with isolated client catalogues.
+Retained only timestamped SyncSmoke status/reason/count/error-code lines; no record payloads, account identifiers or tokens.
+
+2026-11-10T15:32:22Z SyncSmoke[macB] Syncing the library… books=0
+2026-11-10T15:32:22Z SyncSmoke[macB] diagnostic cycle start
+2026-11-10T15:32:24Z SyncSmoke[macB] Syncing the library… books=0
+2026-11-10T15:32:25Z SyncSmoke[macB] diagnostic fetched modified=1 deleted=0
+2026-11-10T15:32:25Z SyncSmoke[macB] diagnostic send pending=0
+2026-11-10T15:32:25Z SyncSmoke[macB] This sync has completed books=1
+2026-11-10T15:32:25Z SyncSmoke[macB] diagnostic cycle finish result=completed followUp=false
+2026-11-10T15:32:39Z SyncSmoke[macB] diagnostic auto request=bookOpened disposition=debounced
+2026-11-10T15:32:40Z SyncSmoke[macB] diagnostic auto start
+2026-11-10T15:32:40Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T15:32:40Z SyncSmoke[macB] diagnostic cycle start
+2026-11-10T15:32:41Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T15:32:41Z SyncSmoke[macB] diagnostic send pending=0
+2026-11-10T15:32:41Z SyncSmoke[macB] This sync has completed books=1
+2026-11-10T15:32:41Z SyncSmoke[macB] diagnostic cycle finish result=completed followUp=false
+2026-11-10T15:36:12Z SyncSmoke[macB] diagnostic auto request=appActive disposition=debounced
+2026-11-10T15:36:13Z SyncSmoke[macB] diagnostic auto start
+2026-11-10T15:36:13Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T15:36:13Z SyncSmoke[macB] diagnostic cycle start
+2026-11-10T15:36:13Z SyncSmoke[macB] diagnostic auto request=appActive disposition=queued
+2026-11-10T15:36:13Z SyncSmoke[macB] diagnostic auto request=appActive disposition=queued
+2026-11-10T15:36:13Z SyncSmoke[macB] diagnostic auto request=readerForeground disposition=queued
+2026-11-10T15:36:14Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T15:36:14Z SyncSmoke[macB] diagnostic send pending=0
+2026-11-10T15:36:14Z SyncSmoke[macB] This sync has completed books=1
+2026-11-10T15:36:14Z SyncSmoke[macB] diagnostic cycle finish result=completed followUp=true
+2026-11-10T15:36:15Z SyncSmoke[macB] diagnostic auto start
+2026-11-10T15:36:15Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T15:36:15Z SyncSmoke[macB] diagnostic cycle start
+2026-11-10T15:36:16Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T15:36:16Z SyncSmoke[macB] diagnostic send pending=0
+2026-11-10T15:36:16Z SyncSmoke[macB] This sync has completed books=1
+2026-11-10T15:36:16Z SyncSmoke[macB] diagnostic cycle finish result=completed followUp=false
+2026-11-10T15:36:29Z SyncSmoke[macB] diagnostic sent saved=1 failed=0
+2026-11-10T15:36:36Z SyncSmoke[macB] diagnostic sent saved=1 failed=0
+2026-11-10T15:36:39Z SyncSmoke[macB] diagnostic auto request=bookClosed disposition=debounced
+2026-11-10T15:36:40Z SyncSmoke[macB] diagnostic auto start
+2026-11-10T15:36:40Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T15:36:40Z SyncSmoke[macB] diagnostic cycle start
+2026-11-10T15:36:41Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T15:36:41Z SyncSmoke[macB] diagnostic send pending=0
+2026-11-10T15:36:41Z SyncSmoke[macB] This sync has completed books=1
+2026-11-10T15:36:41Z SyncSmoke[macB] diagnostic cycle finish result=completed followUp=false

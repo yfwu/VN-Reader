@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import ComicCore
 
 /// State of one open book. Owns the page source, image loader and thumbnails.
@@ -14,6 +15,9 @@ final class ReaderViewModel: ObservableObject {
     @Published private(set) var toast: String?
     @Published private(set) var widePages: Set<Int> = []
     @Published private(set) var loupeVisible = false
+    @Published private(set) var isPreparingShare = false
+    /// Set while the share sheet is showing these files.
+    @Published private(set) var sharedFiles: [URL]?
 
     let library: LibraryStore
     let settings: AppSettings
@@ -21,38 +25,67 @@ final class ReaderViewModel: ObservableObject {
     private(set) var source: BookPageSource?
     private(set) var loader: PageImageLoader?
     private(set) var thumbnails: ThumbnailProvider?
+    @Published private(set) var downloadProgress: Double?
+    private var openTask: Task<Void, Never>?
+    private var readerLease: UUID?
     private var toastTask: Task<Void, Never>?
+    private var shareWork: Task<[URL], Error>?
     private var pixelSize: CGSize = .zero
+    private var libraryObservation: AnyCancellable?
+    private var hasNavigatedInForeground = false
+    private var sceneIsActive = true
+    private var wasBackgrounded = false
+    private var hasClosed = false
 
     var pageCount: Int { record.pageCount }
     var bookID: UUID { record.id }
+    var layout: PageLayout { settings.readerLayout(for: record) }
 
     init(record: BookRecord, library: LibraryStore, settings: AppSettings = .shared) {
         self.record = record
         self.library = library
         self.settings = settings
         self.currentPage = max(0, min(record.progress.currentPage, record.pageCount - 1))
+        libraryObservation = library.$books.sink { [weak self] books in
+            guard let self, let latest = books.first(where: { $0.id == self.bookID }) else { return }
+            self.acceptLibraryRecord(latest)
+        }
     }
 
     /// Opens the archive off the main thread.
     func open() {
-        guard source == nil, openError == nil else { return }
+        guard source == nil, openError == nil, openTask == nil else { return }
+        hasClosed = false
+        library.cloudSync.requestAutomaticSync(.bookOpened)
+        readerLease = library.acquireReaderLease(record.id)
         let paths = library.paths
         let id = record.id
         let format = record.format
-        Task {
+        openTask = Task {
             do {
+                if !library.isDownloaded(record) {
+                    downloadProgress = 0
+                    try await library.cloudSync.ensureDownloaded(id) { value in self.downloadProgress = value }
+                    downloadProgress = nil
+                }
+                try Task.checkCancellation()
                 let src = try await Task.detached(priority: .userInitiated) {
                     try BookPageSource(bookID: id, paths: paths, format: format)
                 }.value
+                guard !Task.isCancelled else { src.close(); return }
                 self.attach(src)
             } catch {
-                self.openError = ErrorMessages.explain(error)
+                guard !Task.isCancelled else { return }
+                if record.syncState != nil {
+                    self.openError = ErrorExplanation(title: L10n.syncTitle, message: library.cloudSync.explain(error))
+                } else { self.openError = ErrorMessages.explain(error) }
             }
         }
     }
 
     private func attach(_ src: BookPageSource) {
+        // A fetch/download may have updated the catalogue while the archive opened.
+        if let latest = library.book(bookID) { acceptLibraryRecord(latest) }
         source = src
         // Decode for the longer screen side in both orientations so rotation is free.
         let screen = UIScreen.main.bounds.size
@@ -68,9 +101,8 @@ final class ReaderViewModel: ObservableObject {
         preparation = src.preparation
         src.startPreparation()
         isReady = true
-        // Opening counts as reading (status becomes "reading", appears in Continue).
-        library.recordPosition(record.id, page: currentPage)
-        refreshRecord()
+        // Recency is local presentation data, not a new cross-device position edit.
+        library.recordOpened(bookID)
     }
 
     func containerSizeChanged(_ size: CGSize, scale: CGFloat) {
@@ -81,19 +113,35 @@ final class ReaderViewModel: ObservableObject {
         if let r = library.book(record.id) { record = r }
     }
 
+    private func acceptLibraryRecord(_ latest: BookRecord) {
+        record = latest
+        // Never move a reader who has started navigating in this foreground session.
+        // On initial open/resume, keep following fetched progress until they do.
+        guard sceneIsActive, !hasNavigatedInForeground else { return }
+        let page = max(0, min(latest.progress.currentPage, max(0, latest.pageCount - 1)))
+        guard currentPage != page else { return }
+        currentPage = page
+        visiblePages = []
+        pager?.go(toPage: page, animated: false, userInitiated: false)
+    }
+
     // MARK: Paging
 
-    func pageDidChange(_ page: Int, visiblePages: [Int]) {
-        currentPage = page
+    func pageDidChange(_ page: Int, visiblePages: [Int], userInitiated: Bool) {
         self.visiblePages = visiblePages
-        // Store the last visible page of a spread so "finished" triggers on the final spread.
-        library.recordPosition(record.id, page: visiblePages.max() == pageCount - 1 ? pageCount - 1 : page)
+        // Initial display, re-pairing and settings/viewport changes are not reading
+        // actions. In particular they must not stamp an old position as a new edit.
+        guard userInitiated else { return }
+        hasNavigatedInForeground = true
+        currentPage = max(0, min(page, max(0, pageCount - 1)))
+        library.recordPosition(record.id, page: currentPage,
+                               reachedEnd: visiblePages.contains(pageCount - 1))
         refreshRecord()
     }
 
     func jump(to page: Int) {
         let p = max(0, min(page, pageCount - 1))
-        pager?.go(toPage: p, animated: false)
+        pager?.go(toPage: p, animated: false, userInitiated: true)
     }
 
     var isCurrentPageReady: Bool {
@@ -175,9 +223,15 @@ final class ReaderViewModel: ObservableObject {
     }
 
     func setLayout(_ l: PageLayout) {
-        guard l != record.layout else { return }
-        library.update(record.id, { $0.layout = l }, immediate: true)
-        refreshRecord()
+        if settings.storeLocalReaderLayout(l, for: record.id) {
+            // An explicit Mac choice stays local, even when it equals the current
+            // effective layout. Keep it if the global default changes afterward.
+            objectWillChange.send()
+        } else {
+            guard l != record.layout else { return }
+            library.update(record.id, { $0.layout = l }, immediate: true)
+            refreshRecord()
+        }
         pager?.reloadForSettings()
     }
 
@@ -194,13 +248,64 @@ final class ReaderViewModel: ObservableObject {
         flash(isBookmarked ? L10n.addBookmark : L10n.removeBookmark)
     }
 
+    // MARK: Sharing
+
+    /// Shares what is on screen, which in a spread is both pages.
+    func shareVisiblePages() {
+        guard !isPreparingShare, sharedFiles == nil, let source else { return }
+        let pages = (visiblePages.isEmpty ? [currentPage] : visiblePages).sorted()
+        let bookName = record.displayName
+        isPreparingShare = true
+        let work = Task.detached(priority: .userInitiated) {
+            try await SharedPageFiles.write(pages: pages, source: source, bookName: bookName)
+        }
+        shareWork = work
+        Task {
+            defer {
+                isPreparingShare = false
+                shareWork = nil
+            }
+            do {
+                sharedFiles = try await work.value
+            } catch {
+                if !work.isCancelled { flash(L10n.shareFailed) }
+            }
+        }
+    }
+
+    func shareDidEnd() { sharedFiles = nil }
+
     // MARK: Lifecycle
 
     /// Persists the position right now (app going to background, view closing).
     func flush() { library.saveNow() }
 
+    func scenePhaseChanged(_ phase: ScenePhase) {
+        if phase == .active {
+            guard !sceneIsActive else { return }
+            sceneIsActive = true
+            // Transient inactive states (system sheets/menus) can request fresh
+            // metadata without resetting the active reader's navigation policy.
+            if wasBackgrounded { hasNavigatedInForeground = false; wasBackgrounded = false }
+            if let latest = library.book(bookID) { acceptLibraryRecord(latest) }
+            library.cloudSync.requestAutomaticSync(.readerForeground)
+        } else {
+            sceneIsActive = false
+            if phase == .background { wasBackgrounded = true }
+            flush()
+        }
+    }
+
     func close() {
+        guard !hasClosed else { return }
+        hasClosed = true
+        openTask?.cancel(); openTask = nil
+        libraryObservation?.cancel(); libraryObservation = nil
+        if let readerLease { library.releaseReaderLease(readerLease); self.readerLease = nil }
         flush()
+        library.cloudSync.requestAutomaticSync(.bookClosed)
+        shareWork?.cancel()
+        SharedPageFiles.removeAll()
         loader?.cancelAll()
         thumbnails?.cancelAll()
         source?.close()

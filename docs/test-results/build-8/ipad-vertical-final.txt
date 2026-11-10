@@ -1,0 +1,29 @@
+Original log: /private/tmp/vn-reader-build8-vertical-final.log
+SHA256: ff07d2cc84205546ce4dba13015eaefdaa13c9d1f461336fa78a6f0fb948d7e7
+Evidence scope: synthetic local validation; no CloudKit transport assertion.
+
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -project VNReader.xcodeproj -scheme VNReader -configuration Debug -destination "platform=iOS Simulator,id=4CE28906-A98C-4FCA-833F-80C6A213A4E9" -derivedDataPath /private/tmp/vn-reader-build8-ipad-ui -resultBundlePath /private/tmp/vn-reader-build8-vertical-final.xcresult "-only-testing:VNReaderUITests/ReaderUITests/test08VerticalScrollMode" CODE_SIGNING_ALLOWED=NO
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+
+Selected result/signing/warning lines (compiler command lines omitted):
+	/private/tmp/vn-reader-build8-vertical-final.xcresult
+2026-11-10 22:31:01.438 appintentsmetadataprocessor[80586:18117630] warning: Metadata extraction skipped, no AppIntents.framework dependency found
+Test Suite 'Selected tests' started at 2026-11-10 22:31:05.365.
+Test Suite 'VNReaderUITests.xctest' started at 2026-11-10 22:31:05.366.
+Test Suite 'ReaderUITests' started at 2026-11-10 22:31:05.366.
+Test Case '-[VNReaderUITests.ReaderUITests test08VerticalScrollMode]' started.
+<unknown>:0: warning: -[VNReaderUITests.ReaderUITests test08VerticalScrollMode] : Publishing changes from within view updates is not allowed, this will cause undefined behavior.
+Test Case '-[VNReaderUITests.ReaderUITests test08VerticalScrollMode]' passed (44.913 seconds).
+Test Suite 'ReaderUITests' passed at 2026-11-10 22:31:50.281.
+	 Executed 1 test, with 0 failures (0 unexpected) in 44.913 (44.915) seconds
+Test Suite 'VNReaderUITests.xctest' passed at 2026-11-10 22:31:50.282.
+	 Executed 1 test, with 0 failures (0 unexpected) in 44.913 (44.916) seconds
+Test Suite 'Selected tests' passed at 2026-11-10 22:31:50.282.
+	 Executed 1 test, with 0 failures (0 unexpected) in 44.913 (44.917) seconds
+Test session results, code coverage, and logs:
+	/tmp/vn-reader-build8-vertical-final.xcresult
+** TEST SUCCEEDED **

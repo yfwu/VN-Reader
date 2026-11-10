@@ -46,7 +46,7 @@ final class SpreadPageController: UIViewController, UIGestureRecognizerDelegate 
         }
         zoomView.isAccessibilityElement = true
         zoomView.accessibilityTraits = [.image]
-        zoomView.accessibilityLabel = pages.map { L10n.pageNumber($0 + 1) }.joined(separator: "、")
+        zoomView.accessibilityLabel = ListFormatter.localizedString(byJoining: pages.map { L10n.pageNumber($0 + 1) })
         zoomView.accessibilityIdentifier = "reader.page.\(pages.first ?? 0)"
         zoomView.accessibilityCustomActions = reader.map { [$0.model.loupeAccessibilityAction] }
 
@@ -121,6 +121,7 @@ final class SpreadPageController: UIViewController, UIGestureRecognizerDelegate 
         guard let reader, let loader = reader.loader else { return }
         loadTask?.cancel()
         errorStack.isHidden = true
+        guard reader.canDisplay(self) else { spinner.startAnimating(); return }
         let order = reader.screenOrder(pages)
         // Show cached pages immediately (no flash when paging back and forth).
         let cached = order.map { loader.cachedImage($0) }
@@ -148,7 +149,7 @@ final class SpreadPageController: UIViewController, UIGestureRecognizerDelegate 
                     failure = ErrorMessages.explain(error)
                 }
             }
-            guard let self, !Task.isCancelled else { return }
+            guard let self, !Task.isCancelled, self.reader?.canDisplay(self) == true else { return }
             self.spinner.stopAnimating()
             let shown = images.compactMap { $0 }
             self.shownPages = zip(order, images).filter { $1 != nil }.map(\.0)

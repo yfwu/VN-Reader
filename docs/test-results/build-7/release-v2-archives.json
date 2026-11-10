@@ -1,0 +1,26 @@
+{
+  "ios": {
+    "bundle": "org.yfwu.VNReader",
+    "version": "0.1.0",
+    "build": "7",
+    "architectures": "arm64",
+    "archiveCloudKitEnvironment": "Development",
+    "container": [
+      "iCloud.org.yfwu.VNReader"
+    ],
+    "binarySHA256": "ec975f5402f2404ca76555a3e299c4060eab4916b7ce4e2bcc0049a4b192b241",
+    "archive": "/Users/yfwu/Developer/VN-Reader/.worktrees/build-7/build/release-7-ios-v2/VNReader.xcarchive"
+  },
+  "mac": {
+    "bundle": "org.yfwu.VNReader",
+    "version": "0.1.0",
+    "build": "7",
+    "architectures": "x86_64 arm64",
+    "archiveCloudKitEnvironment": "Development",
+    "container": [
+      "iCloud.org.yfwu.VNReader"
+    ],
+    "binarySHA256": "6e6bbb5ad9ab99630ef5b260057cbd361caa6de9b58e328bc33ff7940b6f9aaf",
+    "archive": "/Users/yfwu/Developer/VN-Reader/.worktrees/build-7/build/release-7-mac-v2/VNReader.xcarchive"
+  }
+}

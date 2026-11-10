@@ -1,0 +1,69 @@
+/var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-spread-ui-y5h203vc/SpreadAudit.app: replacing existing signature
+PASS: initial Mac layout pairs portrait pages
+PASS: jump keeps the requested logical page inside a pair
+PASS: narrow Mac viewport keeps double layout and logical page
+PASS: late wide discovery keeps the focused page alone
+PASS: obsolete paired controller cannot display a known wide image
+PASS: wide discovery leaves unit indices stable during a transition
+PASS: zoom callback cannot reenable paging during a transition
+PASS: transition completion uses current wide-page classification
+PASS: stale completion cannot replace a newer transition
+PASS: jump queued during a transition wins over the old target
+PASS: cancelled swipe preserves the logical wide page
+PASS: every shared decode consumer receives dimensions before its image
+PASS: cached-image consumer also receives dimensions before return
+PASS: obsolete controller refuses cached wide-pair rendering
+GEOMETRY wide size=(1200.0, 800.0) viewport=(0.0, 0.0, 1200.0, 800.0) frames=[(0.0, 100.0, 1200.0, 600.0)] bounds=(0.0, -100.0, 1200.0, 800.0) content=(1200.0, 600.0) inset=UIEdgeInsets(top: 100.0, left: 0.0, bottom: 100.0, right: 0.0) offset=(0.0, -100.0) scale=0.6
+PASS: fitPage wide stays fully visible at (1200.0, 800.0)
+PASS: fitPage wide remains centered at (1200.0, 800.0)
+GEOMETRY wide size=(1200.0, 696.0) viewport=(0.0, 0.0, 1200.0, 696.0) frames=[(0.0, 48.0, 1200.0, 600.0)] bounds=(0.0, -48.0, 1200.0, 696.0) content=(1200.0, 600.0) inset=UIEdgeInsets(top: 48.0, left: 0.0, bottom: 48.0, right: 0.0) offset=(0.0, -48.0) scale=0.6
+PASS: fitPage wide stays fully visible at (1200.0, 696.0)
+PASS: fitPage wide remains centered at (1200.0, 696.0)
+GEOMETRY wide size=(1200.0, 800.0) viewport=(0.0, 0.0, 1200.0, 800.0) frames=[(0.0, 100.0, 1200.0, 600.0)] bounds=(0.0, -100.0, 1200.0, 800.0) content=(1200.0, 600.0) inset=UIEdgeInsets(top: 100.0, left: 0.0, bottom: 100.0, right: 0.0) offset=(0.0, -100.0) scale=0.6
+PASS: fitPage wide stays fully visible at (1200.0, 800.0)
+PASS: fitPage wide remains centered at (1200.0, 800.0)
+GEOMETRY wide size=(600.0, 900.0) viewport=(0.0, 0.0, 600.0, 900.0) frames=[(0.0, 300.0, 600.0, 300.0)] bounds=(0.0, -300.0, 600.0, 900.0) content=(600.0, 300.0) inset=UIEdgeInsets(top: 300.0, left: 0.0, bottom: 300.0, right: 0.0) offset=(0.0, -300.0) scale=0.3
+PASS: fitPage wide stays fully visible at (600.0, 900.0)
+PASS: fitPage wide remains centered at (600.0, 900.0)
+GEOMETRY two portraits size=(1200.0, 800.0) viewport=(0.0, 0.0, 1200.0, 800.0) frames=[(155.5, 0.0, 444.44444444444446, 800.0), (599.9444444444443, 0.0, 444.44444444444457, 800.0)] bounds=(-155.5, 0.0, 1200.0, 800.0) content=(888.8888888888889, 800.0) inset=UIEdgeInsets(top: 0.0, left: 155.55555555555554, bottom: 0.0, right: 155.55555555555554) offset=(-155.5, 0.0) scale=0.8
+PASS: fitPage two portraits stays fully visible at (1200.0, 800.0)
+PASS: fitPage two portraits remains centered at (1200.0, 800.0)
+GEOMETRY two portraits size=(1200.0, 696.0) viewport=(0.0, 0.0, 1200.0, 696.0) frames=[(213.5, 0.0, 386.66666666666663, 696.0), (600.1666666666665, 0.0, 386.66666666666663, 696.0)] bounds=(-213.5, 0.0, 1200.0, 696.0) content=(773.3333333333333, 696.0) inset=UIEdgeInsets(top: 0.0, left: 213.33333333333337, bottom: 0.0, right: 213.33333333333337) offset=(-213.5, 0.0) scale=0.696
+PASS: fitPage two portraits stays fully visible at (1200.0, 696.0)
+PASS: fitPage two portraits remains centered at (1200.0, 696.0)
+GEOMETRY two portraits size=(1200.0, 800.0) viewport=(0.0, 0.0, 1200.0, 800.0) frames=[(155.5, 0.0, 444.44444444444446, 800.0), (599.9444444444443, 0.0, 444.44444444444457, 800.0)] bounds=(-155.5, 0.0, 1200.0, 800.0) content=(888.8888888888889, 800.0) inset=UIEdgeInsets(top: 0.0, left: 155.55555555555554, bottom: 0.0, right: 155.55555555555554) offset=(-155.5, 0.0) scale=0.8
+PASS: fitPage two portraits stays fully visible at (1200.0, 800.0)
+PASS: fitPage two portraits remains centered at (1200.0, 800.0)
+GEOMETRY two portraits size=(600.0, 900.0) viewport=(0.0, 0.0, 600.0, 900.0) frames=[(0.0, 180.0, 300.0, 540.0), (299.99999999999994, 180.0, 300.00000000000006, 540.0)] bounds=(0.0, -180.0, 600.0, 900.0) content=(600.0, 540.0) inset=UIEdgeInsets(top: 180.0, left: 0.0, bottom: 180.0, right: 0.0) offset=(0.0, -180.0) scale=0.54
+PASS: fitPage two portraits stays fully visible at (600.0, 900.0)
+PASS: fitPage two portraits remains centered at (600.0, 900.0)
+PASS: initial pager rendering never reports user navigation
+PASS: remote restore, wide discovery, settings and resize stay passive
+PASS: explicit same-page jump remains a user navigation
+PASS: next and previous each report one user navigation
+PASS: animated user navigation reports once, completion stays passive
+PASS: cancelled swipe does not report user navigation
+PASS: committed swipe reports exactly one user navigation
+PASS: queued user jump cannot be replaced by passive restore
+PASS: committed swipe wins over queued remote restore
+PASS: cancelled transition can apply queued restore without a write
+PASS: detached pager completion cannot report user navigation
+PASS: initial vertical positioning stays passive
+PASS: vertical remote restore, settings, resize and decoded row changes stay passive
+PASS: explicit vertical same-page jump reports user intent once
+PASS: vertical drag and deceleration report actual reading changes
+PASS: passive row corrections do not inherit an active drag intent
+PASS: real scroll ending on a passively reported row still persists that row
+PASS: remote positioning cancels old deceleration intent
+PASS: existing pan recognizer reports indirect scroll intent without dragging flags
+PASS: detached vertical reader cannot report navigation
+CACHED VERTICAL row=(0.0, 0.0, 400.0, 2000.0) drawn=[(0.0, 0.0, 400.0, 2000.0)]
+PASS: cached tall page gets its full-width row height on first layout
+PASS: cached tall image fills the row instead of becoming a narrow strip
+PASS: cached tall page keeps the correct aspect after viewport resize
+PASS: cached aspect sizing and viewport changes remain passive
+LATE VERTICAL offset=1160.0→2580.0 row=1160.0→2580.0 expectedDelta=1420.0
+PASS: late decode above viewport compensates the old fallback height even with a populated cache
+PASS: late decoded height adjustment preserves logical focus without progress writes
+All 56 UIKit controller/loader/geometry/intent checks passed.
+Retained UIKit harness: /var/folders/4h/fptkys1s045_h3lccr17h_9h0000gn/T/vnreader-spread-ui-y5h203vc

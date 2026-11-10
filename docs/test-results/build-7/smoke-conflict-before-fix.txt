@@ -1,0 +1,13 @@
+2026-11-10T10:09:23Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T10:09:24Z SyncSmoke[macB] Syncing the library… books=1
+2026-11-10T10:09:24Z SyncSmoke[macB] diagnostic send pending=1
+2026-11-10T10:09:25Z SyncSmoke[macB] diagnostic sent saved=0 failed=1
+2026-11-10T10:09:25Z SyncSmoke[macB] diagnostic record-save error=CKErrorDomain:14
+2026-11-10T10:09:25Z SyncSmoke[macB] diagnostic record-save.underlying error=CKInternalErrorDomain:2004
+2026-11-10T10:09:25Z SyncSmoke[macB] diagnostic send error=CKErrorDomain:2
+2026-11-10T10:09:25Z SyncSmoke[macB] diagnostic send.partial[0] error=CKErrorDomain:14
+2026-11-10T10:09:25Z SyncSmoke[macB] diagnostic send.partial[0].underlying error=CKInternalErrorDomain:2004
+2026-11-10T10:09:25Z SyncSmoke[macB] Sync did not complete: Failed to send changes books=1
+2026-11-10T10:09:26Z SyncSmoke[macB] diagnostic fetched modified=1 deleted=0
+2026-11-10T10:09:28Z SyncSmoke[macB] diagnostic sent saved=1 failed=0
+2026-11-10T10:12:52Z SyncSmoke[macB] diagnostic sent saved=1 failed=0

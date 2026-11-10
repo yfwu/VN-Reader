@@ -19,3 +19,11 @@ Config/Signing.xcconfig
 ExportOptions.local.plist
 
 .DS_Store
+
+# Isolated parallel release sources
+.worktrees/
+
+# Local Python and coverage output
+__pycache__/
+*.py[cod]
+*.profraw

@@ -68,6 +68,10 @@ final class ImportCoordinator: ObservableObject {
         for url in urls {
             let job = ImportJob(fileName: url.lastPathComponent)
             jobs.append(job)
+            if let protection = library.writeProtection {
+                job.state = .failed(ErrorMessages.explain(protection))
+                continue
+            }
             enqueue(job, url: url, securityScoped: securityScoped, deleteAfterImport: deleteAfterImport)
         }
         updateBackgroundTask()
@@ -109,23 +113,37 @@ final class ImportCoordinator: ObservableObject {
                                                 existing: existing, flag: flag) { state in
                 onMain { job.state = state }
             }
-            if deleteAfterImport { try? FileManager.default.removeItem(at: url) }
-            onMain {
-                guard let self else { return }
-                self.finish(job, outcome: outcome)
-                self.updateBackgroundTask()
+            // Wait for the durable library commit before the next queued import
+            // reads its snapshot, and before deleting the system's Inbox copy.
+            let committed = DispatchQueue.main.sync {
+                MainActor.assumeIsolated { () -> Bool in
+                    guard let self else { return false }
+                    let committed = self.finish(job, outcome: outcome)
+                    self.updateBackgroundTask()
+                    return committed
+                }
             }
+            if deleteAfterImport && committed { try? FileManager.default.removeItem(at: url) }
         }
     }
 
-    private func finish(_ job: ImportJob, outcome: Result<ImportOutcome, Error>) {
+    /// True only when a new import and its library record are both safely saved.
+    private func finish(_ job: ImportJob, outcome: Result<ImportOutcome, Error>) -> Bool {
         switch outcome {
         case .success(.imported(let record)):
-            library.add(record)
-            job.state = .finished
-            // Successful jobs disappear; the book itself is now in the grid.
-            jobs.removeAll { $0.id == job.id }
+            do {
+                try library.add(record)
+                job.state = .finished
+                jobs.removeAll { $0.id == job.id }
+                return true
+            } catch {
+                // Keep both the completed managed copy and the Inbox source. A later
+                // recovery may need either; startup never discards unknown book files.
+                job.state = .failed(ErrorMessages.explain(error))
+            }
         case .success(.duplicate(let id)):
+            // Retain the Inbox copy: a stale record is not proof that its book file
+            // is still present, so duplicate detection alone cannot authorize removal.
             job.state = .duplicate(library.book(id)?.displayName ?? "")
         case .failure(let error):
             if case ComicError.cancelled = error {
@@ -134,6 +152,7 @@ final class ImportCoordinator: ObservableObject {
                 job.state = .failed(ErrorMessages.explain(error))
             }
         }
+        return false
     }
 
     /// Runs on the import queue.

@@ -106,6 +106,9 @@ struct BookCell: View {
             .accessibilityHint(L10n.menuOpen)
             .accessibilityIdentifier("book.\(book.displayName)")
 
+            if book.syncState != nil && !library.isDownloaded(book) {
+                Label(L10n.syncCoverOnly, systemImage: "icloud.and.arrow.down").font(.caption).foregroundStyle(.secondary)
+            }
             HStack(alignment: .top, spacing: 4) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(book.displayName)
@@ -121,13 +124,15 @@ struct BookCell: View {
                 Menu { menuItems } label: {
                     Image(systemName: "ellipsis")
                         .font(.body.weight(.semibold))
-                        .frame(width: 44, height: 44)
+                        .frame(width: 44, height: 24)
+                        .frame(height: 44, alignment: .top)
                         .contentShape(Rectangle())
                 }
-                .accessibilityLabel(L10n.menuMore + "：" + book.displayName)
+                .menuStyle(.button)
+                .buttonStyle(.plain)
+                .menuIndicator(.hidden)
+                .accessibilityLabel(L10n.moreOptionsAccessibility(book.displayName))
                 .accessibilityIdentifier("book.menu.\(book.displayName)")
-                .padding(.trailing, -10)
-                .padding(.top, -10)
                 .opacity(selected == nil ? 1 : 0)
                 .disabled(selected != nil)
                 .accessibilityHidden(selected != nil)
@@ -144,13 +149,11 @@ struct BookCell: View {
     }
 
     private var accessibilitySummary: String {
-        let status: String
         switch book.status {
-        case .unread: status = L10n.statusUnread
-        case .reading: status = L10n.statusReading + "，" + L10n.pagesProgress(book.progress.currentPage + 1, book.pageCount)
-        case .finished: status = L10n.statusFinished
+        case .unread: return L10n.unreadAccessibility(book.displayName)
+        case .reading: return L10n.readingAccessibility(book.displayName, book.progress.currentPage + 1, book.pageCount)
+        case .finished: return L10n.finishedAccessibility(book.displayName)
         }
-        return "\(book.displayName)，\(status)"
     }
 
     @ViewBuilder
@@ -171,7 +174,15 @@ struct BookCell: View {
             Button(action: reset) { Label(L10n.menuResetProgress, systemImage: "arrow.uturn.backward") }
         }
         Divider()
-        Button(role: .destructive, action: delete) { Label(L10n.menuDelete, systemImage: "trash") }
+        if book.syncState != nil {
+            if library.isDownloaded(book) {
+                Button { library.cloudSync.removeDownload(book.id) } label: {
+                    Label(L10n.syncRemoveDownload, systemImage: "icloud.and.arrow.up")
+                }
+            }
+        } else {
+            Button(role: .destructive, action: delete) { Label(L10n.menuDelete, systemImage: "trash") }
+        }
     }
 }
 
@@ -202,7 +213,7 @@ struct ContinueReadingCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(L10n.continueReading + "：" + book.displayName + "，" + L10n.pagesProgress(book.progress.currentPage + 1, book.pageCount))
+        .accessibilityLabel(L10n.continueAccessibility(book.displayName, book.progress.currentPage + 1, book.pageCount))
         .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier("library.continue")
     }

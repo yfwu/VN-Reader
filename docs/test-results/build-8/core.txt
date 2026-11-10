@@ -1,0 +1,239 @@
+Building for debugging...
+[2 / 3] ComicCoreTests-product
+Build complete! (0.25 sec)
+Test Suite 'All tests' started at 2026-11-10 18:47:29.470.
+Test Suite 'ComicCoreTests.xctest' started at 2026-11-10 18:47:29.471.
+Test Suite 'ArchiveReadingTests' started at 2026-11-10 18:47:29.471.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testAllFormatsListAndDecodeEveryPage]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testAllFormatsListAndDecodeEveryPage]' passed (0.280 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testBrokenImageIsStillListed]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testBrokenImageIsStillListed]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testCorruptRarData]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testCorruptRarData]' passed (0.003 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testDetectsFormatByContent]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testDetectsFormatByContent]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testEncryptedArchives]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testEncryptedArchives]' passed (0.004 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testEntrySizeLimit]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testEntrySizeLimit]' passed (0.002 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testLegacyShiftJISNames]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testLegacyShiftJISNames]' passed (0.004 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testMultiVolume]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testMultiVolume]' passed (0.001 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testNestedCJKNames]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testNestedCJKNames]' passed (0.006 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testNotArchivesAndEmpty]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testNotArchivesAndEmpty]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testSameBytesAcrossFormats]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testSameBytesAcrossFormats]' passed (0.430 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testSequentialExtractionOfSolidArchive]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testSequentialExtractionOfSolidArchive]' passed (0.011 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testSequentialExtractionStopsWhenHandlerReturnsFalse]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testSequentialExtractionStopsWhenHandlerReturnsFalse]' passed (0.002 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testTruncated]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testTruncated]' passed (0.006 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testUnsupportedZipMethod]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testUnsupportedZipMethod]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testWebPAndMixedFormats]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testWebPAndMixedFormats]' passed (0.004 seconds).
+Test Case '-[ComicCoreTests.ArchiveReadingTests testZip64AndStored]' started.
+Test Case '-[ComicCoreTests.ArchiveReadingTests testZip64AndStored]' passed (0.000 seconds).
+Test Suite 'ArchiveReadingTests' passed at 2026-11-10 18:47:30.225.
+	 Executed 17 tests, with 0 failures (0 unexpected) in 0.753 (0.754) seconds
+Test Suite 'BookSyncTests' started at 2026-11-10 18:47:30.225.
+Test Case '-[ComicCoreTests.BookSyncTests testAssociativityForConflictingEditsAndBookmarkSets]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testAssociativityForConflictingEditsAndBookmarkSets]' passed (0.003 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testClockRollbackAndUnknownFields]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testClockRollbackAndUnknownFields]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testConcurrentDifferentFieldsMergeAndConverge]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testConcurrentDifferentFieldsMergeAndConverge]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testCounterRolloverProducesValidForwardStamp]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testCounterRolloverProducesValidForwardStamp]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testEnvelopeRejectsClockOverflow]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testEnvelopeRejectsClockOverflow]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testEnvelopeRejectsUnsafeIdentityAndKeepsDeviceIDSeparate]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testEnvelopeRejectsUnsafeIdentityAndKeepsDeviceIDSeparate]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testExplicitClearAndBookmarkRemovalSurviveStaleDevice]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testExplicitClearAndBookmarkRemovalSurviveStaleDevice]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testIncomingEventPreservesUnflushedPageTurn]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testIncomingEventPreservesUnflushedPageTurn]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testIndependentFirstSyncDoesNotEraseNonemptyMetadata]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testIndependentFirstSyncDoesNotEraseNonemptyMetadata]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testLibraryReloadDoesNotInventProgressEditFromFractionalDate]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testLibraryReloadDoesNotInventProgressEditFromFractionalDate]' passed (0.005 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testLibraryRoundTripPreservesSyncStateAndOldRecordsRemainCompatible]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testLibraryRoundTripPreservesSyncStateAndOldRecordsRemainCompatible]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testProgressResetWinsAndLayoutStaysLocal]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testProgressResetWinsAndLayoutStaysLocal]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.BookSyncTests testV1MigrationKeepsByteIdenticalRollbackSnapshot]' started.
+Test Case '-[ComicCoreTests.BookSyncTests testV1MigrationKeepsByteIdenticalRollbackSnapshot]' passed (0.004 seconds).
+Test Suite 'BookSyncTests' passed at 2026-11-10 18:47:30.238.
+	 Executed 13 tests, with 0 failures (0 unexpected) in 0.013 (0.014) seconds
+Test Suite 'ImportSourceOwnershipTests' started at 2026-11-10 18:47:30.238.
+Test Case '-[ComicCoreTests.ImportSourceOwnershipTests testInboxSymlinkCannotAuthorizeAnUnrelatedFolder]' started.
+Test Case '-[ComicCoreTests.ImportSourceOwnershipTests testInboxSymlinkCannotAuthorizeAnUnrelatedFolder]' passed (0.001 seconds).
+Test Case '-[ComicCoreTests.ImportSourceOwnershipTests testOnlyActualAppInboxDescendantsAreOwned]' started.
+Test Case '-[ComicCoreTests.ImportSourceOwnershipTests testOnlyActualAppInboxDescendantsAreOwned]' passed (0.001 seconds).
+Test Case '-[ComicCoreTests.ImportSourceOwnershipTests testSourceSymlinkCannotAuthorizeDeletingAnExternalOriginal]' started.
+Test Case '-[ComicCoreTests.ImportSourceOwnershipTests testSourceSymlinkCannotAuthorizeDeletingAnExternalOriginal]' passed (0.001 seconds).
+Test Suite 'ImportSourceOwnershipTests' passed at 2026-11-10 18:47:30.242.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'LargeFileImportTests' started at 2026-11-10 18:47:30.242.
+Test Case '-[ComicCoreTests.LargeFileImportTests testClonedBookSurvivesDeletingTheOriginal]' started.
+Test Case '-[ComicCoreTests.LargeFileImportTests testClonedBookSurvivesDeletingTheOriginal]' passed (0.003 seconds).
+Test Case '-[ComicCoreTests.LargeFileImportTests testCloneUsesConstantMemory]' started.
+Test Case '-[ComicCoreTests.LargeFileImportTests testCloneUsesConstantMemory]' passed (0.015 seconds).
+Test Case '-[ComicCoreTests.LargeFileImportTests testCopyUsesConstantMemory]' started.
+Test Case '-[ComicCoreTests.LargeFileImportTests testCopyUsesConstantMemory]' passed (0.035 seconds).
+Test Case '-[ComicCoreTests.LargeFileImportTests testOversizedDictionaryIsRefusedBeforeDecompressing]' started.
+Test Case '-[ComicCoreTests.LargeFileImportTests testOversizedDictionaryIsRefusedBeforeDecompressing]' passed (0.002 seconds).
+Test Suite 'LargeFileImportTests' passed at 2026-11-10 18:47:30.297.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.055 (0.055) seconds
+Test Suite 'LibraryAndImportTests' started at 2026-11-10 18:47:30.297.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testBackupRefreshesAfterEverySuccessfulSaveWithoutRelaunch]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testBackupRefreshesAfterEverySuccessfulSaveWithoutRelaunch]' passed (0.010 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testCancelCleansUp]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testCancelCleansUp]' passed (0.004 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testComicInfo]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testComicInfo]' passed (0.001 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testCorruptMainWithoutBackupIsNeverTreatedAsEmpty]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testCorruptMainWithoutBackupIsNeverTreatedAsEmpty]' passed (0.007 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testDatabaseRoundTripAndRecovery]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testDatabaseRoundTripAndRecovery]' passed (0.004 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testDeleteKeepsUserOriginal]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testDeleteKeepsUserOriginal]' passed (0.031 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testDuplicateAndSameNameRules]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testDuplicateAndSameNameRules]' passed (0.016 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testFailedMainSaveDoesNotRefreshBackup]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testFailedMainSaveDoesNotRefreshBackup]' passed (0.003 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testFailuresLeaveNothingBehind]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testFailuresLeaveNothingBehind]' passed (0.012 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testFutureBackupDoesNotBecomeEmptyLibrary]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testFutureBackupDoesNotBecomeEmptyLibrary]' passed (0.002 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testFutureSchemaIsProtectedEvenIfRecordsCannotDecode]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testFutureSchemaIsProtectedEvenIfRecordsCannotDecode]' passed (0.002 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testImportEveryFormatAndReadOffline]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testImportEveryFormatAndReadOffline]' passed (0.070 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testInsufficientDiskSpace]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testInsufficientDiskSpace]' passed (0.002 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testLaunchCleanupPreservesUncataloguedBooks]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testLaunchCleanupPreservesUncataloguedBooks]' passed (0.005 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testMissingDatabaseWithManagedBooksIsNotNewLibrary]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testMissingDatabaseWithManagedBooksIsNotNewLibrary]' passed (0.004 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testOlderRecordsDecodeWithDefaults]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testOlderRecordsDecodeWithDefaults]' passed (0.002 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testStaleBackupRecoveryNeverDeletesNewerBookFiles]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testStaleBackupRecoveryNeverDeletesNewerBookFiles]' passed (0.013 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testUnreadableSource]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testUnreadableSource]' passed (0.002 seconds).
+Test Case '-[ComicCoreTests.LibraryAndImportTests testUnrecoverableLibraryStaysProtectedAcrossLaunches]' started.
+Test Case '-[ComicCoreTests.LibraryAndImportTests testUnrecoverableLibraryStaysProtectedAcrossLaunches]' passed (0.005 seconds).
+Test Suite 'LibraryAndImportTests' passed at 2026-11-10 18:47:30.491.
+	 Executed 19 tests, with 0 failures (0 unexpected) in 0.193 (0.194) seconds
+Test Suite 'MetadataEditingTests' started at 2026-11-10 18:47:30.491.
+Test Case '-[ComicCoreTests.MetadataEditingTests testApplyChangesKeepsOtherFieldsAndClears]' started.
+Test Case '-[ComicCoreTests.MetadataEditingTests testApplyChangesKeepsOtherFieldsAndClears]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.MetadataEditingTests testComicInfoReadsCreditsAndYear]' started.
+Test Case '-[ComicCoreTests.MetadataEditingTests testComicInfoReadsCreditsAndYear]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.MetadataEditingTests testDisplayNameStyles]' started.
+Test Case '-[ComicCoreTests.MetadataEditingTests testDisplayNameStyles]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.MetadataEditingTests testMetadataWithoutNewFieldsStillDecodes]' started.
+Test Case '-[ComicCoreTests.MetadataEditingTests testMetadataWithoutNewFieldsStillDecodes]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.MetadataEditingTests testSequentialNumbersFollowNaturalFileOrder]' started.
+Test Case '-[ComicCoreTests.MetadataEditingTests testSequentialNumbersFollowNaturalFileOrder]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.MetadataEditingTests testSeriesOrder]' started.
+Test Case '-[ComicCoreTests.MetadataEditingTests testSeriesOrder]' passed (0.000 seconds).
+Test Suite 'MetadataEditingTests' passed at 2026-11-10 18:47:30.492.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'NavigationTests' started at 2026-11-10 18:47:30.492.
+Test Case '-[ComicCoreTests.NavigationTests testBoundaries]' started.
+Test Case '-[ComicCoreTests.NavigationTests testBoundaries]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.NavigationTests testDirectionChangeKeepsLogicalPage]' started.
+Test Case '-[ComicCoreTests.NavigationTests testDirectionChangeKeepsLogicalPage]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.NavigationTests testLTRTapsAndSwipes]' started.
+Test Case '-[ComicCoreTests.NavigationTests testLTRTapsAndSwipes]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.NavigationTests testPrefetchOrder]' started.
+Test Case '-[ComicCoreTests.NavigationTests testPrefetchOrder]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.NavigationTests testProgressAndStatus]' started.
+Test Case '-[ComicCoreTests.NavigationTests testProgressAndStatus]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.NavigationTests testRTLTapsAndSwipes]' started.
+Test Case '-[ComicCoreTests.NavigationTests testRTLTapsAndSwipes]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.NavigationTests testSpreads]' started.
+Test Case '-[ComicCoreTests.NavigationTests testSpreads]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.NavigationTests testTapZones]' started.
+Test Case '-[ComicCoreTests.NavigationTests testTapZones]' passed (0.000 seconds).
+Test Suite 'NavigationTests' passed at 2026-11-10 18:47:30.493.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'PageFileNameTests' started at 2026-11-10 18:47:30.493.
+Test Case '-[ComicCoreTests.PageFileNameTests testCountsFromOneAndPadsToTheBookLength]' started.
+Test Case '-[ComicCoreTests.PageFileNameTests testCountsFromOneAndPadsToTheBookLength]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageFileNameTests testFallsBackToThePageNumberWhenNothingIsLeft]' started.
+Test Case '-[ComicCoreTests.PageFileNameTests testFallsBackToThePageNumberWhenNothingIsLeft]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageFileNameTests testKeepsCJKAndPunctuationThatFilesAllow]' started.
+Test Case '-[ComicCoreTests.PageFileNameTests testKeepsCJKAndPunctuationThatFilesAllow]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageFileNameTests testLongNamesFitTheFileSystemWithoutSplittingACharacter]' started.
+Test Case '-[ComicCoreTests.PageFileNameTests testLongNamesFitTheFileSystemWithoutSplittingACharacter]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageFileNameTests testRemovesWhatAPathCannotHold]' started.
+Test Case '-[ComicCoreTests.PageFileNameTests testRemovesWhatAPathCannotHold]' passed (0.000 seconds).
+Test Suite 'PageFileNameTests' passed at 2026-11-10 18:47:30.494.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'PageOrderingTests' started at 2026-11-10 18:47:30.494.
+Test Case '-[ComicCoreTests.PageOrderingTests testCaseOnlyDifferenceIsDeterministic]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testCaseOnlyDifferenceIsDeterministic]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testCJKAndFullWidthDigits]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testCJKAndFullWidthDigits]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testIgnoresSystemAndNonPageFiles]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testIgnoresSystemAndNonPageFiles]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testManifestRoundTripKeepsOrder]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testManifestRoundTripKeepsOrder]' passed (0.002 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testMixedPaddingIsStable]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testMixedPaddingIsStable]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testPaddedNumbers]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testPaddedNumbers]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testPathTraversalNamesAreOnlyLabels]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testPathTraversalNamesAreOnlyLabels]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testPrefixesAndSuffixes]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testPrefixesAndSuffixes]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testSameNameInDifferentFoldersAndDuplicates]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testSameNameInDifferentFoldersAndDuplicates]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testSubdirectoriesAndRootFilesFirst]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testSubdirectoriesAndRootFilesFirst]' passed (0.000 seconds).
+Test Case '-[ComicCoreTests.PageOrderingTests testUnpaddedNumbers]' started.
+Test Case '-[ComicCoreTests.PageOrderingTests testUnpaddedNumbers]' passed (0.000 seconds).
+Test Suite 'PageOrderingTests' passed at 2026-11-10 18:47:30.498.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+Test Suite 'PageSourceTests' started at 2026-11-10 18:47:30.498.
+Test Case '-[ComicCoreTests.PageSourceTests testCancelledWaiterDoesNotHang]' started.
+Test Case '-[ComicCoreTests.PageSourceTests testCancelledWaiterDoesNotHang]' passed (0.011 seconds).
+Test Case '-[ComicCoreTests.PageSourceTests testRandomAccessSourceConcurrentReads]' started.
+Test Case '-[ComicCoreTests.PageSourceTests testRandomAccessSourceConcurrentReads]' passed (0.040 seconds).
+Test Case '-[ComicCoreTests.PageSourceTests testSolidExtractionNeedsDiskSpace]' started.
+Test Case '-[ComicCoreTests.PageSourceTests testSolidExtractionNeedsDiskSpace]' passed (0.008 seconds).
+Test Case '-[ComicCoreTests.PageSourceTests testSolidWaitsForPreparationThenServesFromCache]' started.
+Test Case '-[ComicCoreTests.PageSourceTests testSolidWaitsForPreparationThenServesFromCache]' passed (0.032 seconds).
+Test Suite 'PageSourceTests' passed at 2026-11-10 18:47:30.588.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.090 (0.090) seconds
+Test Suite 'SpreadLayoutInvariantTests' started at 2026-11-10 18:47:30.588.
+Test Case '-[ComicCoreTests.SpreadLayoutInvariantTests testKnownWidePagesRemainStandaloneWithoutLosingOrDuplicatingPages]' started.
+Test Case '-[ComicCoreTests.SpreadLayoutInvariantTests testKnownWidePagesRemainStandaloneWithoutLosingOrDuplicatingPages]' passed (0.148 seconds).
+Test Suite 'SpreadLayoutInvariantTests' passed at 2026-11-10 18:47:30.736.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.148 (0.148) seconds
+Test Suite 'StressTests' started at 2026-11-10 18:47:30.736.
+Test Case '-[ComicCoreTests.StressTests testImportAndRandomAccess]' started.
+/Users/yfwu/Developer/VN-Reader/.worktrees/build-8/Packages/ComicCore/Tests/ComicCoreTests/StressTests.swift:11: -[ComicCoreTests.StressTests testImportAndRandomAccess] : Test skipped - set VN_STRESS_DIR to run stress tests
+Test Case '-[ComicCoreTests.StressTests testImportAndRandomAccess]' skipped (0.001 seconds).
+Test Case '-[ComicCoreTests.StressTests testSolidPreparation]' started.
+/Users/yfwu/Developer/VN-Reader/.worktrees/build-8/Packages/ComicCore/Tests/ComicCoreTests/StressTests.swift:11: -[ComicCoreTests.StressTests testSolidPreparation] : Test skipped - set VN_STRESS_DIR to run stress tests
+Test Case '-[ComicCoreTests.StressTests testSolidPreparation]' skipped (0.000 seconds).
+Test Suite 'StressTests' passed at 2026-11-10 18:47:30.737.
+	 Executed 2 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'ComicCoreTests.xctest' passed at 2026-11-10 18:47:30.737.
+	 Executed 93 tests, with 2 tests skipped and 0 failures (0 unexpected) in 1.261 (1.266) seconds
+Test Suite 'All tests' passed at 2026-11-10 18:47:30.737.
+	 Executed 93 tests, with 2 tests skipped and 0 failures (0 unexpected) in 1.261 (1.267) seconds
+LARGE import of 128 MB: footprint grew 0 MB
+LARGE import of 128 MB: footprint grew 0 MB
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

@@ -56,8 +56,15 @@ final class PageImageLoader {
     func cachedImage(_ page: Int) -> UIImage? { cache.object(forKey: NSNumber(value: page)) }
 
     func image(for page: Int) async throws -> UIImage {
-        if let img = cachedImage(page) { return img }
-        if let t = inFlight[page] { return try await awaitShared(t, page: page) }
+        if let img = cachedImage(page) {
+            onDecoded?(page, img.size)
+            return img
+        }
+        if let t = inFlight[page] {
+            let img = try await awaitShared(t, page: page)
+            remember(img, page: page)
+            return img
+        }
         let source = self.source
         let target = self.target
         let path = source.manifest.pages.indices.contains(page) ? source.manifest.pages[page].path : "?"
@@ -75,10 +82,16 @@ final class PageImageLoader {
         inFlight[page] = task
         defer { if inFlight[page] == task { inFlight[page] = nil } }
         let img = try await awaitShared(task, page: page)
+        remember(img, page: page)
+        return img
+    }
+
+    /// Classification must precede every consumer, including a shared prefetch
+    /// result; otherwise a wide image can be displayed in its obsolete pairing.
+    private func remember(_ img: UIImage, page: Int) {
         let cost = Int(img.size.width * img.size.height * img.scale * img.scale * 4)
         cache.setObject(img, forKey: NSNumber(value: page), cost: cost)
         onDecoded?(page, img.size)
-        return img
     }
 
     /// Awaits a shared decode task. If the prefetch window cancelled it while this

@@ -1,0 +1,27 @@
+Original log: /private/tmp/vn-reader-build8-auto-macA-return.log
+Original SHA256: aacdbf4b3bc5c25a522081a1c664d7e9dadb34096f69dff8bdf8b3282fd06140
+Scope: explicit DEBUG Development smoke on one Mac with isolated client catalogues.
+Retained only timestamped SyncSmoke status/reason/count/error-code lines; no record payloads, account identifiers or tokens.
+
+2026-11-10T15:38:57Z SyncSmoke[macA] diagnostic auto request=appOpened disposition=debounced
+2026-11-10T15:38:58Z SyncSmoke[macA] diagnostic auto start
+2026-11-10T15:38:58Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:38:58Z SyncSmoke[macA] diagnostic cycle start
+2026-11-10T15:38:59Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:38:59Z SyncSmoke[macA] diagnostic send pending=1
+2026-11-10T15:39:00Z SyncSmoke[macA] diagnostic sent saved=0 failed=1
+2026-11-10T15:39:00Z SyncSmoke[macA] diagnostic record-save error=CKErrorDomain:14
+2026-11-10T15:39:00Z SyncSmoke[macA] diagnostic record-save.underlying error=CKInternalErrorDomain:2004
+2026-11-10T15:39:00Z SyncSmoke[macA] diagnostic retry resolved-conflict attempt=2
+2026-11-10T15:39:01Z SyncSmoke[macA] diagnostic sent saved=1 failed=0
+2026-11-10T15:39:01Z SyncSmoke[macA] This sync has completed books=1
+2026-11-10T15:39:01Z SyncSmoke[macA] diagnostic cycle finish result=completed followUp=false
+2026-11-10T15:39:01Z SyncSmoke[macA] diagnostic fetched modified=1 deleted=0
+2026-11-10T15:39:37Z SyncSmoke[macA] diagnostic auto request=bookOpened disposition=debounced
+2026-11-10T15:39:37Z SyncSmoke[macA] diagnostic auto start
+2026-11-10T15:39:37Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:39:37Z SyncSmoke[macA] diagnostic cycle start
+2026-11-10T15:39:38Z SyncSmoke[macA] Syncing the library… books=1
+2026-11-10T15:39:38Z SyncSmoke[macA] diagnostic send pending=0
+2026-11-10T15:39:39Z SyncSmoke[macA] This sync has completed books=1
+2026-11-10T15:39:39Z SyncSmoke[macA] diagnostic cycle finish result=completed followUp=false

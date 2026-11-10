@@ -51,10 +51,11 @@ enum LibraryFilter: String, CaseIterable, Identifiable {
     }
 }
 
-/// App-wide preferences (UserDefaults). Per-book settings live in BookRecord.
+/// App-wide preferences and device-local Mac layout overrides (UserDefaults).
 final class AppSettings: ObservableObject {
     static let shared = AppSettings()
     private let d = UserDefaults.standard
+    private let readerLayouts: ReaderLayoutPreferences
 
     @Published var defaultDirection: ReadingDirection { didSet { d.set(defaultDirection.rawValue, forKey: "defaultDirection") } }
     @Published var defaultFitMode: PageFitMode { didSet { d.set(defaultFitMode.rawValue, forKey: "defaultFitMode") } }
@@ -71,11 +72,13 @@ final class AppSettings: ObservableObject {
 
     private init() {
         let d = UserDefaults.standard
+        let readerLayouts = ReaderLayoutPreferences(defaults: d)
+        self.readerLayouts = readerLayouts
         d.register(defaults: ["tapToTurn": true, "animatePageTurns": true, "coverAlone": true,
                               "loupeDiameter": 260.0, "loupeMagnification": 2.5])
         defaultDirection = ReadingDirection(rawValue: d.string(forKey: "defaultDirection") ?? "") ?? .leftToRight
         defaultFitMode = PageFitMode(rawValue: d.string(forKey: "defaultFitMode") ?? "") ?? .fitPage
-        defaultLayout = PageLayout(rawValue: d.string(forKey: "defaultLayout") ?? "") ?? .single
+        defaultLayout = readerLayouts.defaultLayout
         background = ReaderBackground(rawValue: d.string(forKey: "readerBackground") ?? "") ?? .black
         tapToTurn = d.bool(forKey: "tapToTurn")
         animatePageTurns = d.bool(forKey: "animatePageTurns")
@@ -87,6 +90,15 @@ final class AppSettings: ObservableObject {
         loupeMagnification = d.double(forKey: "loupeMagnification")
     }
 
+    func readerLayout(for book: BookRecord) -> PageLayout {
+        readerLayouts.layout(for: book, defaultLayout: defaultLayout)
+    }
+
+    @discardableResult
+    func storeLocalReaderLayout(_ layout: PageLayout, for bookID: UUID) -> Bool {
+        readerLayouts.storeLocalSelection(layout, for: bookID)
+    }
+
     /// Restores defaults (UI tests start from a known state).
     func resetForTesting() {
         for k in ["defaultDirection", "defaultFitMode", "defaultLayout", "readerBackground", "tapToTurn",
@@ -94,9 +106,10 @@ final class AppSettings: ObservableObject {
                   "loupeDiameter", "loupeMagnification"] {
             d.removeObject(forKey: k)
         }
+        readerLayouts.resetLocalSelections()
         defaultDirection = .leftToRight
         defaultFitMode = .fitPage
-        defaultLayout = .single
+        defaultLayout = readerLayouts.defaultLayout
         background = .black
         tapToTurn = true
         animatePageTurns = true

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>iCloudContainerEnvironment</key>
+	<string>Production</string>
 	<!-- development: install on devices registered in your team (Xcode can register them automatically).
 	     ad-hoc: install on up to 100 registered devices without Xcode (e.g. via Apple Configurator / Finder).
 	     app-store-connect: upload to TestFlight. -->
